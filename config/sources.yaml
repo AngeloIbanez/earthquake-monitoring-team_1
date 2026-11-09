@@ -1,0 +1,91 @@
+version: "1.0"
+hazard: "earthquake"
+scope: "global"
+
+sources:
+  usgs_fdsn_historical:
+    id: "usgs_fdsn"
+    name: "USGS Earthquake Hazards Program - FDSN Event Web Service"
+    type: "historical"
+    owner: "United States Geological Survey (USGS)"
+    base_url: "https://earthquake.usgs.gov/fdsnws/event/1/query"
+    format: "geojson"
+    access_method: "REST API (GET)"
+    auth_required: false
+    rate_limits:
+      max_records_per_request: 20000
+      requests_per_minute: 60
+    license: "Public Domain (U.S. Government Work)"
+    attribution: "U.S. Geological Survey"
+    parameters:
+      format: "geojson"
+      minmagnitude: 2.5
+      orderby: "time-asc"
+    historical_strategy:
+      partition_by: "month"
+      start_date: "2020-01-01"
+      end_date: "2025-12-31"
+
+  emsc_fdsn_historical:
+    id: "emsc_fdsn"
+    name: "EMSC Seismic Portal - FDSN Web Service"
+    type: "historical"
+    owner: "Euro-Mediterranean Seismological Centre (EMSC)"
+    base_url: "https://www.seismicportal.eu/fdsnws/event/1/query"
+    format: "json"
+    access_method: "REST API (GET)"
+    auth_required: false
+    rate_limits:
+      max_records_per_request: 10000
+      requests_per_minute: 30
+    license: "Open Data (EMSC Terms of Use)"
+    attribution: "Euro-Mediterranean Seismological Centre (EMSC)"
+    parameters:
+      format: "json"
+      minmag: 2.5
+      limit: 10000
+    historical_strategy:
+      partition_by: "month"
+      start_date: "2020-01-01"
+      end_date: "2025-12-31"
+
+  usgs_geojson_incremental:
+    id: "usgs_realtime"
+    name: "USGS Real-time GeoJSON Summary Feed"
+    type: "incremental"
+    owner: "United States Geological Survey (USGS)"
+    base_url: "https://earthquake.usgs.gov/earthquakes/feed/v1.0/detail/"
+    feed_url: "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson"
+    format: "geojson"
+    access_method: "HTTP GET"
+    auth_required: false
+    update_frequency: "5m"
+    rate_limits:
+      polling_interval_seconds: 300
+    license: "Public Domain"
+    attribution: "U.S. Geological Survey"
+    watermark:
+      field: "properties.updated"
+      type: "timestamp_epoch_ms"
+      overlap_window_hours: 24
+
+  gdacs_events_incremental:
+    id: "gdacs_realtime"
+    name: "Global Disaster Alert and Coordination System - Events API"
+    type: "incremental"
+    owner: "European Commission / Joint Research Centre (JRC)"
+    base_url: "https://www.gdacs.org/gdacsapi/api/events/geteventlist/geojson"
+    format: "geojson"
+    access_method: "REST API (GET)"
+    auth_required: false
+    update_frequency: "15m"
+    rate_limits:
+      polling_interval_seconds: 900
+    license: "Open Access (GDACS Attribution)"
+    attribution: "GDACS - Joint Research Centre"
+    parameters:
+      eventtype: "EQ"
+    watermark:
+      field: "todate"
+      type: "iso8601"
+      overlap_window_hours: 48
