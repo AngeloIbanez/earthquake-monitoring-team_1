@@ -71,21 +71,35 @@ sources:
 
   gdacs_events_incremental:
     id: "gdacs_realtime"
-    name: "Global Disaster Alert and Coordination System - Events API"
+    name: "Global Disaster Alert and Coordination System - RSS 24h Feed"
     type: "incremental"
     owner: "European Commission / Joint Research Centre (JRC)"
-    base_url: "https://www.gdacs.org/gdacsapi/api/events/geteventlist/geojson"
-    format: "geojson"
-    access_method: "REST API (GET)"
+    # NOTE: The GeoJSON REST API endpoint (/gdacsapi/api/events/geteventlist/geojson)
+    # returned HTTP 404 as of 2026-11-09. The official programmatic interface that
+    # remains operational is the RSS 2.0 XML feed at the URL below (confirmed live).
+    base_url: "https://www.gdacs.org/xml/rss_24h.xml"
+    format: "xml-rss2"
+    access_method: "HTTP GET (RSS 2.0 XML feed, polled)"
     auth_required: false
     update_frequency: "15m"
     rate_limits:
       polling_interval_seconds: 900
-    license: "Open Access (GDACS Attribution)"
-    attribution: "GDACS - Joint Research Centre"
+      notes: "No explicit rate limit documented; cache all downloads per GDACS ToU."
+    license: "Open Access (GDACS Attribution required)"
+    attribution: "GDACS - European Commission / Joint Research Centre (JRC)"
+    # Key XML namespaces used in this feed:
+    #   gdacs  -> http://www.gdacs.org
+    #   geo    -> http://www.w3.org/2003/01/geo/wgs84_pos#
+    #   georss -> http://www.georss.org/georss
+    #   dc     -> http://purl.org/dc/elements/1.1/
     parameters:
-      eventtype: "EQ"
+      filter_eventtype: "EQ"   # applied in-code after fetch (feed covers all hazard types)
     watermark:
-      field: "todate"
-      type: "iso8601"
+      field: "{http://www.gdacs.org}fromdate"   # RFC-822 timestamp of event origin
+      type: "rfc822"
       overlap_window_hours: 48
+      notes: >
+        Records are filtered server-side by eventtype=EQ only after parsing.
+        Magnitude is extracted via regex from <gdacs:severity> (e.g. 'Magnitude 6.4M, Depth:17km').
+        Coordinates are parsed from <georss:point> ('lat lon' space-separated string).
+        No depth field available in this feed; set depth_km = null for all GDACS records.

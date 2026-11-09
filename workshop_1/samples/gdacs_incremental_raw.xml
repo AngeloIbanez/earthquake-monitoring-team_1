@@ -6,12 +6,66 @@
     <copyright>public domain</copyright>
     <description>Near real-time notification about natural disaster with a potential humanitarian impact</description>
     <managingEditor>stefano.paris@ext.ec.europa.eu</managingEditor>
-    <!--Records number 22-->
-    <!--Start 11/9/2026 5:17:16 AM-->
-    <!--=Start 11/9/2026 5:17:16 AM-->
+    <!--Records number 26-->
+    <!--Start 11/9/2026 6:27:23 AM-->
+    <!--=Start 11/9/2026 6:27:23 AM-->
     <webMaster>stefano.paris@ext.ec.europa.eu</webMaster>
-    <pubDate>Mon, 09 Nov 2026 04:17:16 GMT</pubDate>
+    <pubDate>Mon, 09 Nov 2026 05:27:23 GMT</pubDate>
     <atom:link href="http://www.gdacs.org/xml/rss_24h.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Green earthquake (Magnitude 5.7M, Depth:24.173km) in Japan 09/11/2026 04:52 UTC, 230 thousand in MMI IV.</title>
+      <description>On 11/9/2026 4:52:51 AM, an earthquake occurred in Japan potentially affecting 230 thousand in MMI IV. The earthquake had Magnitude 5.7M, Depth:24.173km.</description>
+      <enclosure type="image/png" length="1" url="https://www.gdacs.org/contentdata/resources/imgtemp/gdacs/eq/eq1745512_1.png" />
+      <gdacs:temporary>false</gdacs:temporary>
+      <link>http://www.gdacs.org/report.aspx?eventtype=EQ&amp;eventid=1576372</link>
+      <pubDate>Mon, 09 Nov 2026 05:03:32 GMT</pubDate>
+      <gdacs:dateadded>Mon, 09 Nov 2026 05:03:32 GMT</gdacs:dateadded>
+      <gdacs:datemodified>Mon, 09 Nov 2026 05:12:54 GMT</gdacs:datemodified>
+      <gdacs:iscurrent>true</gdacs:iscurrent>
+      <gdacs:fromdate>Mon, 09 Nov 2026 04:52:51 GMT</gdacs:fromdate>
+      <gdacs:todate>Mon, 09 Nov 2026 04:52:51 GMT</gdacs:todate>
+      <gdacs:durationinweek>0</gdacs:durationinweek>
+      <gdacs:year>2026</gdacs:year>
+      <dc:subject>EQ1</dc:subject>
+      <guid isPermaLink="false">EQ1576372</guid>
+      <geo:Point>
+        <geo:lat>36.2471</geo:lat>
+        <geo:long>141.8299</geo:long>
+      </geo:Point>
+      <!--gdacs:bbox format = lonmin lonmax latmin latmax-->
+      <gdacs:bbox>137.8299 145.8299 32.2471 40.2471</gdacs:bbox>
+      <georss:point>36.2471 141.8299</georss:point>
+      <gdacs:cap>https://www.gdacs.org/contentdata/resources/EQ/1576372/cap_1576372.xml</gdacs:cap>
+      <gdacs:icon>http://www.gdacs.org/Images/gdacs_icons/alerts/Green/EQ.png</gdacs:icon>
+      <gdacs:version>1</gdacs:version>
+      <gdacs:eventtype>EQ</gdacs:eventtype>
+      <gdacs:alertlevel>Green</gdacs:alertlevel>
+      <gdacs:alertscore>0</gdacs:alertscore>
+      <gdacs:episodealertlevel>Green</gdacs:episodealertlevel>
+      <gdacs:episodealertscore>1</gdacs:episodealertscore>
+      <gdacs:eventname />
+      <gdacs:eventid>1576372</gdacs:eventid>
+      <gdacs:episodeid>1745512</gdacs:episodeid>
+      <gdacs:calculationtype>earthquakeonly</gdacs:calculationtype>
+      <gdacs:severity unit="M" value="5.7">Magnitude 5.7M, Depth:24.2km</gdacs:severity>
+      <gdacs:population unit="in MMI IV" value="228629">230 thousand in MMI IV</gdacs:population>
+      <gdacs:vulnerability value="1.3145341380124" />
+      <gdacs:iso3>JPN</gdacs:iso3>
+      <gdacs:country>Japan</gdacs:country>
+      <gdacs:glide />
+      <gdacs:mapimage />
+      <gdacs:maplink />
+      <gdacs:gtsimage />
+      <gdacs:gtslink />
+      <gdacs:resources>
+        <gdacs:resource id="event_rss" version="0" source="EC-JRC" url="http://www.gdacs.org//datareport/resources/EQ/1576372/rss_1576372.xml" type="rss">
+          <gdacs:title>Event in rss format</gdacs:title>
+          <gdacs:description>Joint Research Center of the European Commission</gdacs:description>
+          <gdacs:acknowledgements>Copyright notice: European Union (CC BY 4.0), reuse is allowed, provided appropriate credit to GDACS is given.</gdacs:acknowledgements>
+          <gdacs:accesslevel>Public</gdacs:accesslevel>
+        </gdacs:resource>
+      </gdacs:resources>
+    </item>
     <item>
       <title>Green earthquake (Magnitude 6.4M, Depth:17km) in Solomon Is. 09/11/2026 03:34 UTC, 8 thousand in MMI VI.</title>
       <description>On 11/9/2026 3:34:59 AM, an earthquake occurred in Solomon Is. potentially affecting 8 thousand in MMI VI. The earthquake had Magnitude 6.4M, Depth:17km.</description>
@@ -175,14 +229,14 @@
       </gdacs:resources>
     </item>
     <item>
-      <title>Green earthquake (Magnitude 5.3M, Depth:538.416km) in South Of Fiji Islands 09/11/2026 00:46 UTC, No people affected in 100km.</title>
-      <description>On 11/9/2026 12:46:59 AM, an earthquake occurred in South Of Fiji Islands potentially affecting No people affected in 100km. The earthquake had Magnitude 5.3M, Depth:538.416km.</description>
-      <enclosure type="image/png" length="1" url="https://www.gdacs.org/contentdata/resources/imgtemp/gdacs/eq/eq1745472_1.png" />
+      <title>Green earthquake (Magnitude 5.1M, Depth:535.494km) in South Of Fiji Islands 09/11/2026 00:46 UTC, No people affected in 100km.</title>
+      <description>On 11/9/2026 12:46:59 AM, an earthquake occurred in South Of Fiji Islands potentially affecting No people affected in 100km. The earthquake had Magnitude 5.1M, Depth:535.494km.</description>
+      <enclosure type="image/png" length="1" url="https://www.gdacs.org/contentdata/resources/imgtemp/gdacs/eq/eq1745509_1.png" />
       <gdacs:temporary>false</gdacs:temporary>
       <link>http://www.gdacs.org/report.aspx?eventtype=EQ&amp;eventid=1576337</link>
       <pubDate>Mon, 09 Nov 2026 01:06:04 GMT</pubDate>
       <gdacs:dateadded>Mon, 09 Nov 2026 01:06:04 GMT</gdacs:dateadded>
-      <gdacs:datemodified>Mon, 09 Nov 2026 01:06:05 GMT</gdacs:datemodified>
+      <gdacs:datemodified>Mon, 09 Nov 2026 04:41:03 GMT</gdacs:datemodified>
       <gdacs:iscurrent>true</gdacs:iscurrent>
       <gdacs:fromdate>Mon, 09 Nov 2026 00:46:59 GMT</gdacs:fromdate>
       <gdacs:todate>Mon, 09 Nov 2026 00:46:59 GMT</gdacs:todate>
@@ -191,12 +245,12 @@
       <dc:subject>EQ1</dc:subject>
       <guid isPermaLink="false">EQ1576337</guid>
       <geo:Point>
-        <geo:lat>-23.6266</geo:lat>
-        <geo:long>179.1054</geo:long>
+        <geo:lat>-23.6774</geo:lat>
+        <geo:long>179.2119</geo:long>
       </geo:Point>
       <!--gdacs:bbox format = lonmin lonmax latmin latmax-->
-      <gdacs:bbox>175.1054 183.1054 -27.6266 -19.6266</gdacs:bbox>
-      <georss:point>-23.6266 179.1054</georss:point>
+      <gdacs:bbox>175.2119 183.2119 -27.6774 -19.6774</gdacs:bbox>
+      <georss:point>-23.6774 179.2119</georss:point>
       <gdacs:cap>https://www.gdacs.org/contentdata/resources/EQ/1576337/cap_1576337.xml</gdacs:cap>
       <gdacs:icon>http://www.gdacs.org/Images/gdacs_icons/alerts/Green/EQ.png</gdacs:icon>
       <gdacs:version>1</gdacs:version>
@@ -207,10 +261,10 @@
       <gdacs:episodealertscore>1</gdacs:episodealertscore>
       <gdacs:eventname />
       <gdacs:eventid>1576337</gdacs:eventid>
-      <gdacs:episodeid>1745472</gdacs:episodeid>
+      <gdacs:episodeid>1745509</gdacs:episodeid>
       <gdacs:calculationtype>earthquakeonly</gdacs:calculationtype>
-      <gdacs:severity unit="M" value="5.3">Magnitude 5.3M, Depth:538.4km</gdacs:severity>
-      <gdacs:population unit="in MMI -" value="0" />
+      <gdacs:severity unit="M" value="5.1">Magnitude 5.1M, Depth:535.5km</gdacs:severity>
+      <gdacs:population unit="in MMI -" value="1">Few people affected in MMI -</gdacs:population>
       <gdacs:vulnerability value="1.3145341380124" />
       <gdacs:iso3 />
       <gdacs:country>South Of Fiji Islands</gdacs:country>
@@ -715,6 +769,114 @@
       </gdacs:resources>
     </item>
     <item>
+      <title>Green forest fire notification in Australia</title>
+      <description>On 30/10/2026, a forest fire started in Australia,  until 07/11/2026.</description>
+      <enclosure type="image/png" length="1" url="" />
+      <gdacs:temporary>false</gdacs:temporary>
+      <link>http://www.gdacs.org/report.aspx?eventtype=WF&amp;eventid=1033456</link>
+      <pubDate>Tue, 03 Nov 2026 16:07:55 GMT</pubDate>
+      <gdacs:dateadded>Tue, 03 Nov 2026 16:07:55 GMT</gdacs:dateadded>
+      <gdacs:datemodified>Mon, 09 Nov 2026 04:25:56 GMT</gdacs:datemodified>
+      <gdacs:iscurrent>true</gdacs:iscurrent>
+      <gdacs:fromdate>Fri, 30 Oct 2026 00:00:00 GMT</gdacs:fromdate>
+      <gdacs:todate>Mon, 09 Nov 2026 00:00:00 GMT</gdacs:todate>
+      <gdacs:durationinweek>1</gdacs:durationinweek>
+      <gdacs:year>2026</gdacs:year>
+      <dc:subject>WF1</dc:subject>
+      <guid isPermaLink="false">WF1033456</guid>
+      <geo:Point>
+        <geo:lat>-15.130777293156937</geo:lat>
+        <geo:long>128.77132919344359</geo:long>
+      </geo:Point>
+      <!--gdacs:bbox format = lonmin lonmax latmin latmax-->
+      <gdacs:bbox>124.771329193444 132.771329193444 -19.1307772931569 -11.1307772931569</gdacs:bbox>
+      <georss:point>-15.130777293156937 128.77132919344359</georss:point>
+      <gdacs:cap>https://www.gdacs.org/contentdata/resources/WF/1033456/cap_1033456.xml</gdacs:cap>
+      <gdacs:icon>http://www.gdacs.org/Images/gdacs_icons/alerts/Green/WF.png</gdacs:icon>
+      <gdacs:version>0</gdacs:version>
+      <gdacs:eventtype>WF</gdacs:eventtype>
+      <gdacs:alertlevel>Green</gdacs:alertlevel>
+      <gdacs:alertscore>1</gdacs:alertscore>
+      <gdacs:episodealertlevel>Green</gdacs:episodealertlevel>
+      <gdacs:episodealertscore>1</gdacs:episodealertscore>
+      <gdacs:eventname />
+      <gdacs:eventid>1033456</gdacs:eventid>
+      <gdacs:episodeid>21</gdacs:episodeid>
+      <gdacs:calculationtype />
+      <gdacs:severity unit="ha" value="61752">Green impact for forestfire in 61752 ha</gdacs:severity>
+      <gdacs:population unit="" value="0">0 people affected in the area</gdacs:population>
+      <gdacs:vulnerability value="0" />
+      <gdacs:iso3>AUS</gdacs:iso3>
+      <gdacs:country>Australia</gdacs:country>
+      <gdacs:glide />
+      <gdacs:mapimage />
+      <gdacs:maplink />
+      <gdacs:gtsimage />
+      <gdacs:gtslink />
+      <gdacs:resources>
+        <gdacs:resource id="event_rss" version="0" source="EC-JRC" url="http://www.gdacs.org//datareport/resources/WF/1033456/rss_1033456.xml" type="rss">
+          <gdacs:title>Event in rss format</gdacs:title>
+          <gdacs:description>Joint Research Center of the European Commission</gdacs:description>
+          <gdacs:acknowledgements>Copyright notice: European Union (CC BY 4.0), reuse is allowed, provided appropriate credit to GDACS is given.</gdacs:acknowledgements>
+          <gdacs:accesslevel>Public</gdacs:accesslevel>
+        </gdacs:resource>
+      </gdacs:resources>
+    </item>
+    <item>
+      <title>Green forest fire notification in Australia</title>
+      <description>On 01/11/2026, a forest fire started in Australia,  until 07/11/2026.</description>
+      <enclosure type="image/png" length="1" url="" />
+      <gdacs:temporary>false</gdacs:temporary>
+      <link>http://www.gdacs.org/report.aspx?eventtype=WF&amp;eventid=1033451</link>
+      <pubDate>Tue, 03 Nov 2026 16:02:00 GMT</pubDate>
+      <gdacs:dateadded>Tue, 03 Nov 2026 16:02:00 GMT</gdacs:dateadded>
+      <gdacs:datemodified>Mon, 09 Nov 2026 04:19:12 GMT</gdacs:datemodified>
+      <gdacs:iscurrent>true</gdacs:iscurrent>
+      <gdacs:fromdate>Sun, 01 Nov 2026 00:00:00 GMT</gdacs:fromdate>
+      <gdacs:todate>Mon, 09 Nov 2026 00:00:00 GMT</gdacs:todate>
+      <gdacs:durationinweek>1</gdacs:durationinweek>
+      <gdacs:year>2026</gdacs:year>
+      <dc:subject>WF1</dc:subject>
+      <guid isPermaLink="false">WF1033451</guid>
+      <geo:Point>
+        <geo:lat>-15.558922422819956</geo:lat>
+        <geo:long>124.99653495535709</geo:long>
+      </geo:Point>
+      <!--gdacs:bbox format = lonmin lonmax latmin latmax-->
+      <gdacs:bbox>120.996534955357 128.996534955357 -19.55892242282 -11.55892242282</gdacs:bbox>
+      <georss:point>-15.558922422819956 124.99653495535709</georss:point>
+      <gdacs:cap>https://www.gdacs.org/contentdata/resources/WF/1033451/cap_1033451.xml</gdacs:cap>
+      <gdacs:icon>http://www.gdacs.org/Images/gdacs_icons/alerts/Green/WF.png</gdacs:icon>
+      <gdacs:version>0</gdacs:version>
+      <gdacs:eventtype>WF</gdacs:eventtype>
+      <gdacs:alertlevel>Green</gdacs:alertlevel>
+      <gdacs:alertscore>1</gdacs:alertscore>
+      <gdacs:episodealertlevel>Green</gdacs:episodealertlevel>
+      <gdacs:episodealertscore>1</gdacs:episodealertscore>
+      <gdacs:eventname />
+      <gdacs:eventid>1033451</gdacs:eventid>
+      <gdacs:episodeid>19</gdacs:episodeid>
+      <gdacs:calculationtype />
+      <gdacs:severity unit="ha" value="23884">Green impact for forestfire in 23884 ha</gdacs:severity>
+      <gdacs:population unit="" value="0">0 people affected in the area</gdacs:population>
+      <gdacs:vulnerability value="0" />
+      <gdacs:iso3>AUS</gdacs:iso3>
+      <gdacs:country>Australia</gdacs:country>
+      <gdacs:glide />
+      <gdacs:mapimage />
+      <gdacs:maplink />
+      <gdacs:gtsimage />
+      <gdacs:gtslink />
+      <gdacs:resources>
+        <gdacs:resource id="event_rss" version="0" source="EC-JRC" url="http://www.gdacs.org//datareport/resources/WF/1033451/rss_1033451.xml" type="rss">
+          <gdacs:title>Event in rss format</gdacs:title>
+          <gdacs:description>Joint Research Center of the European Commission</gdacs:description>
+          <gdacs:acknowledgements>Copyright notice: European Union (CC BY 4.0), reuse is allowed, provided appropriate credit to GDACS is given.</gdacs:acknowledgements>
+          <gdacs:accesslevel>Public</gdacs:accesslevel>
+        </gdacs:resource>
+      </gdacs:resources>
+    </item>
+    <item>
       <title>Green earthquake (Magnitude 4.7M, Depth:120.843km) in Papua New Guinea 08/11/2026 22:30 UTC, 150 thousand in 100km.</title>
       <description>On 11/8/2026 10:30:10 PM, an earthquake occurred in Papua New Guinea potentially affecting 150 thousand in 100km. The earthquake had Magnitude 4.7M, Depth:120.843km.</description>
       <enclosure type="image/png" length="1" url="https://www.gdacs.org/contentdata/resources/imgtemp/gdacs/eq/eq1745498_1.png" />
@@ -1201,4 +1363,4 @@
       </gdacs:resources>
     </item>
   </channel>
-</rss><!--End 11/9/2026 5:17:28 AM-->
+</rss><!--End 11/9/2026 6:27:38 AM-->
