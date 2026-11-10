@@ -1,0 +1,50 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual Environments
+.venv/
+venv/
+ENV/
+
+# Environment Variables & Secrets
+.env
+.env.local
+
+# Jupyter Notebook Checkpoints
+.ipynb_checkpoints/
+*/.ipynb_checkpoints/*
+
+# Data & Ingestion Raw Dumps (exclude heavy dumps, preserve samples in workshop_1/samples)
+data/raw/*
+!data/raw/.gitkeep
+*.log
+
+# IDE & Editor Cache
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS Artifacts
+.DS_Store
+Thumbs.db

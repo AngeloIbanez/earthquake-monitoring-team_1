@@ -1,5 +1,11 @@
 # Empirical Polling Evidence — USGS Real-Time Feed
 
+**Team #1**
+**Team members:**
+- Juan Córdoba - 20211020097
+- Mauricio Sánchez - 20212020045
+- Angelo Ibáñez - 20212020007
+
 ## Methodology
 
 To satisfy the Workshop #1 requirement for incremental source characterization, the USGS
