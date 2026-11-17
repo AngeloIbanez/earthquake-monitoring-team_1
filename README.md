@@ -11,6 +11,7 @@
 [![Python](https://img.shields.io/badge/python-3.11+-blue.svg)]()
 [![Database](https://img.shields.io/badge/database-PostgreSQL%2015+-blue.svg)]()
 [![Status](https://img.shields.io/badge/Workshop%20%231-100%25%20Audit%20Ready-success.svg)]()
+[![Status](https://img.shields.io/badge/Workshop%20%232-100%25%20Audit%20Ready-success.svg)]()
 
 ---
 
@@ -162,38 +163,54 @@ $$\mathbf{SAAI}(t) = 0.4 \cdot \left(\frac{N_{24h}(t) - \mu_N}{\sigma_N}\right) 
 
 ```text
 earthquake-monitoring-pda-team_1/
+├── airflow/
+│   └── dags/
+│       ├── bronze_ingestion_dag.py     # Airflow DAG: USGS telemetry extraction -> datalake_bronze/
+│       └── silver_processing_dag.py    # Airflow DAG: Data cleansing & Parquet/Postgres persistence
 ├── config/
-│   └── sources.yaml                # Standardized catalog configuration (4 sources)
+│   └── sources.yaml                    # Standardized catalog configuration (4 sources)
 ├── dashboard/
 │   ├── __init__.py
-│   └── app.py                      # Interactive Dash / Plotly monitoring application
+│   └── app.py                          # Interactive Dash / Plotly monitoring application
+├── datalake_bronze/                    # Medallion Bronze layer: raw immutable JSON responses
+├── datalake_silver/                    # Medallion Silver layer: curated Apache Parquet files
+├── datalake_gold/                      # Medallion Gold layer: analytical aggregations
 ├── data/
-│   └── raw/                        # Git-ignored bulk landing zone (.gitkeep preserved)
+│   └── raw/                            # Git-ignored bulk landing zone (.gitkeep preserved)
 ├── docs/
-│   └── hazard_definition.md        # Comprehensive geophysical domain & project formalization
+│   ├── hazard_definition.md            # Comprehensive geophysical domain & project formalization
+│   └── Project Definition Report.pdf   # Workshop #1 official compiled PDF report
+├── init-db/
+│   └── 01-create-etl-database.sql      # Automated PostgreSQL DB and ETL user provisioning
 ├── notebooks/
-│   └── 01_source_profiling.ipynb   # Executed profiling notebook with pre-evaluated outputs
+│   ├── 01_source_profiling.ipynb       # Workshop #1: source profiling & quality analysis
+│   └── 02_silver_data_exploration.ipynb# Workshop #2: Silver Parquet reading & statistical profiling
 ├── sql/
-│   └── schema.sql                  # PostgreSQL production DDL with indexes and constraints
+│   └── schema.sql                      # PostgreSQL production DDL with indexes and constraints
 ├── src/
 │   ├── __init__.py
-│   ├── config.py                   # YAML & environment variable loader
-│   ├── models.py                   # Canonical dataclass models (Event, Earthquake, Run)
-│   ├── parsers.py                  # USGS GeoJSON, EMSC JSON, GDACS XML parsers
-│   └── matching.py                 # Haversine & 1-to-1 Nearest-Neighbor matching engine
+│   ├── config.py                       # YAML & environment variable loader
+│   ├── models.py                       # Canonical dataclass models (Event, Earthquake, Run)
+│   ├── parsers.py                      # USGS GeoJSON, EMSC JSON, GDACS XML parsers
+│   └── matching.py                     # Haversine & 1-to-1 Nearest-Neighbor matching engine
 ├── tests/
 │   ├── __init__.py
-│   ├── test_parsers.py             # Unit tests for multi-format payload parsers
-│   ├── test_matching.py            # Unit tests for Haversine & collision resolution
-│   └── test_schema.py              # Unit tests validating SQL schema constraints
+│   ├── test_parsers.py                 # Unit tests for multi-format payload parsers
+│   ├── test_matching.py                # Unit tests for Haversine & collision resolution
+│   └── test_schema.py                  # Unit tests validating SQL schema constraints
 ├── workshop_1/
-│   ├── mapping.md                  # Canonical mapping table, Mermaid ERD, and ingestion contract
-│   ├── polling_evidence.md         # Empirical two-poll update evidence & diff analysis
-│   └── samples/                    # Raw validated JSON/XML samples (≥ 200 records each)
-├── .env.example                    # Environment variable template
-├── .gitignore                      # Python, data raw, and IDE ignores
-├── ingest.py                       # Production Ingestion Worker CLI
-└── README.md                       # Master project overview & academic documentation
+│   ├── canonical mapping table.md      # Canonical mapping table, Mermaid ERD, and ingestion contract
+│   ├── polling_evidence.md             # Empirical two-poll update evidence & diff analysis
+│   └── samples/                        # Raw validated JSON/XML samples (≥ 200 records each)
+├── workshop_2/
+│   └── technical_architecture_report.md# Workshop #2: Full architecture and pipeline report
+├── .env                                # Docker environment variables (AIRFLOW_UID)
+├── .env.example                        # Environment variable template
+├── .gitignore                          # Python, data raw, and IDE ignores
+├── docker-compose.yml                  # Production Docker stack (Airflow 2.10.4 + PostgreSQL 16)
+├── ingest.py                           # Standalone Ingestion Worker CLI
+├── requirements.txt                    # Project Python dependencies
+└── README.md                           # Master project overview & academic documentation
 ```
 
 ---
@@ -202,48 +219,67 @@ earthquake-monitoring-pda-team_1/
 
 ### Prerequisites
 - Python 3.10+
-- PostgreSQL 14+ (optional for dry-run CLI execution)
+- Docker Engine & Docker Compose v2 (running via Docker Desktop with WSL2)
 
-### 1. Clone & Set Up Environment
+### 1. Python Environment Setup
 ```bash
-git clone https://github.com/AngeloIbanez/earthquake-monitoring-pda-team_1.git
-cd earthquake-monitoring-pda-team_1
 python3 -m venv .venv
+# On Windows PowerShell:
+.\.venv\Scripts\Activate.ps1
+# On Linux/macOS:
 source .venv/bin/activate
-pip install pyyaml pandas numpy
+
+pip install -r requirements.txt
 ```
 
 ### 2. Run Test Suite
 Execute the built-in unit tests validating parsers, collision-free matching, and schema integrity:
 ```bash
-python3 -m unittest discover tests
+python -m unittest discover tests
 ```
-*Expected Output: `Ran 8 tests in 0.005s. OK.`*
+*Expected Output: `Ran 8 tests in 0.009s. OK.`*
 
-### 3. Run Ingestion CLI
-Test the ingestion pipeline in dry-run mode:
+### 3. Standalone Ingestion CLI (Workshop #1)
+Test the ingestion pipeline in offline/dry-run mode:
 ```bash
 # Historical Mode (USGS & EMSC FDSN samples)
-python3 ingest.py --mode historical --dry-run
+python ingest.py --mode historical --dry-run
 
 # Incremental Mode (USGS Real-time & GDACS XML feeds)
-python3 ingest.py --mode incremental --dry-run
-
-# Ingest single source
-python3 ingest.py --mode incremental --source gdacs_realtime --dry-run
+python ingest.py --mode incremental --dry-run
 ```
 
-### 4. Launch Interactive Dashboard (Optional)
-To run the interactive monitoring web application:
+### 4. Docker Compose & Apache Airflow Orchestration (Workshop #2)
+To launch the full Medallion pipeline stack:
 ```bash
-pip install dash plotly
-python3 dashboard/app.py
+# Start all containers in background
+docker compose up -d
+
+# Verify container health
+docker compose ps
 ```
-Open your browser at `http://localhost:8050`.
+
+- **Airflow Web UI:** Navigate to `http://localhost:8080` (Credentials: `airflow` / `airflow`).
+- **Trigger Ingestion (Bronze):** Trigger `bronze_ingestion_dag` to download raw earthquake JSON payloads into `datalake_bronze/`.
+- **Trigger Curation (Silver):** Trigger `silver_processing_dag` to clean and persist records to:
+  - `datalake_silver/earthquakes_silver_*.parquet`
+  - PostgreSQL database `earthquakes_ud`, table `earthquakes_curated` (Host port: `5440`, user: `etl_ud`, password: `P4$w0rd`).
+
+### 5. Inspect Silver Parquet Exploration Notebook
+Open and run [`notebooks/02_silver_data_exploration.ipynb`](notebooks/02_silver_data_exploration.ipynb) to inspect the curated dataset, verify null completeness, and analyze seismic energy distributions using Pandas and PyArrow.
+
+### 6. Launch Interactive Dashboard
+```bash
+python dashboard/app.py
+```
+Open your browser at `http://localhost:8050` to inspect real-time global epicenters and the SAAI Anomaly Indicator.
 
 ---
 
 ## 10. Team & Academic Governance
-- **Course:** Programación para Análisis de Datos (PDA) — 2026-II
+- **Course:** Programación para Análisis de Datos (PDA) — Semester 2026-II
 - **Team 1:** Natural Hazard Monitoring Systems — Earthquake Activity Monitoring
-- **Deliverable:** Workshop #1 — Hazard Definition, Source Validation, and Data Contract
+- **Team Members:** Juan Córdoba (20211020097), Angelo Ibáñez (20212020007), Mauricio Sánchez (20212020045)
+- **Deliverables:**
+  - **Workshop #1:** Hazard Definition, Source Validation, and Data Contract
+  - **Workshop #2:** Technical Architecture, Docker Stack, and Bronze/Silver Medallion Pipeline

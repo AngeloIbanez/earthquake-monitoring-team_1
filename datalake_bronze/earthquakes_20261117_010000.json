@@ -1,0 +1,12 @@
+{
+  "type": "FeatureCollection",
+  "metadata": {
+    "generated": 1794878933000,
+    "url": "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=2026-11-17T01%3A00%3A00&endtime=2026-11-17T01%3A15%3A00&minmagnitude=2.0",
+    "title": "USGS Earthquakes",
+    "status": 200,
+    "api": "2.8.4",
+    "count": 0
+  },
+  "features": []
+}
