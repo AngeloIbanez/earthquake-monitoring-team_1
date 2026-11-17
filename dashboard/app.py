@@ -23,10 +23,54 @@ def build_app():
         from dash import html, dcc
         import plotly.express as px
         import pandas as pd
+        import json
     except ImportError as e:
         logger.warning("Dash or Plotly not installed in the active environment: %s", e)
         logger.warning("To run the interactive UI, install dependencies: pip install dash plotly pandas")
         return None
+
+    # Load sample earthquake events for the map
+    sample_file = Path(__file__).resolve().parent.parent / "workshop_1" / "samples" / "usgs_incremental_raw.json"
+    fig = px.scatter_geo(title="No data available")
+    if sample_file.exists():
+        try:
+            with open(sample_file, "r", encoding="utf-8") as f:
+                data = json.load(f)
+            feats = data.get("features", [])
+            records = []
+            for feat in feats:
+                props = feat.get("properties", {})
+                coords = (feat.get("geometry") or {}).get("coordinates", [None, None, None])
+                mag = props.get("mag")
+                if mag is not None and coords[0] is not None and coords[1] is not None:
+                    records.append({
+                        "place": props.get("place", "Unknown"),
+                        "magnitude": float(mag),
+                        "longitude": float(coords[0]),
+                        "latitude": float(coords[1]),
+                        "depth_km": float(coords[2]) if len(coords) > 2 and coords[2] is not None else 10.0,
+                    })
+            if records:
+                df_map = pd.DataFrame(records)
+                df_map["marker_size"] = df_map["magnitude"].apply(lambda m: max(float(m), 1.0) * 3)
+                fig = px.scatter_geo(
+                    df_map,
+                    lat="latitude",
+                    lon="longitude",
+                    color="depth_km",
+                    size="marker_size",
+                    hover_name="place",
+                    hover_data={"magnitude": True, "depth_km": True, "marker_size": False},
+                    color_continuous_scale="Turbo_r",
+                    title="Real-Time Global Seismicity Map (USGS 7-Day Rolling Feed)",
+                    projection="natural earth"
+                )
+                fig.update_layout(
+                    margin={"r": 10, "t": 40, "l": 10, "b": 10},
+                    coloraxis_colorbar={"title": "Depth (km)"}
+                )
+        except Exception as e:
+            logger.warning("Could not render sample map: %s", e)
 
     app = dash.Dash(__name__, title="Seismic Activity Monitoring — Team 1")
 
@@ -79,7 +123,7 @@ def build_app():
                 children=[
                     html.H2("Global Seismicity & Epicenter Map"),
                     html.P("Visualizes event magnitude (circle diameter) and hypocentral depth (color gradient: shallow to deep)."),
-                    dcc.Graph(id="global-seismicity-map")
+                    dcc.Graph(id="global-seismicity-map", figure=fig)
                 ]
             )
         ]
@@ -91,7 +135,10 @@ if __name__ == "__main__":
     app = build_app()
     if app:
         logger.info("Starting Dash server on port 8050...")
-        app.run_server(debug=True, port=8050)
+        if hasattr(app, "run"):
+            app.run(debug=True, port=8050)
+        else:
+            app.run_server(debug=True, port=8050)
     else:
         print("Dashboard application initialized in mock/headless mode.")
         print("Install 'dash' and 'plotly' via pip to run the local web server.")
