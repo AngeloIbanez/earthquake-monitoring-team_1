@@ -1,0 +1,11 @@
+# Core Ingestion & Processing Dependencies
+pyyaml>=6.0.0
+pandas>=2.0.0
+numpy>=1.24.0
+requests>=2.30.0
+polars>=1.0.0
+pyarrow>=14.0.0
+
+# Dashboard & Visualization
+dash>=2.14.0
+plotly>=5.18.0
