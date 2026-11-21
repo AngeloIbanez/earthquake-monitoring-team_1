@@ -3,68 +3,68 @@
 % ======================================================================
 \section{Executive Summary}
 \noindent\textbf{GitHub Repository:} \url{https://github.com/AngeloIbanez/earthquake-monitoring-team_1}\\[0.15cm]
-In Workshop~\#1, Team~1 established the geophysical foundations of global earthquake activity monitoring, validated four open seismological feeds (USGS FDSN Historical, EMSC FDSN Historical, USGS Real-Time GeoJSON, and GDACS RSS~2.0 XML), and designed a seven-table canonical relational data model. In Workshop~\#2, we deployed a containerized Apache Airflow~2.10.4 and PostgreSQL~16 environment via Docker Compose, implementing the initial \texttt{bronze\_ingestion\_dag} and FileSensor-triggered \texttt{silver\_processing\_dag}.
 
-In Workshop~\#3, we transition from single-source ingestion to full multi-agency integration and implement the **Gold layer**---the analytical and decision-support tier of the Medallion Architecture~\cite{armbrust2021lakehouse}. Our work fulfills three interconnected engineering objectives:
-\begin{enumerate}
-    \item \textbf{Bronze \& Silver Pipeline Refinements and Canonical Integration:} We expanded \texttt{bronze\_ingestion\_dag.py} and \texttt{silver\_processing\_dag.py} (alongside the standalone CLI \texttt{ingest.py}) to extract, validate, and persist all four configured seismic sources across the seven canonical PostgreSQL tables (\texttt{source}, \texttt{ingestion\_run}, \texttt{ingestion\_state}, \texttt{event}, \texttt{earthquake}, \texttt{event\_group}, and \texttt{rejected\_record}). We eliminated silent null-to-zero coercions, activated JSONB quarantine logging, implemented incremental watermark overlap windows ($24\,\text{h}$ for USGS, $48\,\text{h}$ for GDACS), and integrated transitive cross-catalog event matching.
-    \item \textbf{Distributed Silver-to-Gold Transformation with PySpark:} We engineered a custom Docker image extending \texttt{apache/airflow:2.10.4} with OpenJDK~17 (\texttt{default-jre-headless}) and PySpark~3.5+. Within \texttt{airflow/dags/gold\_processing\_dag.py} and \texttt{src/gold\_pyspark.py}, PySpark runs in \texttt{local[*]} mode to read the entire \texttt{datalake\_silver/} directory as a unified distributed DataFrame (\texttt{spark.read.parquet("datalake\_silver/")}), simulating a cloud data lake folder read pattern.
-    \item \textbf{Data Governance KPIs \& Functional User Storytelling Summaries:} Using both the PySpark DataFrame API and Spark SQL, the Gold pipeline computes and persists two timestamped Parquet datasets in \texttt{datalake\_gold/}:
-    \begin{itemize}
-        \item \texttt{governance\_YYYYMMDD\_HHMMSS.parquet} ($113$ rows $\times$ $13$ columns): Grounded in empirical Silver data quality observations, tracking column null rates, implicit $10.0\,\text{km}$ default depth pinning ($29.85\%$ overall; $98.25\%$ in EMSC), intra-lake duplicate rates ($23.10\%$), cross-source match pairs ($637$ pairs), schema compliance ($100.0\%$), IQR outlier rates, and \texttt{place} string length distributions.
-        \item \texttt{storytelling\_YYYYMMDD\_HHMMSS.parquet} ($84$ rows $\times$ $14$ columns): Aligned with Workshop~\#1 functional user stories for civil protection and seismic risk analysts, delivering Gutenberg-Richter magnitude tier distributions, daily radiated seismic energy ($\log_{10} E$), the **Seismic Activity Anomaly Index (SAAI)**, top active tectonic regions, multi-source catalog comparisons, and focal depth regime breakdowns.
-    \end{itemize}
-\end{enumerate}
+In Workshop~\#1, Team~1 defined the geophysical scope of global earthquake monitoring and validated four open seismic feeds from the United States Geological Survey (USGS)~\cite{usgs_fdsn,usgs_rt}, the Euro-Mediterranean Seismological Centre (EMSC)~\cite{emsc_fdsn}, and the Global Disaster Alert and Coordination System (GDACS)~\cite{gdacs}. In Workshop~\#2, we containerized Apache Airflow and PostgreSQL using Docker Compose~\cite{docker_docs,airflow_docs,postgres_docs} to automate raw Bronze extraction and curated Silver Parquet storage~\cite{parquet_docs}.
+
+Experimenting with the Workshop~\#2 pipeline exposed practical gaps that needed fixing before building analytics: only USGS was automated in Airflow, missing magnitudes or coordinates could quietly turn into zeros, historical queries lacked protection against API caps, late seismic revisions were not tracked with watermarks, and both nanosecond Parquet timestamps and a container Pandas version mismatch broke PySpark inside Docker.
+
+Workshop~\#3 resolves every one of those defects and delivers the \textbf{Gold layer} of the Medallion Lakehouse~\cite{armbrust2021lakehouse}. As shown in Fig.~\ref{fig:w3_architecture}, the system now ingests all three seismic agencies, quarantines malformed records, tracks incremental watermarks, merges cross-agency duplicate reports, and runs PySpark in local mode~\cite{pyspark_docs} inside a custom OpenJDK~17 Airflow container to produce two Gold Parquet summaries: one for data governance (113 KPI rows) and one for emergency risk storytelling (84 analytical rows).
 
 \begin{figure*}[!t]
 \centering
 \resizebox{0.98\textwidth}{!}{%
 \begin{tikzpicture}[
-    node distance=0.75cm and 1.0cm,
-    box/.style={rectangle, draw=black!80, thick, rounded corners=3pt, minimum width=3.0cm, minimum height=1.1cm, align=center, font=\footnotesize\sffamily, fill=white},
-    layer/.style={rectangle, draw=navyblue!70, dashed, thick, rounded corners=5pt, inner sep=7pt},
-    arrow/.style={-{Stealth[length=2.4mm, width=1.7mm]}, thick, draw=black!80}
+    node distance=0.6cm and 1.1cm,
+    box/.style={rectangle, draw=black, thick, rounded corners=3pt, minimum width=2.85cm, minimum height=1.0cm, align=center, font=\footnotesize\sffamily, fill=white, text=black},
+    layer/.style={rectangle, draw=navyblue, dashed, thick, rounded corners=5pt, inner sep=7pt},
+    arrow/.style={-{Stealth[length=2.2mm, width=1.6mm]}, thick, draw=black}
 ]
 
 % 1. Sources
-\node[box, fill=blue!8] (s1) {\textbf{USGS FDSN \& RT}\\GeoJSON REST\\(\texttt{usgs\_fdsn / realtime})};
-\node[box, fill=blue!8, below=0.35cm of s1] (s2) {\textbf{EMSC \& GDACS}\\JSON REST \& RSS XML\\(\texttt{emsc\_fdsn / gdacs})};
+\node[box, fill=blue!8] (s1) {\textbf{USGS Feeds}\\Historical \& Real-Time\\GeoJSON};
+\node[box, fill=blue!8, below=0.35cm of s1] (s2) {\textbf{EMSC Portal}\\European \& Global\\JSON};
+\node[box, fill=blue!8, below=0.35cm of s2] (s3) {\textbf{GDACS Alerts}\\24-Hour Disaster Feed\\RSS XML};
 
-% 2. Bronze
-\node[box, fill=orange!15, right=1.15cm of s1] (bdag) {\textbf{Bronze Ingestion DAG}\\(\texttt{bronze\_ingestion\_dag})\\Multi-Source Extract\\Schedule: \texttt{*/15 * * * *}};
-\node[box, fill=orange!8, below=0.35cm of bdag] (bstore) {\textbf{Bronze Landing Zone}\\\texttt{datalake\_bronze/}\\\texttt{earthquakes\_*.json}\\\texttt{emsc\_*.json, gdacs\_*.xml}};
+% 2. Bronze Layer
+\node[box, fill=orange!15, right=1.1cm of s1] (bdag) {\textbf{Bronze Ingestion}\\Multi-Source Airflow DAG\\\& Partitioned Extractor};
+\node[box, fill=orange!8, below=0.35cm of bdag] (bstore) {\textbf{Raw Landing Zone}\\Immutable JSON \& XML\\with Retries \& Bisection};
 
-% 3. Silver
-\node[box, fill=cyan!15, right=1.15cm of bdag] (sdag) {\textbf{Silver Processing DAG}\\(\texttt{silver\_processing\_dag})\\FileSensor + Validation\\1-to-1 Matching \& Energy};
-\node[box, fill=green!12, below=0.35cm of sdag] (spg) {\textbf{Canonical PostgreSQL 16}\\\texttt{event, earthquake, source}\\\texttt{event\_group (1,274 rows)}\\\texttt{rejected\_record, state}};
+% 3. Silver Layer
+\node[box, fill=cyan!15, right=1.1cm of bdag] (sdag) {\textbf{Silver Curation}\\Validation Gate, Hashing\\\& Energy Derivation};
+\node[box, fill=cyan!15, below=0.35cm of sdag] (match) {\textbf{Cross-Source Matching}\\1-to-1 Nearest-Neighbor\\\& Connected Grouping};
 
-% 4. Silver Parquet & PySpark Gold
-\node[box, fill=green!12, right=1.15cm of sdag] (sparq) {\textbf{Silver Parquet Store}\\\texttt{datalake\_silver/}\\Uniform 13-Col Schema\\\texttt{TIMESTAMP(MICROS)}};
-\node[box, fill=yellow!20, below=0.35cm of sparq] (gdag) {\textbf{Gold PySpark DAG}\\(\texttt{gold\_processing\_dag})\\\texttt{SparkSession local[*]}\\\texttt{spark.read.parquet()}};
+% 4. Silver Storage & DB
+\node[box, fill=green!12, right=1.1cm of sdag] (sparquet) {\textbf{Silver Parquet Lake}\\Microsecond Schema\\3,806 Unique Events};
+\node[box, fill=green!12, below=0.35cm of sparquet] (pg) {\textbf{Canonical PostgreSQL}\\7 Tables: Events, Watermarks,\\Quarantine \& 637 Groups};
 
-% 5. Gold Outputs
-\node[box, fill=orange!15!yellow!25, right=1.15cm of sparq] (ggov) {\textbf{Governance Gold Parquet}\\\texttt{datalake\_gold/}\\\texttt{governance\_*.parquet}\\(113 KPI Rows)};
-\node[box, fill=purple!12, below=0.35cm of ggov] (gstory) {\textbf{Storytelling Gold Parquet}\\\texttt{datalake\_gold/}\\\texttt{storytelling\_*.parquet}\\(84 SAAI \& Trend Rows)};
+% 5. Gold Layer
+\node[box, fill=yellow!18, right=1.55cm of sparquet] (gdag) {\textbf{Gold PySpark Engine}\\OpenJDK 17 Airflow DAG\\Local Mode Folder Read};
+\node[box, fill=yellow!10, below=0.35cm of gdag] (ggov) {\textbf{Governance Parquet}\\113 Data Quality\\\& Health KPIs};
+\node[box, fill=purple!12, below=0.35cm of ggov] (gstory) {\textbf{Storytelling Parquet}\\84 Hazard, Region\\\& SAAI Summaries};
 
+% Arrows
 \draw[arrow] (s1) -- (bdag);
 \draw[arrow] (s2.east) -| ([xshift=-0.45cm]bdag.west) -- (bdag.west);
+\draw[arrow] (s3.east) -| ([xshift=-0.45cm]bdag.west) -- (bdag.west);
 \draw[arrow] (bdag) -- (bstore);
 \draw[arrow] (bstore.east) -| ([xshift=-0.45cm]sdag.west) -- (sdag.west);
-\draw[arrow] (sdag) -- (spg);
-\draw[arrow] (sdag) -- (sparq);
-\draw[arrow] (sparq) -- (gdag);
-\draw[arrow] (gdag.east) -| ([xshift=-0.45cm]ggov.west) -- (ggov.west);
-\draw[arrow] (gdag) -- (gstory);
+\draw[arrow] (sdag) -- (match);
+\draw[arrow] (sdag) -- (sparquet);
+\draw[arrow] (match) -- (pg);
+\draw[arrow] (sparquet) -- node[above, font=\scriptsize\sffamily, text=black]{Spark Read} (gdag);
+\draw[arrow] (gdag) -- (ggov);
+\draw[arrow] (ggov) -- (gstory);
 
+% Layers
 \begin{scope}[on background layer]
-\node[layer, fit=(s1)(s2), label={[font=\scriptsize\bfseries\sffamily, text=navyblue]above:1. Seismic Networks}] {};
+\node[layer, fit=(s1)(s2)(s3), label={[font=\scriptsize\bfseries\sffamily, text=navyblue]above:1. Seismic Agencies}] {};
 \node[layer, fit=(bdag)(bstore), label={[font=\scriptsize\bfseries\sffamily, text=navyblue]above:2. Bronze Layer}] {};
-\node[layer, fit=(sdag)(spg), label={[font=\scriptsize\bfseries\sffamily, text=navyblue]above:3. Silver \& Canonical DB}] {};
-\node[layer, fit=(sparq)(gdag), label={[font=\scriptsize\bfseries\sffamily, text=navyblue]above:4. PySpark Gold Engine}] {};
-\node[layer, fit=(ggov)(gstory), label={[font=\scriptsize\bfseries\sffamily, text=navyblue]above:5. Gold Layer (Parquet)}] {};
+\node[layer, fit=(sdag)(match), label={[font=\scriptsize\bfseries\sffamily, text=navyblue]above:3. Silver Curation}] {};
+\node[layer, fit=(sparquet)(pg), label={[font=\scriptsize\bfseries\sffamily, text=navyblue]above:4. Silver Lake \& DB}] {};
+\node[layer, fit=(gdag)(ggov)(gstory), label={[font=\scriptsize\bfseries\sffamily, text=navyblue]above:5. Gold Layer (W3)}] {};
 \end{scope}
 \end{tikzpicture}%
 }
-\caption{Updated three-layer Medallion and Canonical PostgreSQL architecture implemented in Workshop~\#3, integrating multi-source Bronze extraction, Silver validation/quarantine and cross-source matching, and PySpark \texttt{local[*]} Gold aggregations.}
+\caption{End-to-end three-layer earthquake monitoring architecture, integrating multi-agency extraction, strict validation and quarantine, cross-source event grouping, and PySpark Gold summaries.}
 \label{fig:w3_architecture}
 \end{figure*}

@@ -1,36 +1,20 @@
 % ======================================================================
 % SECTION 06: PYSPARK IMPLEMENTATION AND GOLD LAYER DAG
 % ======================================================================
-\section{PySpark Implementation and Gold Layer DAG}
+\section{PySpark Implementation and Gold Orchestration}
 
-\subsection{Containerized SparkSession Setup in \texttt{local[*]} Mode}
-Inspecting the base \texttt{apache/airflow:2.10.4} Docker image revealed that it does not ship with a Java Virtual Machine (JVM), which is mandatory for PySpark execution. We therefore created a custom \texttt{Dockerfile} extending \texttt{apache/airflow:2.10.4} that installs OpenJDK~17 (\texttt{default-jre-headless}, \texttt{JAVA\_HOME=/usr/lib/jvm/default-java}) as \texttt{root} and pre-installs \texttt{pyspark>=3.5.0}, \texttt{pandas>=2.2.0}, \texttt{polars>=1.0.0}, and \texttt{pyarrow>=14.0.0} under the \texttt{airflow} user.
+The Silver-to-Gold transformation uses PySpark~\cite{pyspark_docs} running in local mode across all available container CPU cores and is orchestrated by a scheduled Apache Airflow DAG~\cite{airflow_docs}.
 
-In \texttt{src/gold\_pyspark.py}, \texttt{create\_spark\_session()} initializes PySpark in local multi-threaded mode (\texttt{local[*]}), utilizing all available container CPU cores with a $2\,\text{GB}$ driver heap:
-\begin{lstlisting}[language=Python, caption={PySpark Session Configuration and Folder-Level Parquet Read in \texttt{src/gold\_pyspark.py}}]
-def create_spark_session(app_name: str = "Team1_Earthquake_Gold_Pipeline") -> SparkSession:
-    return (
-        SparkSession.builder.master("local[*]")
-        .appName(app_name)
-        .config("spark.driver.memory", "2g")
-        .config("spark.sql.parquet.enableVectorizedReader", "false")
-        .config("spark.sql.parquet.outputTimestampType", "TIMESTAMP_MICROS")
-        .config("spark.sql.session.timeZone", "UTC")
-        .config("spark.ui.enabled", "false")
-        .getOrCreate()
-    )
+\subsection{Custom Docker Setup and Interoperability Fixes}
+Because the standard Airflow~2.10.4 image does not include a Java runtime required by Spark, we built a custom Docker image adding OpenJDK~17 alongside PySpark~3.5, Pandas, Polars, and PyArrow. The Spark session runs in local multi-threaded mode with $2\text{ GB}$ of driver memory, UTC session time zone enforcement, microsecond Parquet output, and the Spark Web UI disabled to avoid port conflicts inside Docker.
 
-# Simulates cloud storage folder read pattern across all Silver partitions
-raw_df = spark.read.parquet(str(silver_dir))
-dedup_df = enriched_df.dropDuplicates(["event_id"]).cache()
-\end{lstlisting}
-
-During container integration testing, we also discovered that \texttt{apache/airflow:2.10.4}'s pre-installed \texttt{pandas==2.1.4} triggered a \texttt{PySparkImportError: [UNSUPPORTED\_PACKAGE\_VERSION] Pandas >= 2.2.0 must be installed} when passing a Pandas DataFrame to \texttt{spark.createDataFrame()}. Refactoring \texttt{src/gold\_pyspark.py} to pass native Python dictionary lists directly to \texttt{spark.createDataFrame(gov\_rows)} and \texttt{spark.createDataFrame(story\_rows)} bypassed the Pandas conversion bottleneck entirely and allowed PySpark to write clean, single-file Snappy-compressed Parquet outputs via \texttt{coalesce(1).write.mode("overwrite").parquet()}.
-
-\subsection{Gold Layer Airflow DAG (\texttt{gold\_processing\_dag.py})}
-The Gold pipeline is orchestrated by \texttt{airflow/dags/gold\_processing\_dag.py} using Airflow's TaskFlow API (\texttt{@dag}, \texttt{@task}) on a 6-hour schedule (\texttt{0 */6 * * *}) with manual trigger support:
+Simulating a cloud object-storage folder read (such as S3 or Azure Data Lake), PySpark ingests the entire Silver Parquet folder as one unified DataFrame. Live container testing uncovered and resolved two interoperability issues:
 \begin{enumerate}
-    \item \texttt{verify\_silver\_inputs()}: Scans \texttt{/opt/airflow/datalake\_silver/} and validates that readable Silver Parquet partitions are present.
-    \item \texttt{execute\_pyspark\_gold\_aggregations(silver\_file\_count)}: Invokes \texttt{run\_gold\_pipeline()}, launching the \texttt{local[*]} SparkSession, executing both DataFrame API and Spark SQL transformations over \texttt{silver\_earthquakes}, and writing \texttt{governance\_YYYYMMDD\_HHMMSS.parquet} and \texttt{storytelling\_YYYYMMDD\_HHMMSS.parquet} into \texttt{/opt/airflow/datalake\_gold/}.
-    \item \texttt{validate\_gold\_outputs(gold\_paths)}: Reads back both generated Gold Parquet files to verify non-empty row counts and schema integrity before marking the DAG run as \texttt{SUCCESS}.
+    \item \textbf{Parquet Timestamp Precision:} Older Workshop~\#2 Silver files stored timestamps in nanoseconds, which Spark rejects. We switched Silver exports to microseconds and added an automatic pre-read migration step for legacy files.
+    \item \textbf{Container Pandas Version Mismatch:} Airflow's bundled Pandas version caused an error when converting Pandas DataFrames into Spark DataFrames. Passing native Python records directly into Spark bypassed that bottleneck cleanly and allowed single-file Snappy Parquet writes.
 \end{enumerate}
+
+\subsection{Distributed Transformations and Airflow DAG Flow}
+After loading all accumulated Silver partitions, PySpark derives agency tags, UTC dates, logarithmic energy, text lengths, and $10.0\text{ km}$ depth-pinning flags, caches the dataset, and removes cross-snapshot duplicates by event ID ($4,786 \to 3,806$ unique events). It then computes all 113 governance KPIs (including approximate quantiles for IQR outlier bounds) and all 84 storytelling and SAAI aggregations, writing each result as a single timestamped Parquet file readable by both Pandas and Spark.
+
+The Gold Airflow DAG runs every six hours (with manual trigger support and no backfill catchup) across three sequential tasks: (1)~verifying that Silver Parquet files are present, (2)~running the PySpark Gold transformations, and (3)~re-reading both generated Gold Parquet files to confirm non-empty rows and valid schemas before marking the run successful.
