@@ -1,17 +1,19 @@
 # Natural Hazard Monitoring System — Earthquake Activity Monitoring
 **Course:** Programación para Análisis de Datos (Data Analysis Programming) — Semester 2026-II  
 **Project:** Natural Hazard Monitoring Systems — **Team 1: Earthquake Activity**  
-**Repository:** `earthquake-monitoring-pda-team_1`  
+**Repository:** `earthquake-monitoring-team_1`  
 **Team members:**
 - Juan Córdoba - 20211020097
 - Mauricio Sánchez - 20212020045
 - Angelo Ibáñez - 20212020007
 
-[![Test Suite](https://img.shields.io/badge/tests-8%20passed-brightgreen.svg)]()
+[![Test Suite](https://img.shields.io/badge/tests-12%20passed-brightgreen.svg)]()
 [![Python](https://img.shields.io/badge/python-3.11+-blue.svg)]()
-[![Database](https://img.shields.io/badge/database-PostgreSQL%2015+-blue.svg)]()
-[![Status](https://img.shields.io/badge/Workshop%20%231-100%25%20Audit%20Ready-success.svg)]()
-[![Status](https://img.shields.io/badge/Workshop%20%232-100%25%20Audit%20Ready-success.svg)]()
+[![Database](https://img.shields.io/badge/database-PostgreSQL%2016+-blue.svg)]()
+[![PySpark](https://img.shields.io/badge/PySpark-3.5%2B%20local%5B*%5D-orange.svg)]()
+[![Status](https://img.shields.io/badge/Workshop%20%231-Completed-success.svg)]()
+[![Status](https://img.shields.io/badge/Workshop%20%232-Completed-success.svg)]()
+[![Status](https://img.shields.io/badge/Workshop%20%233-Completed-success.svg)]()
 
 ---
 
@@ -28,7 +30,7 @@ This repository implements the end-to-end data engineering architecture for **Te
 
 ## 2. High-Level System Architecture
 
-The pipeline processes multi-format raw payloads (GeoJSON, JSON, and RSS 2.0 XML), runs schema and bounding validation gates, resolves cross-catalog event duplication via **1-to-1 Nearest-Neighbor Spatio-Temporal Cost Optimization**, and loads into a canonical PostgreSQL store with real-time analytics.
+The system integrates a **Three-Layer Medallion Data Lakehouse** (`datalake_bronze/`, `datalake_silver/`, `datalake_gold/`) orchestrated by Apache Airflow 2.10.4 and PySpark (`local[*]`) with a **7-Table Canonical PostgreSQL Persistence & Reconciliation Engine** (`ingest.py` / `src/`). Multi-format raw payloads (GeoJSON, JSON, and RSS 2.0 XML) pass through strict schema and physical bounding gates, route malformed records to a `JSONB` quarantine table (`rejected_record`), resolve cross-catalog event duplication via **1-to-1 Nearest-Neighbor Spatio-Temporal Matching & Union-Find Transitive Grouping** (`event_group`), and consolidate into Gold Parquet summaries for data governance and functional user storytelling.
 
 ```mermaid
 flowchart TD
@@ -39,47 +41,55 @@ flowchart TD
         G_INC["GDACS Alert Feed<br>(RSS 2.0 XML, rss_24h.xml)"]
     end
 
-    subgraph ENGINE["2. Ingestion & Validation Engine (Python 3.11)"]
-        CLI["ingest.py CLI<br>(--mode historical | incremental)"]
-        PARS["src/parsers.py<br>(GeoJSON & XML Namespaces)"]
-        VAL{"Validation Gate<br>[-90,90], [-180,180]<br>M ≥ -1.0"}
-        REJ[("rejected_record<br>(Quarantine JSONB)")]
-        MATCH["src/matching.py<br>(Nearest-Neighbor 1-to-1)"]
+    subgraph BRONZE["2. Bronze Layer & Extraction Engine"]
+        B_DAG["bronze_ingestion_dag.py<br>& ingest.py CLI"]
+        B_STORE[("datalake_bronze/ & data/raw/<br>(Immutable JSON / GeoJSON / XML)")]
     end
 
-    subgraph STORAGE["3. Canonical Database Layer (PostgreSQL)"]
-        SRC[("source")]
-        RUN[("ingestion_run")]
+    subgraph SILVER["3. Silver Layer & Canonical Validation"]
+        S_DAG["silver_processing_dag.py<br>& src/parsers.py + src/models.py"]
+        VAL{"Validation Gate<br>[-90,90], [-180,180]<br>-1.0 ≤ M ≤ 10.0"}
+        S_PQ[("datalake_silver/<br>earthquakes_silver_*.parquet<br>(TIMESTAMP_MICROS)")]
+        MATCH["src/matching.py<br>(1-to-1 Nearest-Neighbor &<br>Union-Find Transitive Grouping)"]
+    end
+
+    subgraph STORAGE["4. Canonical Database Layer (PostgreSQL 16)"]
+        SRC[("source & ingestion_run")]
         ST[("ingestion_state (HWM)")]
-        EV[("event (Canonical Core)")]
-        EQ[("earthquake (Domain Extension)")]
-        GRP[("event_group (Deduplication)")]
+        EV[("event & earthquake")]
+        GRP[("event_group (637 Groups)")]
+        REJ[("rejected_record (JSONB)")]
     end
 
-    subgraph ANALYTICS["4. Analytics & Presentation Layer"]
-        SAAI["SAAI Hazard Indicator<br>(Frequency & Energy Anomaly)"]
-        DASH["dashboard/app.py<br>(Interactive Dash / Plotly UI)"]
+    subgraph GOLD["5. Gold Layer (PySpark local[*]) & Presentation"]
+        G_DAG["gold_processing_dag.py<br>& src/gold_pyspark.py"]
+        G_GOV[("datalake_gold/<br>governance_*.parquet<br>(107 KPI Rows)")]
+        G_STR[("datalake_gold/<br>storytelling_*.parquet<br>(79 SAAI & Story Rows)")]
+        DASH["dashboard/app.py & Notebooks<br>(Plotly Dash UI & Analytics)"]
     end
 
-    U_HIST --> CLI
-    E_HIST --> CLI
-    U_INC --> CLI
-    G_INC --> CLI
+    U_HIST --> B_DAG
+    E_HIST --> B_DAG
+    U_INC --> B_DAG
+    G_INC --> B_DAG
 
-    CLI --> PARS
-    PARS --> VAL
+    B_DAG --> B_STORE
+    B_STORE --> S_DAG
+    S_DAG --> VAL
     VAL -->|Malformed / Out-of-bounds| REJ
-    VAL -->|Valid Records| MATCH
+    VAL -->|Valid Curated Records| S_PQ
+    VAL -->|Valid Canonical Entities| MATCH
 
     MATCH --> EV
-    MATCH --> EQ
     MATCH --> GRP
-    CLI --> RUN
-    CLI --> ST
+    S_DAG --> SRC
+    S_DAG --> ST
 
-    EV --> SAAI
-    EQ --> SAAI
-    SAAI --> DASH
+    S_PQ -->|spark.read.parquet| G_DAG
+    G_DAG --> G_GOV
+    G_DAG --> G_STR
+    G_GOV --> DASH
+    G_STR --> DASH
     EV --> DASH
 ```
 
@@ -104,7 +114,7 @@ A detailed, peer-reviewed geophysical foundation is documented in [`docs/hazard_
 
 ## 4. Validated Source Payloads & Empirical Evidence
 
-All four sources are fully configured in [`config/sources.yaml`](config/sources.yaml) and verified with raw sample payloads meeting the academic $\ge 200$ records requirement:
+All four sources are fully configured in [`config/sources.yaml`](config/sources.yaml) and verified with multi-source raw sample payloads:
 
 | Source ID | Institution | Format | Sample Payload File | Verified Records | Scope / Window |
 |---|---|:---:|---|:---:|---|
@@ -116,7 +126,7 @@ All four sources are fully configured in [`config/sources.yaml`](config/sources.
 ### Empirical Two-Poll Ingestion Characterization
 Documented in [`workshop_1/polling_evidence.md`](workshop_1/polling_evidence.md):
 - **Poll #1 (`05:33:48Z`):** 12 events captured from `all_hour.geojson`.
-- **Poll #2 (`06:52:11Z`):** 10 events captured (**78 min elapsed**, satisfying $\ge 60\text{ min}$ threshold).
+- **Poll #2 (`06:52:11Z`):** 10 events captured (**78 min elapsed**, exceeding the 60-minute rolling window).
 - **Window Eviction:** $|P_1 \cap P_2| = 0$, proving sliding-window feeds drop events rapidly without persistent storage.
 - **In-Place Revision Proof:** Queried USGS FDSN Web Service to empirically prove that event `aka2026werkhb` received phase-pick refinements (+24.7 min) and event `us7000tx1f` received DYFI/ShakeMap product updates (+62.4 min).
 - **Design Decisions:** High-water mark tracks `properties.updated` (not origin time) with a **24-hour overlap window** and idempotent SQL upserts (`ON CONFLICT (event_id) DO UPDATE`).
@@ -125,24 +135,24 @@ Documented in [`workshop_1/polling_evidence.md`](workshop_1/polling_evidence.md)
 
 ## 5. Source Profiling & Quality Findings Summary
 
-Executed and pre-evaluated in [`notebooks/01_source_profiling.ipynb`](notebooks/01_source_profiling.ipynb):
+Executed and pre-evaluated in [`notebooks/01_source_profiling.ipynb`](notebooks/01_source_profiling.ipynb) and [`notebooks/03_silver_data_quality_findings.ipynb`](notebooks/03_silver_data_quality_findings.ipynb):
 1. **GDACS XML Parser Defect Resolved:** Targeted `<georss:point>` and extracted magnitude/depth via regex on `<gdacs:severity>`, reducing null rates from 100% to **0.0%**.
-2. **Comprehensive Profiling Matrix:** 100% coordinate compliance (all within $[-90, 90]$ and $[-180, 180]$) with zero duplicate IDs.
-3. **5 Concrete Quality Issues:** Documented with exact raw snippets for heterogeneous timestamps, uncalibrated/negative depths, magnitude saturation, location naming asymmetry, and artificial 10.0 km pinned depths (affecting 45.1% of global historical events).
+2. **Comprehensive Profiling Matrix:** 100% coordinate compliance (all within $[-90, 90]$ and $[-180, 180]$) with zero duplicate IDs after canonical deduplication.
+3. **5 Concrete Quality Issues:** Documented with exact raw snippets for heterogeneous timestamps, uncalibrated/negative depths, magnitude saturation, location naming asymmetry, and artificial 10.0 km pinned depths (affecting 45.1% of USGS historical events and 29.85% of the consolidated multi-source Silver corpus).
 4. **Cross-Source Event Matching:**
    - Naive window matching produced 679 candidate matches with **72 1-to-N collisions** during earthquake swarms.
-   - Applied **Normalized Spatio-Temporal Nearest-Neighbor Assignment** ($D = \sqrt{(\Delta d / 100\text{km})^2 + (\Delta t / 900\text{s})^2}$), resolving 100% of collisions into **568 clean 1-to-1 pairs** with median $\Delta t = 0.50\text{ s}$ and median $\Delta d = 6.97\text{ km}$.
+   - Applied **Normalized Spatio-Temporal Nearest-Neighbor Assignment** ($D = \sqrt{(\Delta d / 100\text{km})^2 + (\Delta t / 900\text{s})^2}$), resolving 100% of collisions into **568 clean 1-to-1 historical pairs** (and **637 multi-source transitive groups / 1,274 grouped records** across all four feeds) with median $\Delta t = 0.50\text{ s}$ and median $\Delta d = 6.97\text{ km}$.
 
 ---
 
 ## 6. Canonical Data Schema & Ingestion Contract
 
-Detailed in [`workshop_1/mapping.md`](workshop_1/mapping.md) and implemented in [`sql/schema.sql`](sql/schema.sql):
+Detailed in [`workshop_1/canonical mapping table.md`](workshop_1/canonical%20mapping%20table.md) and implemented in [`sql/schema.sql`](sql/schema.sql):
 - **Core Entities:** `source`, `ingestion_run`, `ingestion_state`, `event`, `earthquake`, `event_group`, `rejected_record`.
 - **Severity Normalization:** Standardizes magnitude to equivalent moment magnitude $M_w^*$ (Scordilis, 2006) and computes radiated energy:
   $$E = 10^{4.8 + 1.5 M_w^*} \quad (\text{Joules})$$
 - **Historical Volume Estimation:** 5-year historical scope yields **$\approx 1,800,000$ events** ($\approx 1.72\text{ GB}$ raw, $\approx 433\text{ MB}$ PostgreSQL storage with indexes).
-- **Recursive Temporal Bisection:** Automatically bisects query intervals if aftershock clusters exceed the USGS 20,000-record API limit.
+- **Recursive Temporal Bisection:** Automatically bisects query intervals if aftershock clusters exceed the USGS 20,000-record (or EMSC 10,000-record) API limit.
 
 ---
 
@@ -162,117 +172,137 @@ $$\mathbf{SAAI}(t) = 0.4 \cdot \left(\frac{N_{24h}(t) - \mu_N}{\sigma_N}\right) 
 ## 8. Repository Layout
 
 ```text
-earthquake-monitoring-pda-team_1/
+earthquake-monitoring-team_1/
 ├── airflow/
 │   └── dags/
-│       ├── bronze_ingestion_dag.py     # Airflow DAG: USGS telemetry extraction -> datalake_bronze/
-│       └── silver_processing_dag.py    # Airflow DAG: Data cleansing & Parquet/Postgres persistence
+│       ├── bronze_ingestion_dag.py     # Airflow DAG: Multi-source extraction (USGS, EMSC, GDACS) -> datalake_bronze/
+│       ├── silver_processing_dag.py    # Airflow DAG: Cleansing, quarantine & Parquet/Postgres persistence
+│       └── gold_processing_dag.py      # Airflow DAG: PySpark Silver-to-Gold governance & storytelling aggregations
 ├── config/
 │   └── sources.yaml                    # Standardized catalog configuration (4 sources)
 ├── dashboard/
 │   ├── __init__.py
 │   └── app.py                          # Interactive Dash / Plotly monitoring application
-├── datalake_bronze/                    # Medallion Bronze layer: raw immutable JSON responses
+├── datalake_bronze/                    # Medallion Bronze layer: raw immutable JSON/XML responses
 ├── datalake_silver/                    # Medallion Silver layer: curated Apache Parquet files
-├── datalake_gold/                      # Medallion Gold layer: analytical aggregations
+├── datalake_gold/                      # Medallion Gold layer: governance_*.parquet & storytelling_*.parquet
 ├── data/
-│   └── raw/                            # Git-ignored bulk landing zone (.gitkeep preserved)
+│   └── raw/                            # Bulk landing zone (source_YYYYMMDD_HHMMSS.ext)
 ├── docs/
 │   ├── hazard_definition.md            # Comprehensive geophysical domain & project formalization
-│   └── Project Definition Report.pdf   # Workshop #1 official compiled PDF report
+│   ├── Project Definition Report.pdf   # Workshop #1 compiled PDF report
+│   └── Workshop_2_Technical_Architecture_Report.pdf
 ├── init-db/
 │   └── 01-create-etl-database.sql      # Automated PostgreSQL DB and ETL user provisioning
 ├── notebooks/
-│   ├── 01_source_profiling.ipynb       # Workshop #1: source profiling & quality analysis
-│   └── 02_silver_data_exploration.ipynb# Workshop #2: Silver Parquet reading & statistical profiling
+│   ├── 01_source_profiling.ipynb              # Workshop #1: source profiling & quality analysis
+│   ├── 02_silver_data_exploration.ipynb       # Workshop #2: Silver Parquet reading & statistical profiling
+│   ├── 03_silver_data_quality_findings.ipynb  # Workshop #3: Silver quality findings, null/pinned rates & IQR outliers
+│   └── 04_gold_summaries_exploration.ipynb    # Workshop #3: Gold Governance & Storytelling Parquet exploration
 ├── sql/
-│   └── schema.sql                      # PostgreSQL production DDL with indexes and constraints
+│   └── schema.sql                      # PostgreSQL production DDL (7 canonical tables + indexes)
 ├── src/
 │   ├── __init__.py
 │   ├── config.py                       # YAML & environment variable loader
-│   ├── models.py                       # Canonical dataclass models (Event, Earthquake, Run)
-│   ├── parsers.py                      # USGS GeoJSON, EMSC JSON, GDACS XML parsers
-│   └── matching.py                     # Haversine & 1-to-1 Nearest-Neighbor matching engine
+│   ├── db.py                           # PostgreSQL canonical persistence, watermarks, quarantine & status
+│   ├── extractors.py                   # Live HTTP partitioned extractor with recursive temporal bisection
+│   ├── gold_pyspark.py                 # PySpark local[*] Silver-to-Gold transformation engine
+│   ├── models.py                       # Canonical dataclass models & validation gating
+│   ├── parsers.py                      # USGS GeoJSON, EMSC JSON, GDACS XML parsers with SHA-256 hashes
+│   └── matching.py                     # Haversine, 1-to-1 Nearest-Neighbor & transitive event_group builder
 ├── tests/
 │   ├── __init__.py
-│   ├── test_parsers.py                 # Unit tests for multi-format payload parsers
+│   ├── test_parsers.py                 # Unit tests for multi-format parsers & quarantine validation reasons
 │   ├── test_matching.py                # Unit tests for Haversine & collision resolution
-│   └── test_schema.py                  # Unit tests validating SQL schema constraints
+│   ├── test_schema.py                  # Unit tests validating SQL schema constraints
+│   └── test_workshop3.py               # Unit tests for transitive grouping, watermark windows & Gold Parquets
 ├── workshop_1/
 │   ├── canonical mapping table.md      # Canonical mapping table, Mermaid ERD, and ingestion contract
 │   ├── polling_evidence.md             # Empirical two-poll update evidence & diff analysis
 │   └── samples/                        # Raw validated JSON/XML samples (≥ 200 records each)
 ├── workshop_2/
-│   └── technical_architecture_report.md# Workshop #2: Full architecture and pipeline report
-├── .env                                # Docker environment variables (AIRFLOW_UID)
+│   ├── Workshop_2_Technical_Architecture_Report.pdf
+│   ├── Workshop_2_Technical_Architecture_Report.tex
+│   ├── technical_architecture_report.md
+│   ├── screenshots/                    # Verification screenshots of Airflow UI, datalake & notebooks
+│   └── sections/                       # Modular LaTeX sections (00_abstract .. 08_references)
+├── workshop_3/
+│   ├── Workshop_3_Gold_Pipeline_Report.pdf    # Compiled IEEEtran PDF report for Workshop #3
+│   ├── Workshop_3_Gold_Pipeline_Report.tex    # Master IEEEtran LaTeX report for Workshop #3
+│   ├── figures/                               # Diagnostic plots generated from Silver and Gold Parquet datasets
+│   └── sections/                              # Modular LaTeX sections (00_abstract .. 08_references)
 ├── .env.example                        # Environment variable template
 ├── .gitignore                          # Python, data raw, and IDE ignores
-├── docker-compose.yml                  # Production Docker stack (Airflow 2.10.4 + PostgreSQL 16)
-├── ingest.py                           # Standalone Ingestion Worker CLI
+├── docker-compose.yml                  # Production Docker stack (Airflow 2.10.4 + PostgreSQL 16 + PySpark)
+├── ingest.py                           # Canonical Ingestion Worker CLI (historical | incremental | status)
 ├── requirements.txt                    # Project Python dependencies
 └── README.md                           # Master project overview & academic documentation
 ```
 
 ---
 
-## 9. Quickstart & Installation Guide
+## 9. Quickstart & Execution Guide
 
 ### Prerequisites
-- Python 3.10+
-- Docker Engine & Docker Compose v2 (running via Docker Desktop with WSL2)
+- Python 3.10+ and Java OpenJDK 17/21 (for PySpark `local[*]` execution)
+- Docker Engine & Docker Compose v2
 
 ### 1. Python Environment Setup
 ```bash
 python3 -m venv .venv
-# On Windows PowerShell:
-.\.venv\Scripts\Activate.ps1
-# On Linux/macOS:
 source .venv/bin/activate
-
 pip install -r requirements.txt
 ```
 
-### 2. Run Test Suite
-Execute the built-in unit tests validating parsers, collision-free matching, and schema integrity:
+### 2. Run Automated Test Suite (`pytest`)
+Execute the 12 automated tests validating parsers, quarantine reasons, collision-free 1-to-1 and transitive matching, watermark overlap windows, SQL schema integrity, and Gold Parquet outputs:
 ```bash
-python -m unittest discover tests
-```
-*Expected Output: `Ran 8 tests in 0.009s. OK.`*
-
-### 3. Standalone Ingestion CLI (Workshop #1)
-Test the ingestion pipeline in offline/dry-run mode:
-```bash
-# Historical Mode (USGS & EMSC FDSN samples)
-python ingest.py --mode historical --dry-run
-
-# Incremental Mode (USGS Real-time & GDACS XML feeds)
-python ingest.py --mode incremental --dry-run
+pytest -v
 ```
 
-### 4. Docker Compose & Apache Airflow Orchestration (Workshop #2)
-To launch the full Medallion pipeline stack:
+### 3. Canonical Ingestion CLI (`ingest.py` — Workshops #2 & #3)
 ```bash
-# Start all containers in background
+# 1. Historical Mode (live partitioned HTTP fetch with recursive bisection)
+python ingest.py --mode historical --start 2025-11-01 --end 2025-11-05
+
+# 2. Historical & Incremental Mode using verified local samples (idempotent)
+python ingest.py --mode historical --use-samples
+python ingest.py --mode incremental --use-samples
+
+# 3. Pipeline Status Report (table row counts, source watermarks, recent runs, event_group matches)
+python ingest.py --mode status
+```
+
+### 4. Three-Layer Medallion Pipeline in Apache Airflow & PySpark (Workshops #2 & #3)
+Launch the containerized stack:
+```bash
 docker compose up -d
-
-# Verify container health
 docker compose ps
 ```
 
-- **Airflow Web UI:** Navigate to `http://localhost:8080` (Credentials: `airflow` / `airflow`).
-- **Trigger Ingestion (Bronze):** Trigger `bronze_ingestion_dag` to download raw earthquake JSON payloads into `datalake_bronze/`.
-- **Trigger Curation (Silver):** Trigger `silver_processing_dag` to clean and persist records to:
-  - `datalake_silver/earthquakes_silver_*.parquet`
-  - PostgreSQL database `earthquakes_ud`, table `earthquakes_curated` (Host port: `5440`, user: `etl_ud`, password: `P4$w0rd`).
+- **Airflow Web UI:** `http://localhost:8080` (`airflow` / `airflow`).
+- **Layer 1 — Bronze (`bronze_ingestion_dag`):** Extracts multi-source raw telemetry (USGS GeoJSON, EMSC JSON, GDACS XML) into `datalake_bronze/`.
+- **Layer 2 — Silver (`silver_processing_dag`):** Triggered via `FileSensor` on `datalake_bronze/`; validates bounds, routes malformed records to PostgreSQL `rejected_record`, upserts canonical `event`/`earthquake` tables, and writes `TIMESTAMP(MICROS)` Parquet files to `datalake_silver/`.
+- **Layer 3 — Gold (`gold_processing_dag`):** Uses **PySpark** (`SparkSession.builder.master("local[*]")`) to read the entire `datalake_silver/` folder (`spark.read.parquet("datalake_silver/")`) and persist two Gold summary datasets in `datalake_gold/`:
+  - `datalake_gold/governance_YYYYMMDD_HHMMSS.parquet` (107 KPI rows across null/pinned rates, volume metrics, duplicate/match rates, schema compliance, IQR outlier rates, and `place` text length statistics).
+  - `datalake_gold/storytelling_YYYYMMDD_HHMMSS.parquet` (79 aggregation rows across Gutenberg-Richter severity distributions, daily SAAI anomaly scores, top active regions, multi-source comparisons, and focal depth regimes).
 
-### 5. Inspect Silver Parquet Exploration Notebook
-Open and run [`notebooks/02_silver_data_exploration.ipynb`](notebooks/02_silver_data_exploration.ipynb) to inspect the curated dataset, verify null completeness, and analyze seismic energy distributions using Pandas and PyArrow.
+You can also trigger the PySpark Gold pipeline directly from the CLI:
+```bash
+python -m src.gold_pyspark
+```
+
+### 5. Exploratory Jupyter Notebooks
+- [`notebooks/01_source_profiling.ipynb`](notebooks/01_source_profiling.ipynb): Workshop #1 multi-source profiling & data quality identification.
+- [`notebooks/02_silver_data_exploration.ipynb`](notebooks/02_silver_data_exploration.ipynb): Workshop #2 Silver Parquet schema and statistical exploration.
+- [`notebooks/03_silver_data_quality_findings.ipynb`](notebooks/03_silver_data_quality_findings.ipynb): Workshop #3 Silver data quality audit (nulls, pinned 10 km depths, IQR/Z-score outliers, text length distributions) justifying Governance KPIs.
+- [`notebooks/04_gold_summaries_exploration.ipynb`](notebooks/04_gold_summaries_exploration.ipynb): Workshop #3 Gold Parquet inspection previewing both `governance_*.parquet` and `storytelling_*.parquet`.
 
 ### 6. Launch Interactive Dashboard
 ```bash
 python dashboard/app.py
 ```
-Open your browser at `http://localhost:8050` to inspect real-time global epicenters and the SAAI Anomaly Indicator.
+Open `http://localhost:8050` to inspect global epicenters and the SAAI Anomaly Indicator.
 
 ---
 
@@ -282,4 +312,5 @@ Open your browser at `http://localhost:8050` to inspect real-time global epicent
 - **Team Members:** Juan Córdoba (20211020097), Angelo Ibáñez (20212020007), Mauricio Sánchez (20212020045)
 - **Deliverables:**
   - **Workshop #1:** Hazard Definition, Source Validation, and Data Contract
-  - **Workshop #2:** Technical Architecture, Docker Stack, and Bronze/Silver Medallion Pipeline
+  - **Workshop #2:** Technical Architecture, Docker Stack, Canonical Historical Ingestion, and Bronze/Silver Pipeline
+  - **Workshop #3:** Incremental Watermarks, Cross-Source Event Matching (`event_group`), Silver-to-Gold PySpark Pipeline, and Governance/Storytelling KPIs

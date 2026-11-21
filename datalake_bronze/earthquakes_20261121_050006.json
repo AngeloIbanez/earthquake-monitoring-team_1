@@ -1,0 +1,2421 @@
+{
+  "type": "FeatureCollection",
+  "metadata": {
+    "generated": 1795237202000,
+    "url": "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=2026-11-20T05%3A00%3A02&endtime=2026-11-21T05%3A00%3A02&minmagnitude=2.5",
+    "title": "USGS Earthquakes",
+    "status": 200,
+    "api": "2.8.4",
+    "count": 60
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "mag": 4.1,
+        "place": "28 km NNE of Chenega, Alaska",
+        "time": 1795235354724,
+        "updated": 1795236377029,
+        "tz": null,
+        "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026xaubpp",
+        "detail": "https://earthquake.usgs.gov/fdsnws/event/1/query?eventid=aka2026xaubpp&format=geojson",
+        "felt": 10,
+        "cdi": 3.4,
+        "mmi": 4.399,
+        "alert": null,
+        "status": "reviewed",
+        "tsunami": 1,
+        "sig": 262,
+        "net": "ak",
+        "code": "a2026xaubpp",
+        "ids": ",aka2026xaubpp,attou4gr,us6000uch2,",
+        "sources": ",ak,at,us,",
+        "types": ",dyfi,impact-link,moment-tensor,origin,phase-data,shakemap,",
+        "nst": 164,
+        "dmin": 0.4,
+        "rms": 1.1,
+        "gap": 78,
+        "magType": "ml",
+        "type": "earthquake",
+        "title": "M 4.1 - 28 km NNE of Chenega, Alaska"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -147.79,
+          60.301,
+          3.6
+        ]
+      },
+      "id": "aka2026xaubpp"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "mag": 3.4,
+        "place": "46 km NW of Ninilchik, Alaska",
+        "time": 1795228447435,
+        "updated": 1795235091986,
+        "tz": null,
+        "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026xaqfrm",
+        "detail": "https://earthquake.usgs.gov/fdsnws/event/1/query?eventid=aka2026xaqfrm&format=geojson",
+        "felt": 1,
+        "cdi": 1,
+        "mmi": null,
+        "alert": null,
+        "status": "automatic",
+        "tsunami": 0,
+        "sig": 178,
+        "net": "ak",
+        "code": "a2026xaqfrm",
+        "ids": ",aka2026xaqfrm,us6000ucgk,",
+        "sources": ",ak,us,",
+        "types": ",dyfi,origin,phase-data,",
+        "nst": 172,
+        "dmin": 0.3,
+        "rms": 0.8,
+        "gap": 53,
+        "magType": "ml",
+        "type": "earthquake",
+        "title": "M 3.4 - 46 km NW of Ninilchik, Alaska"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -152.293,
+          60.323,
+          91.4
+        ]
+      },
+      "id": "aka2026xaqfrm"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "mag": 4.9,
+        "place": "Reykjanes Ridge",
+        "time": 1795227877289,
+        "updated": 1795228824040,
+        "tz": null,
+        "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us6000ucgj",
+        "detail": "https://earthquake.usgs.gov/fdsnws/event/1/query?eventid=us6000ucgj&format=geojson",
+        "felt": null,
+        "cdi": null,
+        "mmi": null,
+        "alert": null,
+        "status": "reviewed",
+        "tsunami": 0,
+        "sig": 369,
+        "net": "us",
+        "code": "6000ucgj",
+        "ids": ",us6000ucgj,",
+        "sources": ",us,",
+        "types": ",origin,phase-data,",
+        "nst": 35,
+        "dmin": 7.313,
+        "rms": 0.61,
+        "gap": 123,
+        "magType": "mb",
+        "type": "earthquake",
+        "title": "M 4.9 - Reykjanes Ridge"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -31.857,
+          58.5457,
+          10
+        ]
+      },
+      "id": "us6000ucgj"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "mag": 4.9,
+        "place": "Reykjanes Ridge",
+        "time": 1795224379109,
+        "updated": 1795225589040,
+        "tz": null,
+        "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us6000ucga",
+        "detail": "https://earthquake.usgs.gov/fdsnws/event/1/query?eventid=us6000ucga&format=geojson",
+        "felt": null,
+        "cdi": null,
+        "mmi": null,
+        "alert": null,
+        "status": "reviewed",
+        "tsunami": 0,
+        "sig": 369,
+        "net": "us",
+        "code": "6000ucga",
+        "ids": ",us6000ucga,",
+        "sources": ",us,",
+        "types": ",origin,phase-data,",
+        "nst": 41,
+        "dmin": 7.471,
+        "rms": 0.81,
+        "gap": 89,
+        "magType": "mb",
+        "type": "earthquake",
+        "title": "M 4.9 - Reykjanes Ridge"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -31.7606,
+          58.3017,
+          10
+        ]
+      },
+      "id": "us6000ucga"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "mag": 4.7,
+        "place": "38 km NE of Calama, Chile",
+        "time": 1795224249274,
+        "updated": 1795224856040,
+        "tz": null,
+        "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us6000ucg8",
+        "detail": "https://earthquake.usgs.gov/fdsnws/event/1/query?eventid=us6000ucg8&format=geojson",
+        "felt": null,
+        "cdi": null,
+        "mmi": null,
+        "alert": null,
+        "status": "reviewed",
+        "tsunami": 0,
+        "sig": 340,
+        "net": "us",
+        "code": "6000ucg8",
+        "ids": ",us6000ucg8,",
+        "sources": ",us,",
+        "types": ",moment-tensor,origin,phase-data,",
+        "nst": 29,
+        "dmin": 0.706,
+        "rms": 1.11,
+        "gap": 52,
+        "magType": "mwr",
+        "type": "earthquake",
+        "title": "M 4.7 - 38 km NE of Calama, Chile"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -68.6409,
+          -22.2307,
+          120.01
+        ]
+      },
+      "id": "us6000ucg8"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "mag": 2.84,
+        "place": "10 km E of Cholame, CA",
+        "time": 1795221515700,
+        "updated": 1795232029040,
+        "tz": null,
+        "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75469462",
+        "detail": "https://earthquake.usgs.gov/fdsnws/event/1/query?eventid=nc75469462&format=geojson",
+        "felt": null,
+        "cdi": null,
+        "mmi": null,
+        "alert": null,
+        "status": "automatic",
+        "tsunami": 0,
+        "sig": 124,
+        "net": "nc",
+        "code": "75469462",
+        "ids": ",nc75469462,us6000ucg0,",
+        "sources": ",nc,us,",
+        "types": ",focal-mechanism,nearby-cities,origin,phase-data,scitech-link,",
+        "nst": 45,
+        "dmin": 0.02149,
+        "rms": 0.14,
+        "gap": 126,
+        "magType": "md",
+        "type": "earthquake",
+        "title": "M 2.8 - 10 km E of Cholame, CA"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -120.181167602539,
+          35.7236671447754,
+          3.10999989509583
+        ]
+      },
+      "id": "nc75469462"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "mag": 4.4,
+        "place": "41 km SE of Petropavlovsk-Kamchatsky, Russia",
+        "time": 1795221168295,
+        "updated": 1795226173040,
+        "tz": null,
+        "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us6000ucg3",
+        "detail": "https://earthquake.usgs.gov/fdsnws/event/1/query?eventid=us6000ucg3&format=geojson",
+        "felt": null,
+        "cdi": null,
+        "mmi": null,
+        "alert": null,
+        "status": "reviewed",
+        "tsunami": 0,
+        "sig": 298,
+        "net": "us",
+        "code": "6000ucg3",
+        "ids": ",us6000ucg3,",
+        "sources": ",us,",
+        "types": ",origin,phase-data,",
+        "nst": 27,
+        "dmin": 0.894,
+        "rms": 0.83,
+        "gap": 109,
+        "magType": "mb",
+        "type": "earthquake",
+        "title": "M 4.4 - 41 km SE of Petropavlovsk-Kamchatsky, Russia"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          159.104,
+          52.828,
+          88.946
+        ]
+      },
+      "id": "us6000ucg3"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "mag": 2.51,
+        "place": "3 km ENE of Nanawale Estates, Hawaii",
+        "time": 1795220487300,
+        "updated": 1795220702510,
+        "tz": null,
+        "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv75073882",
+        "detail": "https://earthquake.usgs.gov/fdsnws/event/1/query?eventid=hv75073882&format=geojson",
+        "felt": null,
+        "cdi": null,
+        "mmi": null,
+        "alert": null,
+        "status": "automatic",
+        "tsunami": 0,
+        "sig": 97,
+        "net": "hv",
+        "code": "75073882",
+        "ids": ",hv75073882,",
+        "sources": ",hv,",
+        "types": ",origin,phase-data,",
+        "nst": 9,
+        "dmin": 0.1455,
+        "rms": 0.129999995,
+        "gap": 277,
+        "magType": "md",
+        "type": "earthquake",
+        "title": "M 2.5 - 3 km ENE of Nanawale Estates, Hawaii"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -154.880172729492,
+          19.5201663970947,
+          76.0500030517578
+        ]
+      },
+      "id": "hv75073882"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "mag": 2.7,
+        "place": "41 km ENE of Maneadero, B.C., MX",
+        "time": 1795219803910,
+        "updated": 1795229261040,
+        "tz": null,
+        "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41364303",
+        "detail": "https://earthquake.usgs.gov/fdsnws/event/1/query?eventid=ci41364303&format=geojson",
+        "felt": null,
+        "cdi": null,
+        "mmi": null,
+        "alert": null,
+        "status": "reviewed",
+        "tsunami": 0,
+        "sig": 112,
+        "net": "ci",
+        "code": "41364303",
+        "ids": ",ci41364303,us6000ucfl,",
+        "sources": ",ci,us,",
+        "types": ",nearby-cities,origin,phase-data,scitech-link,",
+        "nst": 26,
+        "dmin": 0.06314,
+        "rms": 0.22,
+        "gap": 69,
+        "magType": "ml",
+        "type": "earthquake",
+        "title": "M 2.7 - 41 km ENE of Maneadero, B.C., MX"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -116.17233,
+          31.867,
+          11.46
+        ]
+      },
+      "id": "ci41364303"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "mag": 6.7,
+        "place": "9 km NE of Carhuamayo, Peru",
+        "time": 1795219759667,
+        "updated": 1795235195991,
+        "tz": null,
+        "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us6000ucfm",
+        "detail": "https://earthquake.usgs.gov/fdsnws/event/1/query?eventid=us6000ucfm&format=geojson",
+        "felt": 100,
+        "cdi": 5.2,
+        "mmi": 5.707,
+        "alert": "green",
+        "status": "reviewed",
+        "tsunami": 1,
+        "sig": 743,
+        "net": "us",
+        "code": "6000ucfm",
+        "ids": ",pt26325050,us6000ucfm,attotsfi,",
+        "sources": ",pt,us,at,",
+        "types": ",dyfi,ground-failure,impact-link,losspager,moment-tensor,origin,phase-data,shakemap,",
+        "nst": 74,
+        "dmin": 1.409,
+        "rms": 0.68,
+        "gap": 65,
+        "magType": "mww",
+        "type": "earthquake",
+        "title": "M 6.7 - 9 km NE of Carhuamayo, Peru"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -75.9779,
+          -10.8548,
+          107.991
+        ]
+      },
+      "id": "us6000ucfm"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "mag": 2.8,
+        "place": "30 km WSW of Denali Park, Alaska",
+        "time": 1795219635701,
+        "updated": 1795228210040,
+        "tz": null,
+        "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026xalikz",
+        "detail": "https://earthquake.usgs.gov/fdsnws/event/1/query?eventid=aka2026xalikz&format=geojson",
+        "felt": null,
+        "cdi": null,
+        "mmi": null,
+        "alert": null,
+        "status": "automatic",
+        "tsunami": 0,
+        "sig": 121,
+        "net": "ak",
+        "code": "a2026xalikz",
+        "ids": ",us6000ucfk,aka2026xalikz,",
+        "sources": ",us,ak,",
+        "types": ",origin,phase-data,",
+        "nst": 91,
+        "dmin": 0.3,
+        "rms": 0.7,
+        "gap": 38,
+        "magType": "ml",
+        "type": "earthquake",
+        "title": "M 2.8 - 30 km WSW of Denali Park, Alaska"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -149.494,
+          63.651,
+          119.8
+        ]
+      },
+      "id": "aka2026xalikz"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "mag": 4.4,
+        "place": "115 km W of Illapel, Chile",
+        "time": 1795217853534,
+        "updated": 1795219498040,
+        "tz": null,
+        "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us6000ucfa",
+        "detail": "https://earthquake.usgs.gov/fdsnws/event/1/query?eventid=us6000ucfa&format=geojson",
+        "felt": null,
+        "cdi": null,
+        "mmi": null,
+        "alert": null,
+        "status": "reviewed",
+        "tsunami": 0,
+        "sig": 298,
+        "net": "us",
+        "code": "6000ucfa",
+        "ids": ",us6000ucfa,",
+        "sources": ",us,",
+        "types": ",moment-tensor,origin,phase-data,",
+        "nst": 46,
+        "dmin": 1.218,
+        "rms": 1.04,
+        "gap": 76,
+        "magType": "mwr",
+        "type": "earthquake",
+        "title": "M 4.4 - 115 km W of Illapel, Chile"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -72.3842,
+          -31.7122,
+          10
+        ]
+      },
+      "id": "us6000ucfa"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "mag": 4.9,
+        "place": "113 km ESE of Pangai, Tonga",
+        "time": 1795214079096,
+        "updated": 1795215504040,
+        "tz": null,
+        "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us6000ucf0",
+        "detail": "https://earthquake.usgs.gov/fdsnws/event/1/query?eventid=us6000ucf0&format=geojson",
+        "felt": null,
+        "cdi": null,
+        "mmi": null,
+        "alert": null,
+        "status": "reviewed",
+        "tsunami": 0,
+        "sig": 369,
+        "net": "us",
+        "code": "6000ucf0",
+        "ids": ",us6000ucf0,",
+        "sources": ",us,",
+        "types": ",origin,phase-data,",
+        "nst": 33,
+        "dmin": 3.504,
+        "rms": 1.39,
+        "gap": 110,
+        "magType": "mb",
+        "type": "earthquake",
+        "title": "M 4.9 - 113 km ESE of Pangai, Tonga"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -173.4099,
+          -20.3204,
+          10
+        ]
+      },
+      "id": "us6000ucf0"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "mag": 4.2,
+        "place": "65 km W of Ollagüe, Chile",
+        "time": 1795213933976,
+        "updated": 1795218316040,
+        "tz": null,
+        "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us6000ucey",
+        "detail": "https://earthquake.usgs.gov/fdsnws/event/1/query?eventid=us6000ucey&format=geojson",
+        "felt": null,
+        "cdi": null,
+        "mmi": null,
+        "alert": null,
+        "status": "reviewed",
+        "tsunami": 0,
+        "sig": 271,
+        "net": "us",
+        "code": "6000ucey",
+        "ids": ",us6000ucey,",
+        "sources": ",us,",
+        "types": ",moment-tensor,origin,phase-data,",
+        "nst": 30,
+        "dmin": 0.584,
+        "rms": 0.71,
+        "gap": 59,
+        "magType": "mwr",
+        "type": "earthquake",
+        "title": "M 4.2 - 65 km W of Ollagüe, Chile"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -68.8815,
+          -21.1895,
+          114.345
+        ]
+      },
+      "id": "us6000ucey"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "mag": 4.4,
+        "place": "Reykjanes Ridge",
+        "time": 1795206591959,
+        "updated": 1795213010040,
+        "tz": null,
+        "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us6000uce0",
+        "detail": "https://earthquake.usgs.gov/fdsnws/event/1/query?eventid=us6000uce0&format=geojson",
+        "felt": null,
+        "cdi": null,
+        "mmi": null,
+        "alert": null,
+        "status": "reviewed",
+        "tsunami": 0,
+        "sig": 298,
+        "net": "us",
+        "code": "6000uce0",
+        "ids": ",us6000uce0,",
+        "sources": ",us,",
+        "types": ",origin,phase-data,",
+        "nst": 50,
+        "dmin": 7.46,
+        "rms": 0.68,
+        "gap": 109,
+        "magType": "mb",
+        "type": "earthquake",
+        "title": "M 4.4 - Reykjanes Ridge"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -31.6011,
+          58.4869,
+          10
+        ]
+      },
+      "id": "us6000uce0"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "mag": 2.8,
+        "place": "159 km SSW of Akhiok, Alaska",
+        "time": 1795201646037,
+        "updated": 1795201734289,
+        "tz": null,
+        "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026xabinn",
+        "detail": "https://earthquake.usgs.gov/fdsnws/event/1/query?eventid=aka2026xabinn&format=geojson",
+        "felt": null,
+        "cdi": null,
+        "mmi": null,
+        "alert": null,
+        "status": "automatic",
+        "tsunami": 0,
+        "sig": 121,
+        "net": "ak",
+        "code": "a2026xabinn",
+        "ids": ",aka2026xabinn,",
+        "sources": ",ak,",
+        "types": ",origin,phase-data,",
+        "nst": 23,
+        "dmin": 0.1,
+        "rms": 0.4,
+        "gap": 236,
+        "magType": "ml",
+        "type": "earthquake",
+        "title": "M 2.8 - 159 km SSW of Akhiok, Alaska"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -155.577,
+          55.745,
+          47.9
+        ]
+      },
+      "id": "aka2026xabinn"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "mag": 4.2,
+        "place": "192 km SW of Bluff, New Zealand",
+        "time": 1795201494178,
+        "updated": 1795212059040,
+        "tz": null,
+        "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us6000ucdj",
+        "detail": "https://earthquake.usgs.gov/fdsnws/event/1/query?eventid=us6000ucdj&format=geojson",
+        "felt": null,
+        "cdi": null,
+        "mmi": null,
+        "alert": null,
+        "status": "reviewed",
+        "tsunami": 0,
+        "sig": 271,
+        "net": "us",
+        "code": "6000ucdj",
+        "ids": ",us6000ucdj,",
+        "sources": ",us,",
+        "types": ",origin,phase-data,",
+        "nst": 21,
+        "dmin": 1.403,
+        "rms": 1.21,
+        "gap": 122,
+        "magType": "mb",
+        "type": "earthquake",
+        "title": "M 4.2 - 192 km SW of Bluff, New Zealand"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          166.2638,
+          -47.5959,
+          10
+        ]
+      },
+      "id": "us6000ucdj"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "mag": 3.5,
+        "place": "59 km SSW of Cantwell, Alaska",
+        "time": 1795200311073,
+        "updated": 1795221448021,
+        "tz": null,
+        "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026xaapef",
+        "detail": "https://earthquake.usgs.gov/fdsnws/event/1/query?eventid=aka2026xaapef&format=geojson",
+        "felt": null,
+        "cdi": null,
+        "mmi": null,
+        "alert": null,
+        "status": "reviewed",
+        "tsunami": 0,
+        "sig": 188,
+        "net": "ak",
+        "code": "a2026xaapef",
+        "ids": ",aka2026xaapef,",
+        "sources": ",ak,",
+        "types": ",origin,phase-data,",
+        "nst": 192,
+        "dmin": 0.3,
+        "rms": 1,
+        "gap": 14,
+        "magType": "ml",
+        "type": "earthquake",
+        "title": "M 3.5 - 59 km SSW of Cantwell, Alaska"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -149.527,
+          62.925,
+          81.6
+        ]
+      },
+      "id": "aka2026xaapef"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "mag": 5.1,
+        "place": "32 km NE of Port-Olry, Vanuatu",
+        "time": 1795197195442,
+        "updated": 1795198273040,
+        "tz": null,
+        "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us6000ucd6",
+        "detail": "https://earthquake.usgs.gov/fdsnws/event/1/query?eventid=us6000ucd6&format=geojson",
+        "felt": null,
+        "cdi": null,
+        "mmi": null,
+        "alert": null,
+        "status": "reviewed",
+        "tsunami": 0,
+        "sig": 400,
+        "net": "us",
+        "code": "6000ucd6",
+        "ids": ",us6000ucd6,",
+        "sources": ",us,",
+        "types": ",origin,phase-data,",
+        "nst": 70,
+        "dmin": 6.363,
+        "rms": 0.69,
+        "gap": 77,
+        "magType": "mb",
+        "type": "earthquake",
+        "title": "M 5.1 - 32 km NE of Port-Olry, Vanuatu"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          167.29,
+          -14.835,
+          94.53
+        ]
+      },
+      "id": "us6000ucd6"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "mag": 3.42,
+        "place": "91 km N of Charlotte Amalie, U.S. Virgin Islands",
+        "time": 1795193567200,
+        "updated": 1795204757040,
+        "tz": null,
+        "url": "https://earthquake.usgs.gov/earthquakes/eventpage/pr71539618",
+        "detail": "https://earthquake.usgs.gov/fdsnws/event/1/query?eventid=pr71539618&format=geojson",
+        "felt": null,
+        "cdi": null,
+        "mmi": null,
+        "alert": null,
+        "status": "reviewed",
+        "tsunami": 0,
+        "sig": 180,
+        "net": "pr",
+        "code": "71539618",
+        "ids": ",us6000ucca,pr71539618,",
+        "sources": ",us,pr,",
+        "types": ",origin,phase-data,",
+        "nst": 10,
+        "dmin": 0.7619,
+        "rms": 0.31,
+        "gap": 262,
+        "magType": "md",
+        "type": "earthquake",
+        "title": "M 3.4 - 91 km N of Charlotte Amalie, U.S. Virgin Islands"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -64.8121666666667,
+          19.164,
+          13.44
+        ]
+      },
+      "id": "pr71539618"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "mag": 4.4,
+        "place": "109 km NNE of Lospalos, Timor Leste",
+        "time": 1795192873832,
+        "updated": 1795205525040,
+        "tz": null,
+        "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us6000ucax",
+        "detail": "https://earthquake.usgs.gov/fdsnws/event/1/query?eventid=us6000ucax&format=geojson",
+        "felt": null,
+        "cdi": null,
+        "mmi": null,
+        "alert": null,
+        "status": "reviewed",
+        "tsunami": 0,
+        "sig": 298,
+        "net": "us",
+        "code": "6000ucax",
+        "ids": ",us6000ucax,",
+        "sources": ",us,",
+        "types": ",origin,phase-data,",
+        "nst": 42,
+        "dmin": 6.329,
+        "rms": 0.79,
+        "gap": 86,
+        "magType": "mb",
+        "type": "earthquake",
+        "title": "M 4.4 - 109 km NNE of Lospalos, Timor Leste"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          127.4332,
+          -7.6315,
+          143.686
+        ]
+      },
+      "id": "us6000ucax"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "mag": 2.7,
+        "place": "39 km SE of Denali National Park, Alaska",
+        "time": 1795187512850,
+        "updated": 1795204242040,
+        "tz": null,
+        "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026wztmfr",
+        "detail": "https://earthquake.usgs.gov/fdsnws/event/1/query?eventid=aka2026wztmfr&format=geojson",
+        "felt": null,
+        "cdi": null,
+        "mmi": null,
+        "alert": null,
+        "status": "automatic",
+        "tsunami": 0,
+        "sig": 112,
+        "net": "ak",
+        "code": "a2026wztmfr",
+        "ids": ",us6000uc9i,aka2026wztmfr,",
+        "sources": ",us,ak,",
+        "types": ",origin,phase-data,",
+        "nst": 58,
+        "dmin": 0.4,
+        "rms": 0.8,
+        "gap": 32,
+        "magType": "ml",
+        "type": "earthquake",
+        "title": "M 2.7 - 39 km SE of Denali National Park, Alaska"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -151.14,
+          63.302,
+          5
+        ]
+      },
+      "id": "aka2026wztmfr"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "mag": 2.68,
+        "place": "5 km NW of Pinnacles, CA",
+        "time": 1795187238700,
+        "updated": 1795213422773,
+        "tz": null,
+        "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75469167",
+        "detail": "https://earthquake.usgs.gov/fdsnws/event/1/query?eventid=nc75469167&format=geojson",
+        "felt": 14,
+        "cdi": 2.2,
+        "mmi": null,
+        "alert": null,
+        "status": "automatic",
+        "tsunami": 0,
+        "sig": 114,
+        "net": "nc",
+        "code": "75469167",
+        "ids": ",nc75469167,",
+        "sources": ",nc,",
+        "types": ",dyfi,focal-mechanism,nearby-cities,origin,phase-data,scitech-link,",
+        "nst": 61,
+        "dmin": 0.01166,
+        "rms": 0.26,
+        "gap": 40,
+        "magType": "md",
+        "type": "earthquake",
+        "title": "M 2.7 - 5 km NW of Pinnacles, CA"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -121.178337097168,
+          36.5615005493164,
+          6.73000001907349
+        ]
+      },
+      "id": "nc75469167"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "mag": 4.7,
+        "place": "94 km W of Illapel, Chile",
+        "time": 1795184175225,
+        "updated": 1795186447040,
+        "tz": null,
+        "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us6000uc9c",
+        "detail": "https://earthquake.usgs.gov/fdsnws/event/1/query?eventid=us6000uc9c&format=geojson",
+        "felt": null,
+        "cdi": null,
+        "mmi": null,
+        "alert": null,
+        "status": "reviewed",
+        "tsunami": 0,
+        "sig": 340,
+        "net": "us",
+        "code": "6000uc9c",
+        "ids": ",us6000uc9c,",
+        "sources": ",us,",
+        "types": ",origin,phase-data,",
+        "nst": 37,
+        "dmin": 1.031,
+        "rms": 0.97,
+        "gap": 141,
+        "magType": "mb",
+        "type": "earthquake",
+        "title": "M 4.7 - 94 km W of Illapel, Chile"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -72.1485,
+          -31.7842,
+          10
+        ]
+      },
+      "id": "us6000uc9c"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "mag": 3,
+        "place": "202 km S of Akhiok, Alaska",
+        "time": 1795183334679,
+        "updated": 1795219529906,
+        "tz": null,
+        "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026wzreib",
+        "detail": "https://earthquake.usgs.gov/fdsnws/event/1/query?eventid=aka2026wzreib&format=geojson",
+        "felt": null,
+        "cdi": null,
+        "mmi": null,
+        "alert": null,
+        "status": "reviewed",
+        "tsunami": 0,
+        "sig": 138,
+        "net": "ak",
+        "code": "a2026wzreib",
+        "ids": ",aka2026wzreib,",
+        "sources": ",ak,",
+        "types": ",origin,phase-data,",
+        "nst": 31,
+        "dmin": 1.1,
+        "rms": 0.7,
+        "gap": 259,
+        "magType": "ml",
+        "type": "earthquake",
+        "title": "M 3.0 - 202 km S of Akhiok, Alaska"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -154.01,
+          55.131,
+          5
+        ]
+      },
+      "id": "aka2026wzreib"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "mag": 2.9,
+        "place": "18 km ENE of Tilden, Texas",
+        "time": 1795183057989,
+        "updated": 1795196026271,
+        "tz": null,
+        "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026wvzici",
+        "detail": "https://earthquake.usgs.gov/fdsnws/event/1/query?eventid=tx2026wvzici&format=geojson",
+        "felt": null,
+        "cdi": null,
+        "mmi": null,
+        "alert": null,
+        "status": "reviewed",
+        "tsunami": 0,
+        "sig": 129,
+        "net": "tx",
+        "code": "2026wvzici",
+        "ids": ",us6000uc9a,tx2026wvzici,",
+        "sources": ",us,tx,",
+        "types": ",origin,phase-data,",
+        "nst": 44,
+        "dmin": 0.1,
+        "rms": 0.4,
+        "gap": 40,
+        "magType": "ml",
+        "type": "earthquake",
+        "title": "M 2.9 - 18 km ENE of Tilden, Texas"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -98.387,
+          28.539,
+          6.7691
+        ]
+      },
+      "id": "tx2026wvzici"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "mag": 5.1,
+        "place": "15 km SSW of Balangonan, Philippines",
+        "time": 1795180144057,
+        "updated": 1795226455117,
+        "tz": null,
+        "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us6000uc96",
+        "detail": "https://earthquake.usgs.gov/fdsnws/event/1/query?eventid=us6000uc96&format=geojson",
+        "felt": 5,
+        "cdi": 3.1,
+        "mmi": null,
+        "alert": null,
+        "status": "reviewed",
+        "tsunami": 0,
+        "sig": 402,
+        "net": "us",
+        "code": "6000uc96",
+        "ids": ",us6000uc96,",
+        "sources": ",us,",
+        "types": ",dyfi,origin,phase-data,",
+        "nst": 61,
+        "dmin": 1.639,
+        "rms": 1.16,
+        "gap": 73,
+        "magType": "mb",
+        "type": "earthquake",
+        "title": "M 5.1 - 15 km SSW of Balangonan, Philippines"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          125.2986,
+          5.4441,
+          73.392
+        ]
+      },
+      "id": "us6000uc96"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "mag": 3.94,
+        "place": "1 km NW of Commerce, CA",
+        "time": 1795173935140,
+        "updated": 1795237154039,
+        "tz": null,
+        "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41364111",
+        "detail": "https://earthquake.usgs.gov/fdsnws/event/1/query?eventid=ci41364111&format=geojson",
+        "felt": 14607,
+        "cdi": 4,
+        "mmi": 4.45,
+        "alert": "green",
+        "status": "reviewed",
+        "tsunami": 1,
+        "sig": 639,
+        "net": "ci",
+        "code": "41364111",
+        "ids": ",ew1795173930,ci41364111,attost2m,us6000uc8u,",
+        "sources": ",ew,ci,at,us,",
+        "types": ",dyfi,focal-mechanism,impact-link,losspager,moment-tensor,nearby-cities,origin,phase-data,scitech-link,shake-alert,shakemap,",
+        "nst": 185,
+        "dmin": 0.03212,
+        "rms": 0.23,
+        "gap": 22,
+        "magType": "mw",
+        "type": "earthquake",
+        "title": "M 3.9 - 1 km NW of Commerce, CA"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -118.1665,
+          34.00633,
+          15.45
+        ]
+      },
+      "id": "ci41364111"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "mag": 2.77,
+        "place": "16 km SSW of Volcano, Hawaii",
+        "time": 1795173151820,
+        "updated": 1795197246575,
+        "tz": null,
+        "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv75073642",
+        "detail": "https://earthquake.usgs.gov/fdsnws/event/1/query?eventid=hv75073642&format=geojson",
+        "felt": 1,
+        "cdi": 2,
+        "mmi": null,
+        "alert": null,
+        "status": "reviewed",
+        "tsunami": 0,
+        "sig": 118,
+        "net": "hv",
+        "code": "75073642",
+        "ids": ",hv75073642,",
+        "sources": ",hv,",
+        "types": ",dyfi,origin,phase-data,",
+        "nst": 54,
+        "dmin": 0.0145,
+        "rms": 0.13,
+        "gap": 112,
+        "magType": "ml",
+        "type": "earthquake",
+        "title": "M 2.8 - 16 km SSW of Volcano, Hawaii"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -155.2975,
+          19.3073333333333,
+          30.18
+        ]
+      },
+      "id": "hv75073642"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "mag": 4.1,
+        "place": "86 km ESE of Adak, Alaska",
+        "time": 1795172472830,
+        "updated": 1795218489057,
+        "tz": null,
+        "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026wzlcvl",
+        "detail": "https://earthquake.usgs.gov/fdsnws/event/1/query?eventid=aka2026wzlcvl&format=geojson",
+        "felt": null,
+        "cdi": null,
+        "mmi": 2.698,
+        "alert": null,
+        "status": "reviewed",
+        "tsunami": 0,
+        "sig": 259,
+        "net": "ak",
+        "code": "a2026wzlcvl",
+        "ids": ",aka2026wzlcvl,",
+        "sources": ",ak,",
+        "types": ",origin,phase-data,shakemap,",
+        "nst": 44,
+        "dmin": 0.5,
+        "rms": 0.6,
+        "gap": 205,
+        "magType": "ml",
+        "type": "earthquake",
+        "title": "M 4.1 - 86 km ESE of Adak, Alaska"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -175.474,
+          51.585,
+          40.2
+        ]
+      },
+      "id": "aka2026wzlcvl"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "mag": 2.9,
+        "place": "70 km SSE of Kokhanok, Alaska",
+        "time": 1795172275711,
+        "updated": 1795172545032,
+        "tz": null,
+        "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026wzlaba",
+        "detail": "https://earthquake.usgs.gov/fdsnws/event/1/query?eventid=aka2026wzlaba&format=geojson",
+        "felt": null,
+        "cdi": null,
+        "mmi": null,
+        "alert": null,
+        "status": "automatic",
+        "tsunami": 0,
+        "sig": 129,
+        "net": "ak",
+        "code": "a2026wzlaba",
+        "ids": ",aka2026wzlaba,",
+        "sources": ",ak,",
+        "types": ",origin,phase-data,",
+        "nst": 135,
+        "dmin": 0.3,
+        "rms": 0.7,
+        "gap": 48,
+        "magType": "ml",
+        "type": "earthquake",
+        "title": "M 2.9 - 70 km SSE of Kokhanok, Alaska"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -154.35,
+          58.846,
+          128.7
+        ]
+      },
+      "id": "aka2026wzlaba"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "mag": 4.4,
+        "place": "Fiji region",
+        "time": 1795171975274,
+        "updated": 1795173983040,
+        "tz": null,
+        "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us6000uc8p",
+        "detail": "https://earthquake.usgs.gov/fdsnws/event/1/query?eventid=us6000uc8p&format=geojson",
+        "felt": null,
+        "cdi": null,
+        "mmi": null,
+        "alert": null,
+        "status": "reviewed",
+        "tsunami": 0,
+        "sig": 298,
+        "net": "us",
+        "code": "6000uc8p",
+        "ids": ",us6000uc8p,",
+        "sources": ",us,",
+        "types": ",origin,phase-data,",
+        "nst": 26,
+        "dmin": 3.855,
+        "rms": 0.44,
+        "gap": 105,
+        "magType": "mb",
+        "type": "earthquake",
+        "title": "M 4.4 - Fiji region"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -178.0132,
+          -19.4364,
+          622.356
+        ]
+      },
+      "id": "us6000uc8p"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "mag": 2.52,
+        "place": "6 km NW of Pinnacles, CA",
+        "time": 1795171782770,
+        "updated": 1795234471670,
+        "tz": null,
+        "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75469032",
+        "detail": "https://earthquake.usgs.gov/fdsnws/event/1/query?eventid=nc75469032&format=geojson",
+        "felt": 4,
+        "cdi": 2.7,
+        "mmi": null,
+        "alert": null,
+        "status": "automatic",
+        "tsunami": 0,
+        "sig": 99,
+        "net": "nc",
+        "code": "75469032",
+        "ids": ",nc75469032,",
+        "sources": ",nc,",
+        "types": ",dyfi,focal-mechanism,nearby-cities,origin,phase-data,scitech-link,",
+        "nst": 56,
+        "dmin": 0.007411,
+        "rms": 0.29,
+        "gap": 29,
+        "magType": "md",
+        "type": "earthquake",
+        "title": "M 2.5 - 6 km NW of Pinnacles, CA"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -121.193496704102,
+          36.5681648254395,
+          4.59000015258789
+        ]
+      },
+      "id": "nc75469032"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "mag": 4.7,
+        "place": "southeast of the Loyalty Islands",
+        "time": 1795171724362,
+        "updated": 1795173384040,
+        "tz": null,
+        "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us6000uc8k",
+        "detail": "https://earthquake.usgs.gov/fdsnws/event/1/query?eventid=us6000uc8k&format=geojson",
+        "felt": null,
+        "cdi": null,
+        "mmi": null,
+        "alert": null,
+        "status": "reviewed",
+        "tsunami": 0,
+        "sig": 340,
+        "net": "us",
+        "code": "6000uc8k",
+        "ids": ",us6000uc8k,",
+        "sources": ",us,",
+        "types": ",origin,phase-data,",
+        "nst": 24,
+        "dmin": 3.99,
+        "rms": 0.52,
+        "gap": 121,
+        "magType": "mb",
+        "type": "earthquake",
+        "title": "M 4.7 - southeast of the Loyalty Islands"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          171.1906,
+          -24.6606,
+          10
+        ]
+      },
+      "id": "us6000uc8k"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "mag": 5,
+        "place": "southeast of the Loyalty Islands",
+        "time": 1795170601069,
+        "updated": 1795171651040,
+        "tz": null,
+        "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us6000uc8g",
+        "detail": "https://earthquake.usgs.gov/fdsnws/event/1/query?eventid=us6000uc8g&format=geojson",
+        "felt": null,
+        "cdi": null,
+        "mmi": null,
+        "alert": null,
+        "status": "reviewed",
+        "tsunami": 0,
+        "sig": 385,
+        "net": "us",
+        "code": "6000uc8g",
+        "ids": ",us6000uc8g,",
+        "sources": ",us,",
+        "types": ",origin,phase-data,",
+        "nst": 35,
+        "dmin": 4.223,
+        "rms": 1.01,
+        "gap": 133,
+        "magType": "mww",
+        "type": "earthquake",
+        "title": "M 5.0 - southeast of the Loyalty Islands"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          171.4327,
+          -24.7463,
+          10
+        ]
+      },
+      "id": "us6000uc8g"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "mag": 4.6,
+        "place": "40 km SSE of Koróni, Greece",
+        "time": 1795169774294,
+        "updated": 1795175883040,
+        "tz": null,
+        "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us6000uc8d",
+        "detail": "https://earthquake.usgs.gov/fdsnws/event/1/query?eventid=us6000uc8d&format=geojson",
+        "felt": null,
+        "cdi": null,
+        "mmi": null,
+        "alert": null,
+        "status": "reviewed",
+        "tsunami": 0,
+        "sig": 326,
+        "net": "us",
+        "code": "6000uc8d",
+        "ids": ",us6000uc8d,",
+        "sources": ",us,",
+        "types": ",origin,phase-data,",
+        "nst": 86,
+        "dmin": 0.748,
+        "rms": 0.81,
+        "gap": 152,
+        "magType": "mb",
+        "type": "earthquake",
+        "title": "M 4.6 - 40 km SSE of Koróni, Greece"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          22.082,
+          36.4406,
+          41.976
+        ]
+      },
+      "id": "us6000uc8d"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "mag": 3.4,
+        "place": "12 km NNW of Nikiski, Alaska",
+        "time": 1795164486974,
+        "updated": 1795224385787,
+        "tz": null,
+        "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026wzgrna",
+        "detail": "https://earthquake.usgs.gov/fdsnws/event/1/query?eventid=aka2026wzgrna&format=geojson",
+        "felt": 2,
+        "cdi": 2.2,
+        "mmi": null,
+        "alert": null,
+        "status": "automatic",
+        "tsunami": 0,
+        "sig": 178,
+        "net": "ak",
+        "code": "a2026wzgrna",
+        "ids": ",aka2026wzgrna,us6000uc80,",
+        "sources": ",ak,us,",
+        "types": ",dyfi,origin,phase-data,",
+        "nst": 156,
+        "dmin": 0.1,
+        "rms": 0.9,
+        "gap": 41,
+        "magType": "ml",
+        "type": "earthquake",
+        "title": "M 3.4 - 12 km NNW of Nikiski, Alaska"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -151.402,
+          60.787,
+          75.7
+        ]
+      },
+      "id": "aka2026wzgrna"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "mag": 5.4,
+        "place": "Carlsberg Ridge",
+        "time": 1795164251644,
+        "updated": 1795171899017,
+        "tz": null,
+        "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us6000uc82",
+        "detail": "https://earthquake.usgs.gov/fdsnws/event/1/query?eventid=us6000uc82&format=geojson",
+        "felt": null,
+        "cdi": null,
+        "mmi": 0,
+        "alert": "green",
+        "status": "reviewed",
+        "tsunami": 0,
+        "sig": 449,
+        "net": "us",
+        "code": "6000uc82",
+        "ids": ",us6000uc82,",
+        "sources": ",us,",
+        "types": ",losspager,origin,phase-data,shakemap,",
+        "nst": 44,
+        "dmin": 15.138,
+        "rms": 0.64,
+        "gap": 111,
+        "magType": "mww",
+        "type": "earthquake",
+        "title": "M 5.4 - Carlsberg Ridge"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.7485,
+          9.7949,
+          10
+        ]
+      },
+      "id": "us6000uc82"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "mag": 4.7,
+        "place": "Carlsberg Ridge",
+        "time": 1795164174187,
+        "updated": 1795165863040,
+        "tz": null,
+        "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us6000uc81",
+        "detail": "https://earthquake.usgs.gov/fdsnws/event/1/query?eventid=us6000uc81&format=geojson",
+        "felt": null,
+        "cdi": null,
+        "mmi": null,
+        "alert": null,
+        "status": "reviewed",
+        "tsunami": 0,
+        "sig": 340,
+        "net": "us",
+        "code": "6000uc81",
+        "ids": ",us6000uc81,",
+        "sources": ",us,",
+        "types": ",origin,phase-data,",
+        "nst": 26,
+        "dmin": 15.189,
+        "rms": 0.69,
+        "gap": 123,
+        "magType": "mb",
+        "type": "earthquake",
+        "title": "M 4.7 - Carlsberg Ridge"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.8408,
+          9.7529,
+          10
+        ]
+      },
+      "id": "us6000uc81"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "mag": 2.8,
+        "place": "25 km NE of Beluga, Alaska",
+        "time": 1795163767388,
+        "updated": 1795170396040,
+        "tz": null,
+        "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026wzggdo",
+        "detail": "https://earthquake.usgs.gov/fdsnws/event/1/query?eventid=aka2026wzggdo&format=geojson",
+        "felt": null,
+        "cdi": null,
+        "mmi": null,
+        "alert": null,
+        "status": "automatic",
+        "tsunami": 0,
+        "sig": 121,
+        "net": "ak",
+        "code": "a2026wzggdo",
+        "ids": ",us6000uc7y,aka2026wzggdo,",
+        "sources": ",us,ak,",
+        "types": ",origin,phase-data,",
+        "nst": 90,
+        "dmin": 0.3,
+        "rms": 0.8,
+        "gap": 32,
+        "magType": "ml",
+        "type": "earthquake",
+        "title": "M 2.8 - 25 km NE of Beluga, Alaska"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -150.706,
+          61.278,
+          49.8
+        ]
+      },
+      "id": "aka2026wzggdo"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "mag": 2.71,
+        "place": "10 km NW of Pinnacles, CA",
+        "time": 1795163764140,
+        "updated": 1795224287741,
+        "tz": null,
+        "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75468947",
+        "detail": "https://earthquake.usgs.gov/fdsnws/event/1/query?eventid=nc75468947&format=geojson",
+        "felt": 4,
+        "cdi": 2.2,
+        "mmi": null,
+        "alert": null,
+        "status": "automatic",
+        "tsunami": 0,
+        "sig": 114,
+        "net": "nc",
+        "code": "75468947",
+        "ids": ",nc75468947,",
+        "sources": ",nc,",
+        "types": ",dyfi,nearby-cities,origin,phase-data,scitech-link,",
+        "nst": 13,
+        "dmin": 0.04,
+        "rms": 0.05,
+        "gap": 84,
+        "magType": "md",
+        "type": "earthquake",
+        "title": "M 2.7 - 10 km NW of Pinnacles, CA"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -121.231498718262,
+          36.5866661071777,
+          3.07999992370605
+        ]
+      },
+      "id": "nc75468947"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "mag": 3.06,
+        "place": "10 km NW of Pinnacles, CA",
+        "time": 1795163727320,
+        "updated": 1795224177050,
+        "tz": null,
+        "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75468942",
+        "detail": "https://earthquake.usgs.gov/fdsnws/event/1/query?eventid=nc75468942&format=geojson",
+        "felt": 5,
+        "cdi": 2.1,
+        "mmi": null,
+        "alert": null,
+        "status": "automatic",
+        "tsunami": 0,
+        "sig": 145,
+        "net": "nc",
+        "code": "75468942",
+        "ids": ",nc75468942,us6000uc7x,",
+        "sources": ",nc,us,",
+        "types": ",dyfi,focal-mechanism,nearby-cities,origin,phase-data,scitech-link,",
+        "nst": 74,
+        "dmin": null,
+        "rms": 0.22,
+        "gap": 30,
+        "magType": "ml",
+        "type": "earthquake",
+        "title": "M 3.1 - 10 km NW of Pinnacles, CA"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -121.216331481934,
+          36.5986671447754,
+          6.6399998664856
+        ]
+      },
+      "id": "nc75468942"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "mag": 2.59,
+        "place": "8 km NW of Pinnacles, CA",
+        "time": 1795163128950,
+        "updated": 1795219076583,
+        "tz": null,
+        "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75468917",
+        "detail": "https://earthquake.usgs.gov/fdsnws/event/1/query?eventid=nc75468917&format=geojson",
+        "felt": 2,
+        "cdi": 1,
+        "mmi": null,
+        "alert": null,
+        "status": "automatic",
+        "tsunami": 0,
+        "sig": 103,
+        "net": "nc",
+        "code": "75468917",
+        "ids": ",nc75468917,us6000uc7u,",
+        "sources": ",nc,us,",
+        "types": ",dyfi,focal-mechanism,nearby-cities,origin,phase-data,scitech-link,",
+        "nst": 57,
+        "dmin": 0.02091,
+        "rms": 0.29,
+        "gap": 32,
+        "magType": "md",
+        "type": "earthquake",
+        "title": "M 2.6 - 8 km NW of Pinnacles, CA"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -121.209167480469,
+          36.5801658630371,
+          6.13000011444092
+        ]
+      },
+      "id": "nc75468917"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "mag": 2.55,
+        "place": "6 km NW of Pinnacles, CA",
+        "time": 1795162485100,
+        "updated": 1795214104969,
+        "tz": null,
+        "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75468902",
+        "detail": "https://earthquake.usgs.gov/fdsnws/event/1/query?eventid=nc75468902&format=geojson",
+        "felt": 2,
+        "cdi": 2,
+        "mmi": null,
+        "alert": null,
+        "status": "automatic",
+        "tsunami": 0,
+        "sig": 100,
+        "net": "nc",
+        "code": "75468902",
+        "ids": ",nc75468902,us6000uc7t,",
+        "sources": ",nc,us,",
+        "types": ",dyfi,focal-mechanism,nearby-cities,origin,phase-data,scitech-link,",
+        "nst": 59,
+        "dmin": 0.01008,
+        "rms": 0.28,
+        "gap": 36,
+        "magType": "md",
+        "type": "earthquake",
+        "title": "M 2.6 - 6 km NW of Pinnacles, CA"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -121.19766998291,
+          36.5696678161621,
+          6.40000009536743
+        ]
+      },
+      "id": "nc75468902"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "mag": 2.54,
+        "place": "6 km NW of Pinnacles, CA",
+        "time": 1795161517920,
+        "updated": 1795216398125,
+        "tz": null,
+        "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75468867",
+        "detail": "https://earthquake.usgs.gov/fdsnws/event/1/query?eventid=nc75468867&format=geojson",
+        "felt": 1,
+        "cdi": 1,
+        "mmi": null,
+        "alert": null,
+        "status": "automatic",
+        "tsunami": 0,
+        "sig": 99,
+        "net": "nc",
+        "code": "75468867",
+        "ids": ",nc75468867,",
+        "sources": ",nc,",
+        "types": ",dyfi,focal-mechanism,nearby-cities,origin,phase-data,scitech-link,",
+        "nst": 50,
+        "dmin": 0.008262,
+        "rms": 0.27,
+        "gap": 38,
+        "magType": "md",
+        "type": "earthquake",
+        "title": "M 2.5 - 6 km NW of Pinnacles, CA"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -121.195663452148,
+          36.571834564209,
+          4.96999979019165
+        ]
+      },
+      "id": "nc75468867"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "mag": 2.6,
+        "place": "7 km NW of Pinnacles, CA",
+        "time": 1795161426280,
+        "updated": 1795215525067,
+        "tz": null,
+        "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75468862",
+        "detail": "https://earthquake.usgs.gov/fdsnws/event/1/query?eventid=nc75468862&format=geojson",
+        "felt": 3,
+        "cdi": 1,
+        "mmi": null,
+        "alert": null,
+        "status": "automatic",
+        "tsunami": 0,
+        "sig": 104,
+        "net": "nc",
+        "code": "75468862",
+        "ids": ",nc75468862,us6000uc7p,",
+        "sources": ",nc,us,",
+        "types": ",dyfi,focal-mechanism,nearby-cities,origin,phase-data,scitech-link,",
+        "nst": 54,
+        "dmin": 0.01114,
+        "rms": 0.29,
+        "gap": 36,
+        "magType": "md",
+        "type": "earthquake",
+        "title": "M 2.6 - 7 km NW of Pinnacles, CA"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -121.199165344238,
+          36.5728340148926,
+          5.1100001335144
+        ]
+      },
+      "id": "nc75468862"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "mag": 3.2,
+        "place": "128 km SSE of Sand Point, Alaska",
+        "time": 1795161211836,
+        "updated": 1795217771049,
+        "tz": null,
+        "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026wzewmb",
+        "detail": "https://earthquake.usgs.gov/fdsnws/event/1/query?eventid=aka2026wzewmb&format=geojson",
+        "felt": null,
+        "cdi": null,
+        "mmi": null,
+        "alert": null,
+        "status": "reviewed",
+        "tsunami": 0,
+        "sig": 158,
+        "net": "ak",
+        "code": "a2026wzewmb",
+        "ids": ",aka2026wzewmb,",
+        "sources": ",ak,",
+        "types": ",origin,phase-data,",
+        "nst": 55,
+        "dmin": 1.5,
+        "rms": 0.6,
+        "gap": 218,
+        "magType": "ml",
+        "type": "earthquake",
+        "title": "M 3.2 - 128 km SSE of Sand Point, Alaska"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -159.694,
+          54.278,
+          26.2
+        ]
+      },
+      "id": "aka2026wzewmb"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "mag": 2.55,
+        "place": "9 km NW of Pinnacles, CA",
+        "time": 1795160787620,
+        "updated": 1795217425923,
+        "tz": null,
+        "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75468852",
+        "detail": "https://earthquake.usgs.gov/fdsnws/event/1/query?eventid=nc75468852&format=geojson",
+        "felt": 4,
+        "cdi": 2,
+        "mmi": null,
+        "alert": null,
+        "status": "automatic",
+        "tsunami": 0,
+        "sig": 101,
+        "net": "nc",
+        "code": "75468852",
+        "ids": ",nc75468852,us6000uc7m,",
+        "sources": ",nc,us,",
+        "types": ",dyfi,focal-mechanism,nearby-cities,origin,phase-data,scitech-link,",
+        "nst": 57,
+        "dmin": 0.03087,
+        "rms": 0.28,
+        "gap": 29,
+        "magType": "md",
+        "type": "earthquake",
+        "title": "M 2.6 - 9 km NW of Pinnacles, CA"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -121.217330932617,
+          36.5888328552246,
+          6.84999990463257
+        ]
+      },
+      "id": "nc75468852"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "mag": 2.68,
+        "place": "5 km NW of Pinnacles, CA",
+        "time": 1795159271480,
+        "updated": 1795170145135,
+        "tz": null,
+        "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75468807",
+        "detail": "https://earthquake.usgs.gov/fdsnws/event/1/query?eventid=nc75468807&format=geojson",
+        "felt": 3,
+        "cdi": 2,
+        "mmi": null,
+        "alert": null,
+        "status": "automatic",
+        "tsunami": 0,
+        "sig": 111,
+        "net": "nc",
+        "code": "75468807",
+        "ids": ",nc75468807,us6000uc7k,",
+        "sources": ",nc,us,",
+        "types": ",dyfi,focal-mechanism,nearby-cities,origin,phase-data,scitech-link,",
+        "nst": 61,
+        "dmin": 0.009213,
+        "rms": 0.28,
+        "gap": 39,
+        "magType": "md",
+        "type": "earthquake",
+        "title": "M 2.7 - 5 km NW of Pinnacles, CA"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -121.186332702637,
+          36.5625,
+          5.09000015258789
+        ]
+      },
+      "id": "nc75468807"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "mag": 2.64,
+        "place": "9 km NW of Pinnacles, CA",
+        "time": 1795159186810,
+        "updated": 1795216181326,
+        "tz": null,
+        "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75468797",
+        "detail": "https://earthquake.usgs.gov/fdsnws/event/1/query?eventid=nc75468797&format=geojson",
+        "felt": 1,
+        "cdi": 1,
+        "mmi": null,
+        "alert": null,
+        "status": "automatic",
+        "tsunami": 0,
+        "sig": 107,
+        "net": "nc",
+        "code": "75468797",
+        "ids": ",nc75468797,",
+        "sources": ",nc,",
+        "types": ",dyfi,focal-mechanism,nearby-cities,origin,phase-data,scitech-link,",
+        "nst": 52,
+        "dmin": 0.02673,
+        "rms": 0.23,
+        "gap": 31,
+        "magType": "md",
+        "type": "earthquake",
+        "title": "M 2.6 - 9 km NW of Pinnacles, CA"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -121.216835021973,
+          36.5803337097168,
+          5.21999979019165
+        ]
+      },
+      "id": "nc75468797"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "mag": 3.38,
+        "place": "6 km NW of Pinnacles, CA",
+        "time": 1795158865490,
+        "updated": 1795214014305,
+        "tz": null,
+        "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75468787",
+        "detail": "https://earthquake.usgs.gov/fdsnws/event/1/query?eventid=nc75468787&format=geojson",
+        "felt": 34,
+        "cdi": 3.4,
+        "mmi": null,
+        "alert": null,
+        "status": "automatic",
+        "tsunami": 0,
+        "sig": 187,
+        "net": "nc",
+        "code": "75468787",
+        "ids": ",nc75468787,us6000uc7e,",
+        "sources": ",nc,us,",
+        "types": ",dyfi,focal-mechanism,nearby-cities,origin,phase-data,scitech-link,",
+        "nst": 77,
+        "dmin": null,
+        "rms": 0.29,
+        "gap": 29,
+        "magType": "ml",
+        "type": "earthquake",
+        "title": "M 3.4 - 6 km NW of Pinnacles, CA"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -121.188667297363,
+          36.5688323974609,
+          7
+        ]
+      },
+      "id": "nc75468787"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "mag": 2.53,
+        "place": "8 km NW of Pinnacles, CA",
+        "time": 1795157834030,
+        "updated": 1795166523671,
+        "tz": null,
+        "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75468732",
+        "detail": "https://earthquake.usgs.gov/fdsnws/event/1/query?eventid=nc75468732&format=geojson",
+        "felt": 2,
+        "cdi": 2,
+        "mmi": null,
+        "alert": null,
+        "status": "automatic",
+        "tsunami": 0,
+        "sig": 99,
+        "net": "nc",
+        "code": "75468732",
+        "ids": ",nc75468732,",
+        "sources": ",nc,",
+        "types": ",dyfi,focal-mechanism,nearby-cities,origin,phase-data,scitech-link,",
+        "nst": 35,
+        "dmin": 0.01717,
+        "rms": 0.17,
+        "gap": 48,
+        "magType": "md",
+        "type": "earthquake",
+        "title": "M 2.5 - 8 km NW of Pinnacles, CA"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -121.205001831055,
+          36.578498840332,
+          5.92000007629395
+        ]
+      },
+      "id": "nc75468732"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "mag": 2.96,
+        "place": "10 km NNW of Pinnacles, CA",
+        "time": 1795157553440,
+        "updated": 1795218984559,
+        "tz": null,
+        "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75468707",
+        "detail": "https://earthquake.usgs.gov/fdsnws/event/1/query?eventid=nc75468707&format=geojson",
+        "felt": 35,
+        "cdi": 2.7,
+        "mmi": null,
+        "alert": null,
+        "status": "automatic",
+        "tsunami": 0,
+        "sig": 144,
+        "net": "nc",
+        "code": "75468707",
+        "ids": ",nc75468707,",
+        "sources": ",nc,",
+        "types": ",dyfi,nearby-cities,origin,phase-data,scitech-link,",
+        "nst": 13,
+        "dmin": 0.04125,
+        "rms": 0.04,
+        "gap": 205,
+        "magType": "ml",
+        "type": "earthquake",
+        "title": "M 3.0 - 10 km NNW of Pinnacles, CA"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -121.205169677734,
+          36.6098327636719,
+          6.07999992370605
+        ]
+      },
+      "id": "nc75468707"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "mag": 4.98,
+        "place": "10 km NW of Pinnacles, CA",
+        "time": 1795157356530,
+        "updated": 1795236940386,
+        "tz": null,
+        "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75468702",
+        "detail": "https://earthquake.usgs.gov/fdsnws/event/1/query?eventid=nc75468702&format=geojson",
+        "felt": 3722,
+        "cdi": 6.2,
+        "mmi": 6.371,
+        "alert": "green",
+        "status": "reviewed",
+        "tsunami": 1,
+        "sig": 1002,
+        "net": "nc",
+        "code": "75468702",
+        "ids": ",ew1795157360,nc75468702,us6000uc70,attosga4,",
+        "sources": ",ew,nc,us,at,",
+        "types": ",dyfi,event-sequence,focal-mechanism,general-text,ground-failure,impact-link,losspager,moment-tensor,nearby-cities,oaf,origin,phase-data,scitech-link,shake-alert,shakemap,",
+        "nst": 78,
+        "dmin": null,
+        "rms": 0.29,
+        "gap": 29,
+        "magType": "mw",
+        "type": "earthquake",
+        "title": "M 5.0 - 10 km NW of Pinnacles, CA"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -121.220664978027,
+          36.5934982299805,
+          6.69999980926514
+        ]
+      },
+      "id": "nc75468702"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "mag": 3,
+        "place": "53 km W of Happy Valley, Alaska",
+        "time": 1795155164187,
+        "updated": 1795186580040,
+        "tz": null,
+        "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026wzbmul",
+        "detail": "https://earthquake.usgs.gov/fdsnws/event/1/query?eventid=aka2026wzbmul&format=geojson",
+        "felt": null,
+        "cdi": null,
+        "mmi": null,
+        "alert": null,
+        "status": "automatic",
+        "tsunami": 0,
+        "sig": 138,
+        "net": "ak",
+        "code": "a2026wzbmul",
+        "ids": ",us6000uc6t,aka2026wzbmul,",
+        "sources": ",us,ak,",
+        "types": ",origin,phase-data,",
+        "nst": 129,
+        "dmin": 0.1,
+        "rms": 0.7,
+        "gap": 69,
+        "magType": "ml",
+        "type": "earthquake",
+        "title": "M 3.0 - 53 km W of Happy Valley, Alaska"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -152.681,
+          59.998,
+          94.9
+        ]
+      },
+      "id": "aka2026wzbmul"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "mag": 3.31,
+        "place": "10 km NW of Pinnacles, CA",
+        "time": 1795155130440,
+        "updated": 1795219285101,
+        "tz": null,
+        "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75468687",
+        "detail": "https://earthquake.usgs.gov/fdsnws/event/1/query?eventid=nc75468687&format=geojson",
+        "felt": 27,
+        "cdi": 4.1,
+        "mmi": null,
+        "alert": null,
+        "status": "automatic",
+        "tsunami": 0,
+        "sig": 180,
+        "net": "nc",
+        "code": "75468687",
+        "ids": ",nc75468687,us6000uc6s,",
+        "sources": ",nc,us,",
+        "types": ",dyfi,focal-mechanism,nearby-cities,origin,phase-data,scitech-link,",
+        "nst": 78,
+        "dmin": null,
+        "rms": 0.28,
+        "gap": 29,
+        "magType": "ml",
+        "type": "earthquake",
+        "title": "M 3.3 - 10 km NW of Pinnacles, CA"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -121.22233581543,
+          36.5923347473145,
+          6.42999982833862
+        ]
+      },
+      "id": "nc75468687"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "mag": 3.11,
+        "place": "9 km NW of Pinnacles, CA",
+        "time": 1795154003950,
+        "updated": 1795207447169,
+        "tz": null,
+        "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75468662",
+        "detail": "https://earthquake.usgs.gov/fdsnws/event/1/query?eventid=nc75468662&format=geojson",
+        "felt": 8,
+        "cdi": 2.7,
+        "mmi": null,
+        "alert": null,
+        "status": "automatic",
+        "tsunami": 0,
+        "sig": 151,
+        "net": "nc",
+        "code": "75468662",
+        "ids": ",nc75468662,us6000uc6i,",
+        "sources": ",nc,us,",
+        "types": ",dyfi,focal-mechanism,nearby-cities,origin,phase-data,scitech-link,",
+        "nst": 76,
+        "dmin": null,
+        "rms": 0.29,
+        "gap": 29,
+        "magType": "ml",
+        "type": "earthquake",
+        "title": "M 3.1 - 9 km NW of Pinnacles, CA"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -121.216499328613,
+          36.5900001525879,
+          7.21000003814697
+        ]
+      },
+      "id": "nc75468662"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "mag": 2.51,
+        "place": "46 km NNE of Pa‘auilo, Hawaii",
+        "time": 1795152593930,
+        "updated": 1795205973959,
+        "tz": null,
+        "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv75073487",
+        "detail": "https://earthquake.usgs.gov/fdsnws/event/1/query?eventid=hv75073487&format=geojson",
+        "felt": 4,
+        "cdi": 2.2,
+        "mmi": null,
+        "alert": null,
+        "status": "reviewed",
+        "tsunami": 0,
+        "sig": 98,
+        "net": "hv",
+        "code": "75073487",
+        "ids": ",hv75073487,",
+        "sources": ",hv,",
+        "types": ",dyfi,origin,phase-data,",
+        "nst": 42,
+        "dmin": 0.4516,
+        "rms": 0.2,
+        "gap": 235,
+        "magType": "ml",
+        "type": "earthquake",
+        "title": "M 2.5 - 46 km NNE of Pa‘auilo, Hawaii"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -155.246166666667,
+          20.4458333333333,
+          -0.44
+        ]
+      },
+      "id": "hv75073487"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "mag": 2.82,
+        "place": "41 km NW of San Antonio, Puerto Rico",
+        "time": 1795152010960,
+        "updated": 1795153280200,
+        "tz": null,
+        "url": "https://earthquake.usgs.gov/earthquakes/eventpage/pr71539613",
+        "detail": "https://earthquake.usgs.gov/fdsnws/event/1/query?eventid=pr71539613&format=geojson",
+        "felt": null,
+        "cdi": null,
+        "mmi": null,
+        "alert": null,
+        "status": "reviewed",
+        "tsunami": 0,
+        "sig": 122,
+        "net": "pr",
+        "code": "71539613",
+        "ids": ",pr71539613,",
+        "sources": ",pr,",
+        "types": ",origin,phase-data,",
+        "nst": 13,
+        "dmin": 0.3779,
+        "rms": 0.27,
+        "gap": 216,
+        "magType": "md",
+        "type": "earthquake",
+        "title": "M 2.8 - 41 km NW of San Antonio, Puerto Rico"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -67.3871666666667,
+          18.7415,
+          11.58
+        ]
+      },
+      "id": "pr71539613"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "mag": 4.9,
+        "place": "54 km W of Madang, Papua New Guinea",
+        "time": 1795151865106,
+        "updated": 1795156054186,
+        "tz": null,
+        "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us6000uc6c",
+        "detail": "https://earthquake.usgs.gov/fdsnws/event/1/query?eventid=us6000uc6c&format=geojson",
+        "felt": 1,
+        "cdi": 2.5,
+        "mmi": null,
+        "alert": null,
+        "status": "reviewed",
+        "tsunami": 0,
+        "sig": 370,
+        "net": "us",
+        "code": "6000uc6c",
+        "ids": ",us6000uc6c,",
+        "sources": ",us,",
+        "types": ",dyfi,origin,phase-data,",
+        "nst": 21,
+        "dmin": 3.772,
+        "rms": 0.97,
+        "gap": 110,
+        "magType": "mb",
+        "type": "earthquake",
+        "title": "M 4.9 - 54 km W of Madang, Papua New Guinea"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          145.2974,
+          -5.219,
+          97.583
+        ]
+      },
+      "id": "us6000uc6c"
+    }
+  ],
+  "bbox": [
+    -178.0132,
+    -47.5959,
+    -0.44,
+    171.4327,
+    63.651,
+    622.356
+  ]
+}

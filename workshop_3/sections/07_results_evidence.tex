@@ -1,0 +1,84 @@
+% ======================================================================
+% SECTION 07: RESULTS EVIDENCE AND VALIDATION
+% ======================================================================
+\section{Results Evidence and Validation}
+
+\subsection{End-to-End Docker \& Airflow Execution Evidence}
+All three Medallion DAGs (\texttt{bronze\_ingestion\_dag}, \texttt{silver\_processing\_dag}, and \texttt{gold\_processing\_dag}) were verified inside the running \texttt{airflow-scheduler} container (\texttt{earthquake-monitoring-airflow:2.10.4} with OpenJDK~17.0.21.1) and via the automated \texttt{pytest} suite ($12/12$ tests passing in $1.10\,\text{s}$):
+\begin{lstlisting}[caption={Verified Execution Log of \texttt{gold\_processing\_dag} Inside the Airflow Docker Container}]
+$ docker compose exec airflow-scheduler airflow dags test gold_processing_dag 2026-11-20
+[2026-11-21 04:52:40,574] {python.py:240} INFO - Returned value: {
+  'governance_parquet': '/opt/airflow/datalake_gold/governance_20261121_045045.parquet',
+  'storytelling_parquet': '/opt/airflow/datalake_gold/storytelling_20261121_045045.parquet'
+}
+[2026-11-21 04:52:41,060] {gold_processing_dag.py:75} INFO - Validated Gold outputs:
+  governance_20261121_045045.parquet (113 rows) | storytelling_20261121_045045.parquet (84 rows)
+[2026-11-21T04:52:41.134+0000] {dagrun.py:854} INFO - Marking run <DagRun gold_processing_dag> successful
+\end{lstlisting}
+
+\subsection{Gold Governance Parquet Output Evidence}
+Table~\ref{tab:gold_gov_evidence} displays concrete rows extracted from \texttt{datalake\_gold/governance\_20261121\_045048.parquet} in \texttt{notebooks/04\_gold\_summaries\_exploration.ipynb}.
+
+\begin{table}[!t]
+\centering
+\caption{Sample Rows from \texttt{datalake\_gold/governance\_20261121\_045048.parquet}}
+\label{tab:gold_gov_evidence}
+\begin{tabular}{llrrll}
+\toprule
+\textbf{Category} & \textbf{Metric Name} & \textbf{Value} & \textbf{Thresh.} & \textbf{Status} & \textbf{Unit} \\
+\midrule
+\texttt{summary} & \texttt{total\_silver\_records\_read} & 4,787.00 & 100.0 & \texttt{PASS} & records \\
+\texttt{summary} & \texttt{unique\_deduplicated\_events} & 3,806.00 & 100.0 & \texttt{PASS} & records \\
+\texttt{summary} & \texttt{intra\_lake\_duplicate\_rate} & 20.49 & 50.0 & \texttt{PASS} & percent \\
+\texttt{summary} & \texttt{schema\_compliance\_rate\_pct} & 100.00 & 99.0 & \texttt{PASS} & percent \\
+\texttt{summary} & \texttt{quarantined\_records\_detected} & 3.00 & 5.0 & \texttt{PASS} & records \\
+\texttt{summary} & \texttt{cross\_source\_matched\_pairs} & 568.00 & 50.0 & \texttt{PASS} & pairs \\
+\texttt{null\_rate} & \texttt{magnitude / lat / lon} & 0.00 & 5.0 & \texttt{PASS} & percent \\
+\texttt{null\_rate} & \texttt{depth\_km\_pinned\_10km} & 31.11 & 35.0 & \texttt{WARN} & percent \\
+\texttt{outlier} & \texttt{magnitude} (IQR) & 0.00 & 15.0 & \texttt{PASS} & percent \\
+\texttt{outlier} & \texttt{depth\_km} (IQR) & 15.66 & 15.0 & \texttt{WARN} & percent \\
+\texttt{outlier} & \texttt{log10\_energy} (IQR) & 0.00 & 15.0 & \texttt{PASS} & percent \\
+\texttt{text\_len} & \texttt{place\_len\_emsc\_fdsn} & 21.98 & 120.0 & \texttt{PASS} & chars \\
+\texttt{text\_len} & \texttt{place\_len\_usgs\_fdsn} & 29.01 & 120.0 & \texttt{PASS} & chars \\
+\texttt{text\_len} & \texttt{place\_len\_gdacs\_realtime} & 115.17 & 120.0 & \texttt{PASS} & chars \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Gold Storytelling Parquet Output Evidence}
+Table~\ref{tab:gold_story_evidence} displays concrete rows extracted from \texttt{datalake\_gold/storytelling\_20261121\_045048.parquet}, illustrating the severity tier breakdown, focal depth regimes, and peak daily SAAI anomaly scores.
+
+\begin{table}[!t]
+\centering
+\caption{Sample Rows from \texttt{datalake\_gold/storytelling\_20261121\_045048.parquet}}
+\label{tab:gold_story_evidence}
+\begin{tabular}{llrrrrl}
+\toprule
+\textbf{Agg. Type} & \textbf{Dimension Key} & \textbf{Count} & \textbf{Share} & \textbf{$\overline{M}$} & \textbf{$\log_{10} E$} & \textbf{Tier} \\
+\midrule
+\texttt{severity} & Micro/Minor ($<3.0$) & 2,058 & 54.07\% & 1.605 & 7.208 & \texttt{INFO} \\
+\texttt{severity} & Light ($3.0\text{--}4.4$) & 310 & 8.15\% & 3.621 & 10.232 & \texttt{INFO} \\
+\texttt{severity} & Moderate ($4.5\text{--}5.4$) & 1,347 & 35.39\% & 4.776 & 11.964 & \texttt{INFO} \\
+\texttt{severity} & Strong ($5.5\text{--}6.4$) & 84 & 2.21\% & 5.774 & 13.461 & \texttt{INFO} \\
+\texttt{severity} & Major/Great ($\ge 6.5$) & 7 & 0.18\% & 6.629 & 14.743 & \texttt{INFO} \\
+\midrule
+\texttt{depth} & Shallow ($0\text{--}70\,\text{km}$) & 3,330 & 87.49\% & 2.912 & 15.895 & \texttt{INFO} \\
+\texttt{depth} & Interm. ($70\text{--}300\,\text{km}$) & 418 & 10.98\% & 3.435 & 14.542 & \texttt{INFO} \\
+\texttt{depth} & Deep ($>300\,\text{km}$) & 58 & 1.52\% & 4.622 & 14.185 & \texttt{INFO} \\
+\midrule
+\texttt{saai\_day} & \texttt{2026-11-05} ($\text{SAAI}=1.003$) & 260 & 6.83\% & 1.613 & 13.997 & \texttt{ELEVATED} \\
+\texttt{saai\_day} & \texttt{2026-11-03} ($\text{SAAI}=0.895$) & 302 & 7.93\% & 1.852 & 13.482 & \texttt{NORMAL} \\
+\texttt{saai\_day} & \texttt{2026-11-16} ($\text{SAAI}=0.717$) & 114 & 3.00\% & 2.422 & 14.719 & \texttt{NORMAL} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Canonical PostgreSQL \& Cross-Source Matching Status}
+Executing \texttt{python ingest.py --mode status} confirms full synchronization across all seven canonical PostgreSQL tables:
+\begin{itemize}
+    \item \texttt{source}: $4$ rows (\texttt{usgs\_fdsn}, \texttt{emsc\_fdsn}, \texttt{usgs\_realtime}, \texttt{gdacs\_realtime}).
+    \item \texttt{event} \& \texttt{earthquake}: $3,305$ canonical events and domain records (idempotently verified across repeated runs with $0$ duplicates).
+    \item \texttt{event\_group}: $1,274$ grouped rows across $637$ cross-source earthquake groups ($\text{median }\Delta t = 0.47\,\text{s}$, $\text{median }\Delta d = 6.33\,\text{km}$).
+    \item \texttt{rejected\_record}: $3$ quarantined records with JSONB payloads and reason \texttt{missing\_severity}.
+    \item \texttt{ingestion\_state} \& \texttt{ingestion\_run}: $4$ active source watermarks and $10$ audited runs.
+\end{itemize}

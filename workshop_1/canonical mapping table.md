@@ -111,7 +111,7 @@ erDiagram
 
 ## 3. Field-Level Source Mapping Matrix
 
-> **Note on GDACS Source Format:** The legacy GDACS GeoJSON endpoint (`/gdacsapi/api/events/geteventlist/geojson`) returned HTTP 404 upon audit validation. The official operational interface is the RSS 2.0 XML feed at `https://www.gdacs.org/xml/rss_24h.xml`.
+> **Note on GDACS Source Format:** The legacy GDACS GeoJSON endpoint (`/gdacsapi/api/events/geteventlist/geojson`) returned HTTP 404 during endpoint verification. The official operational interface is the RSS 2.0 XML feed at `https://www.gdacs.org/xml/rss_24h.xml`.
 > 
 > XML Namespaces: `gdacs = http://www.gdacs.org`, `georss = http://www.georss.org/georss`, `geo = http://www.w3.org/2003/01/geo/wgs84_pos#`.
 
@@ -122,11 +122,11 @@ erDiagram
 | **`timestamp`** | `properties.time` (epoch ms) | `properties.time` (ISO-8601 string) | `properties.time` (epoch ms) | `{gdacs}fromdate` (RFC-822 string) | **USGS:** `to_timestamp(time / 1000.0)`.<br>**EMSC:** `parse_iso8601(time).astimezone(UTC)`.<br>**GDACS:** `parse_rfc822(fromdate).astimezone(UTC)`. |
 | **`latitude`** | `geometry.coordinates[1]` | `geometry.coordinates[1]` or `properties.lat` | `geometry.coordinates[1]` | `{georss}point` token `[0]` | Cast to `DOUBLE PRECISION`. Validate within range $[-90.0, 90.0]$; route out-of-range to `rejected_record`. |
 | **`longitude`** | `geometry.coordinates[0]` | `geometry.coordinates[0]` or `properties.lon` | `geometry.coordinates[0]` | `{georss}point` token `[1]` | Cast to `DOUBLE PRECISION`. Validate within range $[-180.0, 180.0]$; route out-of-range to `rejected_record`. |
-| **`severity`** | `properties.mag` | `properties.mag` | `properties.mag` | Regex on `{gdacs}severity`: `r'Magnitude\s*([\d.]+)'` | Cast to `DOUBLE PRECISION`. Quarantine if `NaN`, `None`, or negative magnitude ($M < 0.0$ for regional feeds). |
-| **`severity_unit`** | `properties.magType` | `properties.magtype` | `properties.magType` | Literal `"mw"` | Lowercase string normalization. Standardize synonyms (`mww` $\to$ `mw`, `mb_lg` $\to$ `mb`). Default to `"unk"` if absent. |
-| **`raw_reference`** | `properties.url` | Link generated from `unid` | `properties.url` | `item.link` | Full URI referencing upstream authoritative source page. |
-| **`depth_km`** | `geometry.coordinates[2]` | `geometry.coordinates[2]` or `properties.depth` | `geometry.coordinates[2]` | Regex on `{gdacs}severity`: `r'Depth:\s*([\d.]+)\s*km'` | Nullable float. Quarantine negative values ($Z < -5\text{ km}$) as atmospheric distortions. Null if unparseable. |
-| **`place`** | `properties.place` | `properties.flynn_region` | `properties.place` | `item.title` (stripped of alert prefix) | Trim whitespace. Default to `"Unknown Region"` if missing. |
+| **`severity`** | `properties.mag` | `properties.mag` | `properties.mag` | Regex on `{gdacs}severity`: `r'Magnitude\s*([-\d.]+)\s*M?'` | Cast to `DOUBLE PRECISION`. Quarantine if `NaN`, `None`, or outside physical bounds ($M < -1.0$ or $M > 10.0$). |
+| **`severity_unit`** | `properties.magType` | `properties.magtype` | `properties.magType` | Literal `"mw"` | Lowercase string normalization. Default to `"unk"` if absent. |
+| **`raw_reference`** | `properties.url` | Link generated from `unid` | `properties.url` | `item.link` | Full URI referencing upstream authoritative source page with appended 16-char SHA-256 content hash (`#sha256=...`). |
+| **`depth_km`** | `geometry.coordinates[2]` | `geometry.coordinates[2]` or `properties.depth` | `geometry.coordinates[2]` | Regex on `{gdacs}severity`: `r'Depth:\s*([-\d.]+)\s*km'` | Nullable float. Normalize depths outside $[-5.0, 800.0]\text{ km}$ or unparseable tokens to `NULL`. |
+| **`place`** | `properties.place` | `properties.flynn_region` | `properties.place` | `item.title` | Trim whitespace. Default to `"Unknown Location"` if missing. |
 | **`tsunami_flag`** | `properties.tsunami == 1` | Default `FALSE` | `properties.tsunami == 1` | `{gdacs}calculationtype == "tsunami"` | Cast integer/string flags to SQL `BOOLEAN`. |
 
 ---

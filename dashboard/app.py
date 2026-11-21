@@ -117,7 +117,7 @@ def build_app():
                 ]
             ),
             
-            # Map & Chart Placeholders
+            # Global Seismicity & Epicenter Map Container
             html.Div(
                 style={"marginTop": "20px", "backgroundColor": "white", "padding": "20px", "borderRadius": "8px", "boxShadow": "0 2px 4px rgba(0,0,0,0.05)"},
                 children=[

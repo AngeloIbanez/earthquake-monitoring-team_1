@@ -1,0 +1,5 @@
+% ======================================================================
+% SECTION 07: CONCLUSION AND NEXT STEPS
+% ======================================================================
+\section{Conclusion and Next Steps}
+This workshop successfully translated Team~1's conceptual earthquake monitoring design into a containerized, automated Medallion pipeline using Docker Compose, Apache Airflow~2.10.4, PostgreSQL~16, and Apache Parquet. Both the Bronze ingestion DAG and the FileSensor-driven Silver curation DAG operate idempotently, producing verified JSON and Parquet datasets ready for distributed PySpark Gold-layer aggregation in Workshop~\#3.

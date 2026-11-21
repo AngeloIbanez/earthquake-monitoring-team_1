@@ -192,24 +192,22 @@ FROM earthquakes_curated;
 
 ---
 
-## 7. Screenshots Checklist for Delivery
+## 7. Verification Screenshots & Visual Evidence
 
-The following screenshots are pre-arranged and ready to be captured directly from your local environment for the final PDF submission:
+The empirical verification screenshots captured from the containerized environment and stored in [`workshop_2/screenshots/`](screenshots/) document the complete execution lifecycle:
 
-1. **Airflow UI — DAG List (`http://localhost:8080`):**
-   - Showing `bronze_ingestion_dag` and `silver_processing_dag` active with green status indicators.
-2. **Airflow UI — Grid / Tree View:**
-   - Visualizing all tasks in `bronze_ingestion_dag` (`extract` -> `validate` -> `persist`) and `silver_processing_dag` (`prepare_db` -> `load` -> `clean` -> `persist`) with green success squares.
-3. **Airflow UI — Graph View:**
-   - Showing the task dependency directed acyclic graph for both pipelines.
-4. **Bronze Landing Directory:**
-   - File explorer or terminal listing `datalake_bronze/` showing the timestamped `.json` files.
-5. **Silver Parquet Directory:**
-   - File explorer or terminal listing `datalake_silver/` showing the `.parquet` files.
-6. **PostgreSQL Verification:**
-   - SQL client (DBeaver, DBVisualizer, or psql) showing the `SELECT * FROM earthquakes_curated;` table grid.
-7. **Jupyter Notebook Execution:**
-   - Full display of [`notebooks/02_silver_data_exploration.ipynb`](../notebooks/02_silver_data_exploration.ipynb) with summary statistics and lineage outputs.
+1. **Airflow UI — DAG Overview (`screenshots/01_airflow_dags_overview.png`):**
+   - Displays `bronze_ingestion_dag` and `silver_processing_dag` active and scheduled in the Airflow Web UI (`http://localhost:8080`).
+2. **Airflow UI — Bronze Ingestion Grid (`screenshots/02_bronze_ingestion_dag_grid.png`):**
+   - Visualizes 9 consecutive successful runs of `bronze_ingestion_dag` (`extract_raw_earthquakes` $\to$ `validate_bronze_payload` $\to$ `persist_to_bronze`).
+3. **Airflow UI — Silver Processing & Debugging History (`screenshots/03_silver_processing_dag_grid_debugging.png`):**
+   - Captures the diagnostic resolution of the XCom `pd.Timestamp` serialization fault on Run #2 followed by 6 consecutive green executions.
+4. **Bronze Landing Directory (`screenshots/04_datalake_bronze_files.png`):**
+   - Shows the timestamped raw JSON payloads persisted in `datalake_bronze/`.
+5. **Silver Parquet Directory (`screenshots/05_datalake_silver_files.png`):**
+   - Shows the Snappy-compressed `.parquet` files persisted in `datalake_silver/`.
+6. **Jupyter Notebook Execution (`screenshots/06_notebook_parquet_loading.png` – `10_notebook_provenance_lineage.png`):**
+   - Displays executed outputs from [`notebooks/02_silver_data_exploration.ipynb`](../notebooks/02_silver_data_exploration.ipynb) covering Parquet discovery, PyArrow schema inspection, $0.0\%$ null rate verification, descriptive statistics, and Bronze-to-Silver file lineage.
 
 ---
 

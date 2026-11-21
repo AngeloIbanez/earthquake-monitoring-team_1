@@ -107,5 +107,40 @@ class TestParsers(unittest.TestCase):
         self.assertAlmostEqual(eq.depth_km, 24.2)
         self.assertFalse(eq.tsunami_flag)
 
+    def test_validation_and_quarantine_reasons(self):
+        sample = {
+            "features": [
+                {
+                    "id": "bad_coords",
+                    "properties": {"mag": 4.5, "time": 1794199971519},
+                    "geometry": {"coordinates": [200.0, 95.0, 10.0]},
+                },
+                {
+                    "id": "missing_mag",
+                    "properties": {"mag": None, "time": 1794199971519},
+                    "geometry": {"coordinates": [120.0, 30.0, 10.0]},
+                },
+                {
+                    "id": "missing_time",
+                    "properties": {"mag": 5.0, "time": None},
+                    "geometry": {"coordinates": [120.0, 30.0, 10.0]},
+                },
+            ]
+        }
+        events, _ = parse_usgs_geojson(sample, source_id="usgs_test")
+        self.assertEqual(len(events), 3)
+
+        ok0, reason0 = events[0].validate()
+        self.assertFalse(ok0)
+        self.assertIn("latitude_out_of_bounds", reason0)
+
+        ok1, reason1 = events[1].validate()
+        self.assertFalse(ok1)
+        self.assertEqual(reason1, "missing_severity")
+
+        ok2, reason2 = events[2].validate()
+        self.assertFalse(ok2)
+        self.assertEqual(reason2, "missing_timestamp")
+
 if __name__ == "__main__":
     unittest.main()

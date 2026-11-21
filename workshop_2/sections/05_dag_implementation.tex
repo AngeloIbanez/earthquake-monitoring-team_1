@@ -1,0 +1,22 @@
+% ======================================================================
+% SECTION 05: BRONZE AND SILVER DAG IMPLEMENTATION
+% ======================================================================
+\section{Bronze and Silver DAG Implementation}
+
+\subsection{Bronze Ingestion DAG (\texttt{bronze\_ingestion\_dag.py})}
+Implemented with the TaskFlow API (\texttt{@dag}, \texttt{@task}) on a 15-minute schedule (\texttt{*/15 * * * *}), the Bronze pipeline comprises three sequential tasks:
+\begin{enumerate}
+    \item \textbf{\texttt{extract\_raw\_earthquakes}:} Queries \url{https://earthquake.usgs.gov/fdsnws/event/1/query} with \texttt{format=geojson} and \texttt{minmagnitude=1.5}. Supports both scheduled execution intervals and custom manual configuration windows (\texttt{dag\_run.conf}).
+    \item \textbf{\texttt{validate\_bronze\_payload}:} Verifies that the HTTP 200 payload is a valid dictionary with \texttt{type == "FeatureCollection"} and a list of \texttt{features}.
+    \item \textbf{\texttt{persist\_to\_bronze}:} Writes the unmodified JSON payload to \texttt{/opt/airflow/datalake\_bronze/}\allowbreak\texttt{earthquakes\_YYYYMMDD\_HHMMSS.json}.
+\end{enumerate}
+
+\subsection{Silver Processing DAG (\texttt{silver\_processing\_dag.py})}
+Scheduled every 20 minutes (\texttt{*/20 * * * *}), the Silver pipeline integrates a \texttt{FileSensor} with four TaskFlow tasks:
+\begin{enumerate}
+    \item \textbf{\texttt{wait\_for\_bronze\_files} (\texttt{FileSensor}):} Monitors \texttt{datalake\_bronze/earthquakes\_*.json} via \texttt{fs\_conn\_id="fs\_default"} (\texttt{poke\_interval=15s}, \texttt{timeout=300s}, \texttt{mode="poke"}), blocking downstream execution until Bronze files are present.
+    \item \textbf{\texttt{prepare\_database}:} Connects via \texttt{PostgresHook(postgres\_conn\_id="postgres\_etl")} and executes idempotent DDL creating \texttt{earthquakes\_curated} and B-tree indexes on \texttt{event\_time} and \texttt{magnitude}.
+    \item \textbf{\texttt{find\_and\_load\_bronze\_records}:} Iterates across all JSON files in \texttt{datalake\_bronze/}, flattening nested GeoJSON properties and 3D coordinates while tagging each record with \texttt{source\_file}.
+    \item \textbf{\texttt{clean\_and\_normalize}:} Executes the 7-stage Pandas cleansing pipeline (null removal, type coercion, coordinate/magnitude boundary validation, ISO-8601 UTC serialization, text normalization, Gutenberg-Richter energy calculation, and deduplication).
+    \item \textbf{\texttt{persist\_to\_silver\_parquet} \& \texttt{persist\_to\_postgres}:} Parallel sink tasks that write Snappy-compressed Parquet files to \texttt{datalake\_silver/} and execute batch \texttt{ON CONFLICT (event\_id) DO UPDATE} upserts into PostgreSQL.
+\end{enumerate}

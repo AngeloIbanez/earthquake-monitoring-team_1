@@ -1,0 +1,74 @@
+\documentclass[conference]{IEEEtran}
+\IEEEoverridecommandlockouts
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{listings}
+\usepackage{url}
+\usepackage{float}
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric, arrows.meta, positioning, fit, calc, backgrounds}
+
+\definecolor{codegreen}{rgb}{0,0.5,0}
+\definecolor{codegray}{rgb}{0.4,0.4,0.4}
+\definecolor{codepurple}{rgb}{0.5,0,0.6}
+\definecolor{backcolour}{rgb}{0.97,0.97,0.98}
+\definecolor{navyblue}{RGB}{20,50,100}
+\color{black}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{navyblue}\bfseries,
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\scriptsize,
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=none,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=2,
+    frame=single,
+    rulecolor=\color{black!20}
+}
+\lstset{style=mystyle}
+
+\begin{document}
+
+\title{Workshop \#3: Pipeline Improvements, Silver-to-Gold PySpark Processing, Governance KPIs, and Storytelling Summary}
+
+\author{
+\IEEEauthorblockN{Angelo Ib\'{a}\~{n}ez}
+\IEEEauthorblockA{20212020007}
+\and
+\IEEEauthorblockN{Mauricio S\'{a}nchez}
+\IEEEauthorblockA{20212020045}
+\and
+\IEEEauthorblockN{Juan C\'{o}rdoba}
+\IEEEauthorblockA{20211020097}
+}
+
+\maketitle
+
+% Modularized Report Sections
+\input{sections/00_abstract}
+\input{sections/01_executive_summary}
+\input{sections/02_pipeline_improvements}
+\input{sections/03_data_quality_findings}
+\input{sections/04_governance_kpis}
+\input{sections/05_storytelling_aggregations}
+\input{sections/06_pyspark_implementation}
+\input{sections/07_results_evidence}
+\input{sections/08_references}
+
+\end{document}

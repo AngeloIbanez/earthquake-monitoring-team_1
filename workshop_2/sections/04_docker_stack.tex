@@ -1,0 +1,30 @@
+% ======================================================================
+% SECTION 04: DOCKER COMPOSE STACK SETUP
+% ======================================================================
+\section{Docker Compose Stack Setup}
+The containerized infrastructure is defined in \texttt{docker-compose.yml} and initialized via \texttt{init-db/01-create-etl-database.sql} and \texttt{.env} (\texttt{AIRFLOW\_UID=50000}).
+
+\begin{lstlisting}[language=bash, caption={Core Service and Volume Architecture in \texttt{docker-compose.yml}}]
+x-airflow-common: &airflow-common
+  image: apache/airflow:2.10.4
+  environment:
+    AIRFLOW__CORE__EXECUTOR: LocalExecutor
+    AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres:5432/airflow
+    AIRFLOW__CORE__LOAD_EXAMPLES: 'false'
+    AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: 'false'
+    AIRFLOW_CONN_POSTGRES_ETL: postgresql://etl_ud:P4$$w0rd@postgres:5432/earthquakes_ud
+    AIRFLOW_CONN_FS_DEFAULT: 'fs://?path=%2Fopt%2Fairflow'
+    _PIP_ADDITIONAL_REQUIREMENTS: pandas polars pyarrow requests pyyaml
+  volumes:
+    - ./airflow/dags:/opt/airflow/dags
+    - ./datalake_bronze:/opt/airflow/datalake_bronze
+    - ./datalake_silver:/opt/airflow/datalake_silver
+    - ./datalake_gold:/opt/airflow/datalake_gold
+  user: "${AIRFLOW_UID:-50000}:0"
+\end{lstlisting}
+
+\begin{itemize}
+    \item \textbf{\texttt{postgres} (PostgreSQL 16):} Exposes host port \texttt{5440:5432} to avoid conflicts with local PostgreSQL installations. Mounts \texttt{./init-db:/docker-entrypoint-initdb.d} to automatically create the dedicated ETL user \texttt{etl\_ud} and database \texttt{earthquakes\_ud}, isolating business data from Airflow metadata.
+    \item \textbf{\texttt{airflow-init}:} One-shot initialization container that executes \texttt{airflow db migrate} and provisions the default administrator account (\texttt{airflow} / \texttt{airflow}).
+    \item \textbf{\texttt{airflow-webserver} \& \texttt{airflow-scheduler}:} Dependent on \texttt{airflow-init} completing successfully (\texttt{service\_completed\_successfully}). The webserver exposes the UI at \texttt{http://localhost:8080}, while the scheduler executes tasks locally via \texttt{LocalExecutor}.
+\end{itemize}

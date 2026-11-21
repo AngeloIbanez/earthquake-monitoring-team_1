@@ -23,8 +23,8 @@ def get_db_connection_params() -> Dict[str, Any]:
     """Retrieves PostgreSQL connection parameters from environment variables."""
     return {
         "host": os.getenv("POSTGRES_HOST", "localhost"),
-        "port": int(os.getenv("POSTGRES_PORT", "5432")),
-        "database": os.getenv("POSTGRES_DB", "earthquake_monitoring"),
-        "user": os.getenv("POSTGRES_USER", "postgres"),
-        "password": os.getenv("POSTGRES_PASSWORD", "postgres")
+        "port": int(os.getenv("POSTGRES_PORT", "5440")),
+        "database": os.getenv("POSTGRES_DB", "earthquakes_ud"),
+        "user": os.getenv("POSTGRES_USER", "etl_ud"),
+        "password": os.getenv("POSTGRES_PASSWORD", "P4$w0rd")
     }

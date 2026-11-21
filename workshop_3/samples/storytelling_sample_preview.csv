@@ -1,0 +1,85 @@
+aggregation_type,alert_tier,computed_at,dimension_key,event_count,log10_energy,max_magnitude,mean_depth_km,mean_magnitude,narrative_note,percentage,period_date,saai_score,secondary_dimension
+severity_distribution,INFO,2026-11-21T04:50:48Z,Micro/Minor (<3.0),2058,7.208,2.99,18.55,1.605,Gutenberg-Richter magnitude class distribution,54.07,ALL,0.0,ALL
+severity_distribution,INFO,2026-11-21T04:50:48Z,Light (3.0-4.4),310,10.232,4.4,48.09,3.621,Gutenberg-Richter magnitude class distribution,8.15,ALL,0.0,ALL
+severity_distribution,INFO,2026-11-21T04:50:48Z,Moderate (4.5-5.4),1347,11.964,5.4,43.8,4.776,Gutenberg-Richter magnitude class distribution,35.39,ALL,0.0,ALL
+severity_distribution,INFO,2026-11-21T04:50:48Z,Strong (5.5-6.4),84,13.461,6.4,37.19,5.774,Gutenberg-Richter magnitude class distribution,2.21,ALL,0.0,ALL
+severity_distribution,INFO,2026-11-21T04:50:48Z,Major/Great (>=6.5),7,14.743,6.8,55.71,6.629,Gutenberg-Richter magnitude class distribution,0.18,ALL,0.0,ALL
+temporal_trend_saai,NORMAL,2026-11-21T04:50:48Z,2026-01-01,53,14.394,6.0,35.11,4.877,Daily SAAI=0.21 (NORMAL),1.39,2026-01-01,0.208,NORMAL
+temporal_trend_saai,NORMAL,2026-11-21T04:50:48Z,2026-01-02,28,14.871,6.5,19.88,4.846,Daily SAAI=0.49 (NORMAL),0.74,2026-01-02,0.485,NORMAL
+temporal_trend_saai,NORMAL,2026-11-21T04:50:48Z,2026-01-03,35,14.068,5.9,55.0,4.76,Daily SAAI=-0.14 (NORMAL),0.92,2026-01-03,-0.141,NORMAL
+temporal_trend_saai,NORMAL,2026-11-21T04:50:48Z,2026-01-04,44,13.983,5.7,28.61,4.793,Daily SAAI=-0.17 (NORMAL),1.16,2026-01-04,-0.169,NORMAL
+temporal_trend_saai,NORMAL,2026-11-21T04:50:48Z,2026-01-05,18,13.369,5.2,78.61,4.756,Daily SAAI=-0.79 (NORMAL),0.47,2026-01-05,-0.791,NORMAL
+temporal_trend_saai,NORMAL,2026-11-21T04:50:48Z,2026-01-06,41,14.046,5.7,40.59,4.895,Daily SAAI=-0.13 (NORMAL),1.08,2026-01-06,-0.132,NORMAL
+temporal_trend_saai,NORMAL,2026-11-21T04:50:48Z,2026-01-07,35,14.755,6.4,54.97,4.9,Daily SAAI=0.42 (NORMAL),0.92,2026-01-07,0.422,NORMAL
+temporal_trend_saai,NORMAL,2026-11-21T04:50:48Z,2026-01-08,33,13.831,5.5,66.38,4.794,Daily SAAI=-0.34 (NORMAL),0.87,2026-01-08,-0.344,NORMAL
+temporal_trend_saai,NORMAL,2026-11-21T04:50:48Z,2026-01-09,37,13.809,5.6,58.67,4.738,Daily SAAI=-0.34 (NORMAL),0.97,2026-01-09,-0.344,NORMAL
+temporal_trend_saai,NORMAL,2026-11-21T04:50:48Z,2026-01-10,38,14.811,6.4,42.9,5.118,Daily SAAI=0.48 (NORMAL),1.0,2026-01-10,0.481,NORMAL
+temporal_trend_saai,NORMAL,2026-11-21T04:50:48Z,2026-01-11,25,13.463,5.3,21.28,4.756,Daily SAAI=-0.68 (NORMAL),0.66,2026-01-11,-0.682,NORMAL
+temporal_trend_saai,NORMAL,2026-11-21T04:50:48Z,2026-01-12,47,13.828,5.6,37.07,4.713,Daily SAAI=-0.28 (NORMAL),1.23,2026-01-12,-0.282,NORMAL
+temporal_trend_saai,NORMAL,2026-11-21T04:50:48Z,2026-01-13,54,14.541,6.2,38.06,4.859,Daily SAAI=0.33 (NORMAL),1.42,2026-01-13,0.334,NORMAL
+temporal_trend_saai,NORMAL,2026-11-21T04:50:48Z,2026-01-14,36,13.867,5.6,32.55,4.875,Daily SAAI=-0.30 (NORMAL),0.95,2026-01-14,-0.301,NORMAL
+temporal_trend_saai,NORMAL,2026-11-21T04:50:48Z,2026-01-15,22,14.058,5.9,34.92,4.859,Daily SAAI=-0.21 (NORMAL),0.58,2026-01-15,-0.208,NORMAL
+temporal_trend_saai,NORMAL,2026-11-21T04:50:48Z,2026-01-16,55,14.348,6.0,30.89,4.869,Daily SAAI=0.18 (NORMAL),1.45,2026-01-16,0.179,NORMAL
+temporal_trend_saai,NORMAL,2026-11-21T04:50:48Z,2026-01-17,22,13.641,5.4,29.35,4.845,Daily SAAI=-0.55 (NORMAL),0.58,2026-01-17,-0.55,NORMAL
+temporal_trend_saai,NORMAL,2026-11-21T04:50:48Z,2026-01-18,47,13.73,5.3,25.3,4.685,Daily SAAI=-0.36 (NORMAL),1.23,2026-01-18,-0.363,NORMAL
+temporal_trend_saai,NORMAL,2026-11-21T04:50:48Z,2026-01-19,52,14.341,6.0,29.12,4.837,Daily SAAI=0.16 (NORMAL),1.37,2026-01-19,0.161,NORMAL
+temporal_trend_saai,NORMAL,2026-11-21T04:50:48Z,2026-01-20,57,14.278,5.9,31.16,4.867,Daily SAAI=0.13 (NORMAL),1.5,2026-01-20,0.131,NORMAL
+temporal_trend_saai,NORMAL,2026-11-21T04:50:48Z,2026-01-21,50,14.406,6.1,29.62,4.836,Daily SAAI=0.20 (NORMAL),1.31,2026-01-21,0.204,NORMAL
+temporal_trend_saai,NORMAL,2026-11-21T04:50:48Z,2026-01-22,28,14.454,6.2,25.2,4.827,Daily SAAI=0.14 (NORMAL),0.74,2026-01-22,0.143,NORMAL
+temporal_trend_saai,NORMAL,2026-11-21T04:50:48Z,2026-01-23,20,13.473,5.2,18.73,4.825,Daily SAAI=-0.70 (NORMAL),0.53,2026-01-23,-0.696,NORMAL
+temporal_trend_saai,NORMAL,2026-11-21T04:50:48Z,2026-01-24,22,13.462,5.3,73.59,4.755,Daily SAAI=-0.70 (NORMAL),0.58,2026-01-24,-0.696,NORMAL
+temporal_trend_saai,NORMAL,2026-11-21T04:50:48Z,2026-01-25,24,13.465,5.2,91.6,4.775,Daily SAAI=-0.68 (NORMAL),0.63,2026-01-25,-0.685,NORMAL
+temporal_trend_saai,NORMAL,2026-11-21T04:50:48Z,2026-01-26,62,14.432,5.8,18.98,4.945,Daily SAAI=0.28 (NORMAL),1.63,2026-01-26,0.281,NORMAL
+temporal_trend_saai,NORMAL,2026-11-21T04:50:48Z,2026-01-27,65,14.081,5.7,42.07,4.765,Daily SAAI=0.01 (NORMAL),1.71,2026-01-27,0.007,NORMAL
+temporal_trend_saai,NORMAL,2026-11-21T04:50:48Z,2026-01-28,90,14.47,5.9,19.63,4.917,Daily SAAI=0.44 (NORMAL),2.36,2026-01-28,0.439,NORMAL
+temporal_trend_saai,NORMAL,2026-11-21T04:50:48Z,2026-01-29,30,14.163,6.0,52.04,4.733,Daily SAAI=-0.09 (NORMAL),0.79,2026-01-29,-0.085,NORMAL
+temporal_trend_saai,NORMAL,2026-11-21T04:50:48Z,2026-01-30,32,13.745,5.4,25.33,4.844,Daily SAAI=-0.42 (NORMAL),0.84,2026-01-30,-0.419,NORMAL
+temporal_trend_saai,NORMAL,2026-11-21T04:50:48Z,2026-01-31,43,14.055,5.8,52.77,4.805,Daily SAAI=-0.12 (NORMAL),1.13,2026-01-31,-0.115,NORMAL
+temporal_trend_saai,NORMAL,2026-11-21T04:50:48Z,2026-11-02,262,13.243,5.3,19.79,1.69,Daily SAAI=0.22 (NORMAL),6.88,2026-11-02,0.216,NORMAL
+temporal_trend_saai,NORMAL,2026-11-21T04:50:48Z,2026-11-03,302,13.482,5.4,26.52,1.852,Daily SAAI=0.59 (NORMAL),7.93,2026-11-03,0.594,NORMAL
+temporal_trend_saai,NORMAL,2026-11-21T04:50:48Z,2026-11-04,262,12.701,5.0,22.45,1.662,Daily SAAI=-0.23 (NORMAL),6.88,2026-11-04,-0.228,NORMAL
+temporal_trend_saai,NORMAL,2026-11-21T04:50:48Z,2026-11-05,260,13.997,6.1,26.01,1.613,Daily SAAI=0.82 (NORMAL),6.83,2026-11-05,0.825,NORMAL
+temporal_trend_saai,NORMAL,2026-11-21T04:50:48Z,2026-11-06,224,13.983,6.1,28.09,1.643,Daily SAAI=0.65 (NORMAL),5.89,2026-11-06,0.65,NORMAL
+temporal_trend_saai,NORMAL,2026-11-21T04:50:48Z,2026-11-07,210,13.827,5.8,27.91,1.863,Daily SAAI=0.46 (NORMAL),5.52,2026-11-07,0.458,NORMAL
+temporal_trend_saai,NORMAL,2026-11-21T04:50:48Z,2026-11-08,198,13.061,4.8,29.22,1.913,Daily SAAI=-0.22 (NORMAL),5.2,2026-11-08,-0.224,NORMAL
+temporal_trend_saai,NORMAL,2026-11-21T04:50:48Z,2026-11-09,55,14.746,6.4,38.64,2.425,Daily SAAI=0.51 (NORMAL),1.45,2026-11-09,0.505,NORMAL
+temporal_trend_saai,NORMAL,2026-11-21T04:50:48Z,2026-11-14,256,13.756,5.5,41.83,2.489,Daily SAAI=0.61 (NORMAL),6.73,2026-11-14,0.609,NORMAL
+temporal_trend_saai,ELEVATED,2026-11-21T04:50:48Z,2026-11-16,228,15.021,6.6,32.01,2.422,Daily SAAI=1.52 (ELEVATED),5.99,2026-11-16,1.518,ELEVATED
+temporal_trend_saai,NORMAL,2026-11-21T04:50:48Z,2026-11-17,8,10.657,3.9,34.8,2.235,Daily SAAI=-3.06 (NORMAL),0.21,2026-11-17,-3.058,NORMAL
+temporal_trend_saai,NORMAL,2026-11-21T04:50:48Z,2026-11-20,242,13.867,5.4,15.63,3.446,Daily SAAI=0.64 (NORMAL),6.36,2026-11-20,0.637,NORMAL
+temporal_trend_saai,ELEVATED,2026-11-21T04:50:48Z,2026-11-21,54,15.385,6.8,22.7,3.694,Daily SAAI=1.02 (ELEVATED),1.42,2026-11-21,1.025,ELEVATED
+top_regions_keywords,NORMAL,2026-11-21T04:50:48Z,"Milford, Utah",125,9.981,3.12,3.27,1.526,Top active tectonic region in Silver corpus,3.28,ALL,0.0,NORMAL
+top_regions_keywords,NORMAL,2026-11-21T04:50:48Z,"The Geysers, CA",124,9.281,2.71,2.35,0.934,Top active tectonic region in Silver corpus,3.26,ALL,0.0,NORMAL
+top_regions_keywords,NORMAL,2026-11-21T04:50:48Z,"Pāhala, Hawaii",93,9.915,3.12,27.96,1.905,Top active tectonic region in Silver corpus,2.44,ALL,0.0,NORMAL
+top_regions_keywords,NORMAL,2026-11-21T04:50:48Z,"Karluk, Alaska",66,9.503,3.0,19.63,0.906,Top active tectonic region in Silver corpus,1.73,ALL,0.0,NORMAL
+top_regions_keywords,NORMAL,2026-11-21T04:50:48Z,"Anza, CA",59,8.272,1.98,8.82,0.545,Top active tectonic region in Silver corpus,1.55,ALL,0.0,NORMAL
+top_regions_keywords,NORMAL,2026-11-21T04:50:48Z,"Cobb, CA",58,8.634,2.27,2.14,0.934,Top active tectonic region in Silver corpus,1.52,ALL,0.0,NORMAL
+top_regions_keywords,ELEVATED,2026-11-21T04:50:48Z,"MORO GULF, MINDANAO, PHILIPPINES",51,14.176,5.9,9.43,4.882,Top active tectonic region in Silver corpus,1.34,ALL,0.0,ELEVATED
+top_regions_keywords,NORMAL,2026-11-21T04:50:48Z,"Brawley, CA",48,9.413,2.89,9.4,1.585,Top active tectonic region in Silver corpus,1.26,ALL,0.0,NORMAL
+top_regions_keywords,NORMAL,2026-11-21T04:50:48Z,"Nikolski, Alaska",41,12.023,4.7,10.71,2.075,Top active tectonic region in Silver corpus,1.08,ALL,0.0,NORMAL
+top_regions_keywords,NORMAL,2026-11-21T04:50:48Z,"Holtville, CA",38,10.284,3.01,12.09,2.271,Top active tectonic region in Silver corpus,1.0,ALL,0.0,NORMAL
+top_regions_keywords,ELEVATED,2026-11-21T04:50:48Z,"Sangay, Philippines",37,13.992,5.9,10.33,4.797,Top active tectonic region in Silver corpus,0.97,ALL,0.0,ELEVATED
+top_regions_keywords,ELEVATED,2026-11-21T04:50:48Z,OFF EAST COAST OF KAMCHATKA,36,13.806,5.5,10.0,4.792,Top active tectonic region in Silver corpus,0.95,ALL,0.0,ELEVATED
+top_regions_keywords,ELEVATED,2026-11-21T04:50:48Z,"Yakutat, Alaska",33,13.479,5.7,6.43,2.388,Top active tectonic region in Silver corpus,0.87,ALL,0.0,ELEVATED
+top_regions_keywords,NORMAL,2026-11-21T04:50:48Z,"Denali National Park, Alaska",33,11.608,4.5,42.33,2.261,Top active tectonic region in Silver corpus,0.87,ALL,0.0,NORMAL
+top_regions_keywords,NORMAL,2026-11-21T04:50:48Z,"Delta, B.C., MX",33,12.138,4.89,15.14,2.182,Top active tectonic region in Silver corpus,0.87,ALL,0.0,NORMAL
+source_comparison,INFO,2026-11-21T04:50:48Z,emsc_fdsn,67,10.703,2.9,7.41,2.678,Catalog comparison for emsc_fdsn,1.76,ALL,0.0,Micro/Minor (<3.0)
+source_comparison,INFO,2026-11-21T04:50:48Z,emsc_fdsn,137,12.622,4.4,8.54,3.478,Catalog comparison for emsc_fdsn,3.6,ALL,0.0,Light (3.0-4.4)
+source_comparison,INFO,2026-11-21T04:50:48Z,emsc_fdsn,606,14.941,5.4,9.73,4.783,Catalog comparison for emsc_fdsn,15.92,ALL,0.0,Moderate (4.5-5.4)
+source_comparison,INFO,2026-11-21T04:50:48Z,emsc_fdsn,37,15.225,6.4,10.0,5.765,Catalog comparison for emsc_fdsn,0.97,ALL,0.0,Strong (5.5-6.4)
+source_comparison,INFO,2026-11-21T04:50:48Z,emsc_fdsn,2,15.132,6.8,10.0,6.65,Catalog comparison for emsc_fdsn,0.05,ALL,0.0,Major/Great (>=6.5)
+source_comparison,INFO,2026-11-21T04:50:48Z,gdacs_realtime,23,13.537,5.4,70.38,4.822,Catalog comparison for gdacs_realtime,0.6,ALL,0.0,Moderate (4.5-5.4)
+source_comparison,INFO,2026-11-21T04:50:48Z,gdacs_realtime,2,14.437,6.4,20.6,6.05,Catalog comparison for gdacs_realtime,0.05,ALL,0.0,Strong (5.5-6.4)
+source_comparison,INFO,2026-11-21T04:50:48Z,gdacs_realtime,1,14.85,6.7,108.0,6.7,Catalog comparison for gdacs_realtime,0.03,ALL,0.0,Major/Great (>=6.5)
+source_comparison,INFO,2026-11-21T04:50:48Z,usgs_fdsn,423,10.927,2.99,23.59,2.045,Catalog comparison for usgs_fdsn,11.11,ALL,0.0,Micro/Minor (<3.0)
+source_comparison,INFO,2026-11-21T04:50:48Z,usgs_fdsn,60,12.578,4.4,89.5,3.71,Catalog comparison for usgs_fdsn,1.58,ALL,0.0,Light (3.0-4.4)
+source_comparison,INFO,2026-11-21T04:50:48Z,usgs_fdsn,645,14.953,5.4,67.54,4.772,Catalog comparison for usgs_fdsn,16.95,ALL,0.0,Moderate (4.5-5.4)
+source_comparison,INFO,2026-11-21T04:50:48Z,usgs_fdsn,38,15.223,6.4,53.36,5.75,Catalog comparison for usgs_fdsn,1.0,ALL,0.0,Strong (5.5-6.4)
+source_comparison,INFO,2026-11-21T04:50:48Z,usgs_fdsn,4,15.315,6.7,65.5,6.6,Catalog comparison for usgs_fdsn,0.11,ALL,0.0,Major/Great (>=6.5)
+source_comparison,INFO,2026-11-21T04:50:48Z,usgs_realtime,1568,11.085,2.95,17.66,1.441,Catalog comparison for usgs_realtime,41.2,ALL,0.0,Micro/Minor (<3.0)
+source_comparison,INFO,2026-11-21T04:50:48Z,usgs_realtime,113,12.983,4.4,74.05,3.747,Catalog comparison for usgs_realtime,2.97,ALL,0.0,Light (3.0-4.4)
+source_comparison,INFO,2026-11-21T04:50:48Z,usgs_realtime,73,13.931,5.4,108.44,4.732,Catalog comparison for usgs_realtime,1.92,ALL,0.0,Moderate (4.5-5.4)
+source_comparison,INFO,2026-11-21T04:50:48Z,usgs_realtime,7,14.704,6.4,97.86,5.871,Catalog comparison for usgs_realtime,0.18,ALL,0.0,Strong (5.5-6.4)
+depth_regime_breakdown,INFO,2026-11-21T04:50:48Z,Shallow (0-70 km),3376,15.92,6.8,12.75,2.922,Focal depth regime attenuation breakdown,88.7,ALL,0.0,ALL
+depth_regime_breakdown,INFO,2026-11-21T04:50:48Z,Intermediate (70-300 km),373,15.232,6.7,115.65,3.382,Focal depth regime attenuation breakdown,9.8,ALL,0.0,ALL
+depth_regime_breakdown,INFO,2026-11-21T04:50:48Z,Deep (>300 km),57,14.182,6.1,515.85,4.63,Focal depth regime attenuation breakdown,1.5,ALL,0.0,ALL

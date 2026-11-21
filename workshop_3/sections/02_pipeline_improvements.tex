@@ -1,0 +1,42 @@
+% ======================================================================
+% SECTION 02: PIPELINE IMPROVEMENTS BASED ON EXPERIMENTATION
+% ======================================================================
+\section{Pipeline Improvements Based on Experimentation}
+
+Reviewing the Bronze JSON files and Silver Parquet partitions generated during Workshop~\#2 revealed five architectural and data-handling limitations that required engineering improvements before building the Gold layer. Table~\ref{tab:before_after} summarizes the before-and-after state across all modified pipeline dimensions.
+
+\begin{table*}[!t]
+\centering
+\caption{Before/After Comparison of Bronze, Silver, and Ingestion Pipeline Improvements (Workshop \#2 vs. Workshop \#3)}
+\label{tab:before_after}
+\begin{tabularx}{\textwidth}{lXXl}
+\toprule
+\textbf{Pipeline Dimension} & \textbf{Workshop \#2 State (Before)} & \textbf{Workshop \#3 State (After)} & \textbf{Justification / Root Cause} \\
+\midrule
+Bronze Source Coverage & Single-source extraction in Airflow (\texttt{usgs\_fdsn} only). & Multi-source tasks extracting USGS GeoJSON, EMSC FDSN JSON, and GDACS RSS~2.0 XML into \texttt{datalake\_bronze/}. & Required multi-agency telemetry to evaluate cross-source overlap and catalog asymmetry. \\
+Null Handling \& Validation Gate & Missing coordinates or \texttt{mag=None} were coerced to \texttt{0.0} in parsers or silently dropped via \texttt{dropna()}. & Strict \texttt{CanonicalEvent.validate()} gate preserving \texttt{None} and routing invalid records to \texttt{rejected\_record} with exact reason and JSONB payload. & Coercing \texttt{None} to \texttt{0.0} masked 3 malformed records in \texttt{usgs\_realtime} at $(0^\circ, 0^\circ)$ with $M=0.0$. \\
+Parquet Timestamp Physical Type & Pandas 2.x wrote \texttt{event\_time} as \texttt{TIMESTAMP(NANOS, true)} (\texttt{int64} nanoseconds). & Enforced \texttt{coerce\_timestamps="us"} (\texttt{TIMESTAMP(MICROS, true)}) + automatic legacy file normalizer. & PySpark threw \texttt{[PARQUET\_TYPE\_ILLEGAL] INT64 (TIMESTAMP(NANOS,true))} when reading the Silver folder. \\
+Historical Partitioning \& Retries & Fixed 24h rolling query in DAG; \texttt{ingest.py} only read local sample files. & Live HTTP extractor (\texttt{src/extractors.py}) with monthly partitioning, recursive temporal bisection, and exponential backoff. & Prevents API truncation at the 20,000-event USGS and 10,000-event EMSC limits. \\
+Incremental Watermarks \& Changes & No persisted watermark state; re-queried fixed windows. & High-water mark in \texttt{ingestion\_state} with 24h/48h overlap window and 16-char SHA-256 content hashes in \texttt{raw\_reference}. & Captures late phase-pick and magnitude revisions without duplicating existing events. \\
+Cross-Source Event Identification & Standalone function in \texttt{src/matching.py}, not connected to database storage. & Integrated 1-to-1 nearest-neighbor + Union-Find transitive grouping persisted into \texttt{event\_group}. & Links concurrent observations of the same physical earthquake across USGS, EMSC, and GDACS. \\
+Text Normalization (\texttt{place}) & Basic whitespace stripping (\texttt{str.strip()}). & Multi-pattern regex extraction in PySpark separating USGS distance-bearing prefixes and GDACS alert boilerplate. & Enables clean regional aggregation across heterogeneous agency naming conventions. \\
+\bottomrule
+\end{tabularx}
+\end{table*}
+
+\subsection{Resolution of Parquet \texttt{TIMESTAMP(NANOS)} Incompatibility with PySpark}
+During our initial execution of \texttt{spark.read.parquet("datalake\_silver/")} over the five Silver Parquet files produced in Workshop~\#2, Apache Spark aborted Stage~0 with:
+\begin{lstlisting}
+org.apache.spark.sql.AnalysisException: [PARQUET_TYPE_ILLEGAL] Illegal Parquet type: INT64 (TIMESTAMP(NANOS,true)). SQLSTATE: 42846
+\end{lstlisting}
+Root-cause inspection using \texttt{pyarrow.parquet.read\_schema()} revealed that Pandas~2.x defaults to nanosecond-precision timestamps (\texttt{datetime64[ns, UTC]}), which PyArrow serializes as Parquet logical type \texttt{TIMESTAMP(NANOS, true)}. While readable by Pandas, Spark's \texttt{ParquetToSparkSchemaConverter} requires microsecond precision (\texttt{TIMESTAMP(MICROS, true)}). We resolved this by updating \texttt{silver\_processing\_dag.py} to serialize Parquet files with \texttt{coerce\_timestamps="us"} and \texttt{allow\_truncated\_timestamps=True}, and implementing \texttt{\_normalize\_legacy\_nanos\_parquets()} in \texttt{src/gold\_pyspark.py} to automatically migrate legacy Silver files prior to Spark ingestion.
+
+\subsection{Incremental Watermarks, Overlap Windows, and Quarantine Routing}
+To support fault-tolerant incremental ingestion (\texttt{python ingest.py --mode incremental}), \texttt{src/db.py} tracks per-source high-water marks in \texttt{ingestion\_state}. Because seismological agencies revise focal parameters hours after initial publication, \texttt{\_filter\_by\_watermark\_window()} applies a configurable lookback overlap window ($24\,\text{h}$ for USGS, $48\,\text{h}$ for GDACS) and upserts via \texttt{ON CONFLICT (event\_id) DO UPDATE}. The watermark advances only after a successful PostgreSQL \texttt{COMMIT}. Furthermore, removing silent \texttt{0.0} defaults immediately exposed three malformed records in \texttt{usgs\_realtime} (missing magnitudes), which are now deterministically quarantined into \texttt{rejected\_record} with reason \texttt{"missing\_severity"}.
+
+\subsection{Cross-Source Event Matching and Transitive Grouping (\texttt{event\_group})}
+In \texttt{src/matching.py}, we implemented \texttt{build\_cross\_source\_event\_groups()}. Given canonical events across agencies, the engine computes great-circle Haversine epicentral distance $\Delta d$ and origin-time difference $\Delta t$, filtering pairs within $\Delta d \le 100\,\text{km}$ and $\Delta t \le 900\,\text{s}$. It minimizes the normalized spatio-temporal cost:
+\begin{equation}
+D(e_1, e_2) = \sqrt{\left(\frac{\Delta d}{100\,\text{km}}\right)^2 + \left(\frac{\Delta t}{900\,\text{s}}\right)^2}
+\end{equation}
+using greedy 1-to-1 nearest-neighbor assignment to prevent 1-to-$N$ collisions during aftershock swarms, followed by Disjoint-Set (Union-Find) clustering so that an earthquake reported by USGS, EMSC, and GDACS shares a single canonical \texttt{group\_id} in \texttt{event\_group}. Across the $3,305$ canonical events in PostgreSQL, the matcher identified $637$ cross-catalog groups ($1,274$ grouped rows) with a median temporal offset of $\Delta t = 0.47\,\text{s}$ and median spatial offset of $\Delta d = 6.33\,\text{km}$.

@@ -1,0 +1,66 @@
+% ======================================================================
+% SECTION 01: INTRODUCTION AND EXECUTIVE SUMMARY
+% ======================================================================
+\section{Introduction and Executive Summary}
+\noindent\textbf{GitHub Repository:} \url{https://github.com/AngeloIbanez/earthquake-monitoring-team_1} (Branch: \texttt{workshop\_2})\\[0.15cm]
+In Workshop~\#1, Team~1 formalized the geophysical domain of earthquake activity monitoring, validated four open seismological data sources---United States Geological Survey (USGS) FDSN Event Web Service~\cite{usgs_fdsn}, Euro-Mediterranean Seismological Centre (EMSC) FDSN Portal~\cite{emsc_fdsn}, USGS Real-Time GeoJSON Feeds~\cite{usgs_rt}, and GDACS RSS~2.0 Alerts~\cite{gdacs}---and uncovered five concrete data-quality anomalies across raw telemetry payloads. Translating that conceptual data contract into a production-ready engineering system requires automated orchestration, isolated containerization, deterministic data preprocessing, and immutable lineage tracking.
+
+This report documents the design, deployment, and verification of Workshop~\#2. Our engineering approach adopts the industry-standard \textbf{Medallion Data Lakehouse Architecture}~\cite{armbrust2021lakehouse}, decoupling raw data landing (\textbf{Bronze}), validated and deduplicated tabular curation (\textbf{Silver}), and downstream analytical aggregations (\textbf{Gold}). The entire software stack is containerized via Docker Compose~\cite{docker_docs}, orchestrating Apache Airflow~2.10.4~\cite{airflow_docs} backed by PostgreSQL~16~\cite{postgres_docs}. By combining columnar Apache Parquet persistence~\cite{parquet_docs} in \texttt{datalake\_silver/} with relational idempotent upserts in PostgreSQL (\texttt{earthquakes\_curated}), the architecture satisfies both distributed batch analytics (planned for PySpark in Workshop~\#3) and low-latency operational querying (planned for the Plotly Dash monitoring interface in Workshop~\#4).
+
+\begin{figure*}[!t]
+\centering
+\resizebox{0.98\textwidth}{!}{%
+\begin{tikzpicture}[
+    node distance=0.8cm and 1.1cm,
+    box/.style={rectangle, draw=black!80, thick, rounded corners=3pt, minimum width=3.1cm, minimum height=1.15cm, align=center, font=\footnotesize\sffamily, fill=white},
+    layer/.style={rectangle, draw=navyblue!70, dashed, thick, rounded corners=5pt, inner sep=8pt},
+    arrow/.style={-{Stealth[length=2.5mm, width=1.8mm]}, thick, draw=black!80},
+    darrow/.style={-{Stealth[length=2.5mm, width=1.8mm]}, thick, dashed, draw=black!60}
+]
+
+% 1. Sources
+\node[box, fill=blue!8] (s1) {\textbf{USGS FDSN API}\\GeoJSON REST\\(\texttt{fdsnws/event/1})};
+\node[box, fill=blue!8, below=0.4cm of s1] (s2) {\textbf{EMSC \& GDACS}\\JSON REST \& RSS XML\\(Multi-Catalog Feeds)};
+
+% 2. Bronze Layer
+\node[box, fill=orange!15, right=1.3cm of s1] (dag1) {\textbf{Bronze Ingestion DAG}\\(\texttt{bronze\_ingestion\_dag})\\TaskFlow \texttt{@dag / @task}\\Schedule: \texttt{*/15 * * * *}};
+\node[box, fill=orange!8, below=0.4cm of dag1] (bstore) {\textbf{Bronze Landing Zone}\\\texttt{datalake\_bronze/}\\\texttt{earthquakes\_YYYYMMDD\_HHMMSS.json}};
+
+% 3. Silver Layer
+\node[box, fill=cyan!15, right=1.3cm of dag1] (sensor) {\textbf{Airflow FileSensor}\\(\texttt{wait\_for\_bronze\_files})\\Watches \texttt{datalake\_bronze/}\\\texttt{poke\_interval=15s}};
+\node[box, fill=cyan!15, below=0.4cm of sensor] (dag2) {\textbf{Silver Processing DAG}\\(\texttt{silver\_processing\_dag})\\Pandas / Polars Cleansing\\Bounds, Dedup \& $E=10^{4.8+1.5M}$};
+
+% 4. Silver Storage
+\node[box, fill=green!12, right=1.3cm of sensor] (sparquet) {\textbf{Silver Parquet Store}\\\texttt{datalake\_silver/}\\\texttt{earthquakes\_silver\_*.parquet}\\(PyArrow Snappy)};
+\node[box, fill=green!12, below=0.4cm of sparquet] (spg) {\textbf{PostgreSQL 16 (Port 5440)}\\DB: \texttt{earthquakes\_ud}\\Table: \texttt{earthquakes\_curated}\\Idempotent Upsert};
+
+% 5. Planned Gold & Dashboard
+\node[box, fill=yellow!15, right=1.3cm of sparquet] (gold) {\textbf{Gold Layer (Planned W3)}\\\texttt{datalake\_gold/}\\PySpark Distributed Aggregations\\Governance \& SAAI KPIs};
+\node[box, fill=purple!10, below=0.4cm of gold] (dash) {\textbf{Presentation \& Analytics}\\Plotly Dash (\texttt{localhost:8050})\\\& Exploratory Notebooks\\(\texttt{02\_silver\_data\_exploration})};
+
+% Connections
+\draw[arrow] (s1) -- node[above, font=\scriptsize\sffamily]{HTTPS} (dag1);
+\draw[arrow] (s2.east) -| ([xshift=-0.5cm]dag1.west) -- (dag1.west);
+\draw[arrow] (dag1) -- node[right, font=\scriptsize\sffamily]{Write JSON} (bstore);
+\draw[arrow] (bstore.east) -| ([xshift=-0.5cm]sensor.west) -- (sensor.west);
+\draw[arrow] (sensor) -- node[right, font=\scriptsize\sffamily]{Trigger} (dag2);
+\draw[arrow] (dag2.east) -| ([xshift=-0.5cm]sparquet.west) -- (sparquet.west);
+\draw[arrow] (dag2) -- node[above, font=\scriptsize\sffamily]{Upsert} (spg);
+\draw[darrow] (sparquet) -- node[above, font=\scriptsize\sffamily]{Spark Read} (gold);
+\draw[arrow] (sparquet.south east) -- (dash.north west);
+\draw[darrow] (gold) -- (dash);
+\draw[arrow] (spg) -- (dash);
+
+% Group Boxes
+\begin{scope}[on background layer]
+\node[layer, fit=(s1)(s2), label={[font=\scriptsize\bfseries\sffamily, text=navyblue]above:1. External Data Sources}] {};
+\node[layer, fit=(dag1)(bstore), label={[font=\scriptsize\bfseries\sffamily, text=navyblue]above:2. Bronze Layer (Raw)}] {};
+\node[layer, fit=(sensor)(dag2), label={[font=\scriptsize\bfseries\sffamily, text=navyblue]above:3. Airflow Silver Engine}] {};
+\node[layer, fit=(sparquet)(spg), label={[font=\scriptsize\bfseries\sffamily, text=navyblue]above:4. Silver Layer (Curated)}] {};
+\node[layer, fit=(gold)(dash), label={[font=\scriptsize\bfseries\sffamily, text=navyblue]above:5. Gold \& Analytics (W3/W4)}] {};
+\end{scope}
+\end{tikzpicture}%
+}
+\caption{Complete end-to-end technical architecture of the Earthquake Activity Monitoring System across the Bronze, Silver, and planned Gold Medallion layers, orchestrated via Apache Airflow 2.10.4 and persisted in Apache Parquet and PostgreSQL 16.}
+\label{fig:architecture}
+\end{figure*}

@@ -1,0 +1,85 @@
+% ======================================================================
+% SECTION 03: PREPROCESSING PIPELINE DESIGN
+% ======================================================================
+\section{Preprocessing Pipeline Design}
+Every preprocessing rule implemented in \texttt{silver\_processing\_dag.py} is directly grounded in the empirical data-quality findings documented during Workshop~\#1 profiling.
+
+\subsection{Null and Missing Value Handling Strategy}
+Table~\ref{tab:null_strategy} summarizes the per-field missing value policy. Records missing primary keys (\texttt{event\_id}), origin timestamps (\texttt{raw\_time}), coordinates (\texttt{latitude}, \texttt{longitude}), or severity (\texttt{magnitude}) are dropped via \texttt{df.dropna()}, as an unlocated or unmeasured earthquake cannot be placed on a hazard map or included in energy calculations. Conversely, missing focal depths (\texttt{depth\_km}) are imputed with the seismological sentinel default of $10.0\text{ km}$, consistent with the USGS NEIC and EMSC practice observed in Workshop~\#1 (where $45.1\%$ of teleseismic events lacking depth phases are pinned at $10.0\text{ km}$).
+
+\begin{table}[!t]
+\caption{Field-Level Null Handling and Imputation Strategy}
+\label{tab:null_strategy}
+\centering
+\renewcommand{\arraystretch}{1.12}
+\begin{tabularx}{\columnwidth}{p{2.1cm} p{1.6cm} X}
+\toprule
+\textbf{Field Name} & \textbf{Null Policy} & \textbf{Justification from Workshop \#1 Samples} \\
+\midrule
+\texttt{event\_id} & \textbf{Drop row} & Mandatory primary key for cross-run deduplication and lineage tracking. \\
+\texttt{raw\_time} & \textbf{Drop row} & Event origin time is required for temporal windowing and time-series analysis. \\
+\texttt{latitude}, \texttt{longitude} & \textbf{Drop row} & Spatial coordinates are mandatory for WGS84 mapping and Haversine matching. \\
+\texttt{magnitude} & \textbf{Drop row} & Primary severity metric; 3 USGS incremental records had \texttt{mag: null} and were quarantined in Workshop~\#1. \\
+\texttt{depth\_km} & \textbf{Impute \texttt{10.0}} & Standard crustal fixed-depth convention used by USGS/EMSC when depth phases ($pP, sP$) are unconstrained. \\
+\texttt{place} & \textbf{Fill sentinel} & Imputed as \texttt{"Unknown Location"} to preserve valid seismic events occurring in unnamed oceanic trenches. \\
+\texttt{mag\_type} & \textbf{Fill sentinel} & Imputed as \texttt{"unknown"} when instrumental scale metadata is omitted. \\
+\texttt{tsunami} & \textbf{Fill \texttt{False}} & Binary warning flag (\texttt{0/1} in USGS); missing values indicate no tsunami bulletin issued. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{Data Type Normalization and Schema Enforcement}
+Raw JSON payloads represent timestamps as 64-bit Unix millisecond integers (e.g., \texttt{1794700623470}), flags as integers (\texttt{0} or \texttt{1}), and numeric measurements as untyped JSON numbers or strings. The Silver pipeline enforces strict type normalization using \texttt{pd.to\_numeric(..., errors="coerce")} and \texttt{pd.to\_datetime(..., unit="ms", utc=True)}. Table~\ref{tab:schema} defines the enforced target schema for Silver Parquet files and PostgreSQL.
+
+\begin{table}[!t]
+\caption{Enforced Target Schema for Silver Layer Parquet and PostgreSQL}
+\label{tab:schema}
+\centering
+\renewcommand{\arraystretch}{1.12}
+\begin{tabularx}{\columnwidth}{p{2.2cm} p{2.3cm} p{1.1cm} X}
+\toprule
+\textbf{Field Name} & \textbf{Parquet / Pandas} & \textbf{Req.} & \textbf{Domain Specification} \\
+\midrule
+\texttt{event\_id} & \texttt{string} & Yes & Unique catalog ID (e.g., \texttt{us7000tymu}) \\
+\texttt{raw\_time} & \texttt{int64} & Yes & Original Unix epoch timestamp (ms) \\
+\texttt{event\_time} & \texttt{datetime64[ns, UTC]} & Yes & Standardized ISO-8601 UTC timestamp \\
+\texttt{magnitude} & \texttt{float64} & Yes & Seismic magnitude $M \in [-2.0, 10.0]$ \\
+\texttt{mag\_type} & \texttt{string} & Yes & Raw magnitude scale code \\
+\texttt{magnitude\_type} & \texttt{string} & Yes & Normalized lowercase scale (\texttt{ml}, \texttt{mb}, \texttt{mww}) \\
+\texttt{place} & \texttt{string} & Yes & Trimmed geographic description \\
+\texttt{longitude} & \texttt{float64} & Yes & WGS84 decimal degrees $[-180, 180]$ \\
+\texttt{latitude} & \texttt{float64} & Yes & WGS84 decimal degrees $[-90, 90]$ \\
+\texttt{depth\_km} & \texttt{float64} & Yes & Hypocentral focal depth in km \\
+\texttt{energy\_joules} & \texttt{float64} & Yes & Radiated energy $E = 10^{4.8 + 1.5M}$ J \\
+\texttt{tsunami} & \texttt{bool} & Yes & Tsunami evaluation flag \\
+\texttt{source\_file} & \texttt{string} & Yes & Originating Bronze JSON filename \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{Text Preprocessing and Normalization}
+In Workshop~\#1 (Data Quality Issue~\#3 and Issue~\#4), we observed inconsistent capitalization in magnitude scales (e.g., \texttt{ML} vs. \texttt{ml}, \texttt{Mww} vs. \texttt{mww}) and trailing whitespace or formatting noise in geographic \texttt{place} strings (e.g., \texttt{"38 km WNW of Anchor Point, Alaska"}). Our text cleaning pipeline applies:
+\begin{enumerate}
+    \item \textbf{Null Replacement and String Coercion:} \texttt{.fillna("Unknown Location").astype(str)}.
+    \item \textbf{Whitespace Stripping:} Removal of leading/trailing spaces and line breaks via \texttt{.str.strip()}.
+    \item \textbf{Case Standardization:} Lowercasing of categorical scale identifiers (\texttt{mag\_type.str.lower().str.strip()}) into \texttt{magnitude\_type} to prevent fragmented group-by aggregations in the Gold layer.
+\end{enumerate}
+
+\subsection{Outlier Detection and Physical Boundary Handling}
+Outlier handling in geophysical telemetry requires distinguishing between \textbf{corrupt sensor/transmission artifacts} and \textbf{genuine extreme natural hazards}:
+\begin{enumerate}
+    \item \textbf{Hard Physical Boundary Gates (Filter/Drop):} The pipeline enforces geodetic and physical limits:
+    \begin{align}
+        -90.0^\circ \le \text{latitude} &\le +90.0^\circ, \\
+        -180.0^\circ \le \text{longitude} &\le +180.0^\circ, \\
+        -2.0 \le \text{magnitude} &\le 10.0.
+    \end{align}
+    Note that negative magnitudes down to $-2.0$ and slight negative depths (e.g., $\min(\text{depth\_km}) = -0.690\text{ km}$ observed in our Silver batch) are physically valid: they correspond to micro-earthquakes or shallow geothermal/volcanic events located in mountain edifices above the WGS84 reference geoid (sea level), as proven in Workshop~\#1 Issue~\#2.
+    \item \textbf{Statistical Outlier Analysis (IQR and Z-Score Flagging):} For our curated Silver dataset ($N = 245$ events), the magnitude distribution yields $\mu = 2.453$, $\sigma = 1.034$, $Q_1 = 1.790$, median $Q_2 = 2.020$, and $Q_3 = 2.700$ ($\text{IQR} = 0.910$). Under Tukey's interquartile fence ($Q_3 + 1.5\times\text{IQR} = 4.065$) or a $Z > 3.0$ threshold ($M > 5.555$), major earthquakes such as \texttt{us7000tymu} ($M = 6.6$ in Tual, Indonesia, $Z = +4.01$) are statistical outliers because earthquake magnitudes follow a heavy-tailed exponential Gutenberg-Richter distribution~\cite{gutenberg1956}. Deleting $M \ge 5.5$ events as ``outliers'' would destroy the exact high-priority hazard signals the system is built to monitor! Consequently, hard physical violations are dropped, while statistical extremes ($Z > 3.0$) are preserved and quantified via radiated seismic energy:
+    \begin{equation}
+        E = 10^{4.8 + 1.5 M}\quad [\text{Joules}].
+    \end{equation}
+\end{enumerate}
+
+\subsection{Cross-Batch Deduplication}
+Because Bronze ingestion polls overlapping rolling windows to capture post-facto seismological revisions (proven in Workshop~\#1's two-poll experiment), the same \texttt{event\_id} appears across multiple Bronze JSON files. Within \texttt{silver\_processing\_dag}, records are sorted chronologically by Bronze file timestamp and deduplicated via \texttt{df.drop\_duplicates(subset=["event\_id"], keep="last")}. For instance, out of $362$ raw records extracted across the Bronze files, $117$ overlapping records were deduplicated, yielding $245$ unique curated earthquakes. In PostgreSQL, idempotency across runs is enforced via \texttt{ON CONFLICT (event\_id) DO UPDATE}.

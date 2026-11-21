@@ -2,32 +2,33 @@
 Silver Processing DAG — Team 1: Earthquake Activity Monitoring
 Data Analysis Programming — Semester 2026-II
 
-Monitors datalake_bronze/ for raw earthquake JSON payloads,
-applies comprehensive data cleansing, normalization, deduplication, and validation,
+Monitors datalake_bronze/ for raw earthquake payloads (USGS GeoJSON, EMSC JSON, GDACS XML),
+applies comprehensive data cleansing, normalization, deduplication, validation, and quarantine,
 and outputs:
-1. Curated relational records in PostgreSQL (earthquakes_curated).
-2. Traceable Parquet files in datalake_silver/ (earthquakes_silver_YYYYMMDD_HHMMSS.parquet).
+1. Canonical relational records in PostgreSQL (source, ingestion_run, event, earthquake, rejected_record).
+2. Curated relational records in PostgreSQL (earthquakes_curated) for backward compatibility.
+3. Traceable Parquet files in datalake_silver/ (earthquakes_silver_YYYYMMDD_HHMMSS.parquet).
 """
 
 import json
 import logging
-import math
-import re
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 import pandas as pd
 from airflow.decorators import dag, task
 from airflow.providers.postgres.hooks.postgres import PostgresHook
 from airflow.sensors.filesystem import FileSensor
-from psycopg2.extras import execute_values
+from psycopg2.extras import execute_values, Json
+
+from src.parsers import parse_usgs_geojson, parse_emsc_json, parse_gdacs_xml
 
 logger = logging.getLogger("airflow.task")
 
 BRONZE_DIR = Path("/opt/airflow/datalake_bronze")
 SILVER_DIR = Path("/opt/airflow/datalake_silver")
+SCHEMA_FILE = Path("/opt/airflow/sql/schema.sql")
 CONN_ID = "postgres_etl"
-FILE_PATTERN = re.compile(r"earthquakes_(\d{8}_\d{6})\.json$")
 
 DDL_CURATED = """
 CREATE TABLE IF NOT EXISTS earthquakes_curated (
@@ -49,10 +50,17 @@ CREATE INDEX IF NOT EXISTS idx_curated_time ON earthquakes_curated (event_time);
 CREATE INDEX IF NOT EXISTS idx_curated_mag ON earthquakes_curated (magnitude);
 """
 
+DEFAULT_SOURCES = [
+    ("usgs_fdsn", "USGS FDSN Event Web Service", "https://earthquake.usgs.gov/fdsnws/event/1/query", "geojson", "Public Domain"),
+    ("emsc_fdsn", "EMSC Seismic Portal FDSN Web Service", "https://www.seismicportal.eu/fdsnws/event/1/query", "json", "Open Data"),
+    ("usgs_realtime", "USGS Real-time GeoJSON Feed", "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson", "geojson", "Public Domain"),
+    ("gdacs_realtime", "GDACS RSS 24h Alert Feed", "https://www.gdacs.org/xml/rss_24h.xml", "xml-rss2", "Open Access"),
+]
+
 
 @dag(
     dag_id="silver_processing_dag",
-    schedule="*/20 * * * *",  # Runs every 20 minutes (or manual trigger)
+    schedule="*/20 * * * *",
     start_date=datetime(2026, 1, 1),
     catchup=False,
     max_active_runs=1,
@@ -60,179 +68,389 @@ CREATE INDEX IF NOT EXISTS idx_curated_mag ON earthquakes_curated (magnitude);
         "retries": 1,
         "retry_delay": timedelta(seconds=30),
     },
-    tags=["silver", "curation", "parquet", "postgres", "team_1"],
-    description="Clean, validate, and curate bronze earthquake data to silver Parquet & PostgreSQL",
+    tags=["silver", "curation", "parquet", "postgres", "team_1", "canonical"],
+    description="Clean, validate, quarantine, and curate multi-source bronze earthquake data to silver Parquet & PostgreSQL",
 )
 def silver_processing_pipeline():
 
     @task
     def prepare_database():
-        """Ensure PostgreSQL schema and destination tables exist."""
+        """Ensure PostgreSQL canonical schema (sql/schema.sql) and earthquakes_curated exist."""
         try:
             hook = PostgresHook(postgres_conn_id=CONN_ID)
-            hook.run(DDL_CURATED)
-            logger.info("Verified PostgreSQL earthquakes_curated table definition.")
+            conn = hook.get_conn()
+            with conn.cursor() as cur:
+                if SCHEMA_FILE.exists():
+                    cur.execute(SCHEMA_FILE.read_text(encoding="utf-8"))
+                cur.execute(DDL_CURATED)
+                execute_values(
+                    cur,
+                    """
+                    INSERT INTO source (source_id, name, url, format, license)
+                    VALUES %s
+                    ON CONFLICT (source_id) DO UPDATE SET
+                        name = EXCLUDED.name,
+                        url = EXCLUDED.url,
+                        format = EXCLUDED.format,
+                        license = EXCLUDED.license;
+                    """,
+                    DEFAULT_SOURCES,
+                )
+            conn.commit()
+            conn.close()
+            logger.info("Verified canonical PostgreSQL schema, source catalog, and earthquakes_curated table.")
         except Exception as e:
             logger.warning("PostgreSQL setup skipped or pending connection: %s", e)
 
     @task
-    def find_and_load_bronze_records() -> list:
-        """Scan datalake_bronze/ for raw JSON files and extract event features."""
+    def find_and_parse_bronze_records() -> dict:
+        """Scan datalake_bronze/ for raw USGS, EMSC, and GDACS files, parse, and run validation gate."""
         BRONZE_DIR.mkdir(parents=True, exist_ok=True)
-        bronze_files = sorted(BRONZE_DIR.glob("earthquakes_*.json"))
+        bronze_files = sorted(
+            list(BRONZE_DIR.glob("earthquakes_*.json"))
+            + list(BRONZE_DIR.glob("emsc_*.json"))
+            + list(BRONZE_DIR.glob("gdacs_*.xml"))
+        )
         if not bronze_files:
             logger.info("No Bronze files found in %s", BRONZE_DIR)
-            return []
+            return {"valid": [], "rejected": []}
 
-        all_records = []
+        valid_records = []
+        rejected_records = []
+
         for file_path in bronze_files:
+            fname = file_path.name
             try:
-                with file_path.open("r", encoding="utf-8") as f:
-                    payload = json.load(f)
-                features = payload.get("features", [])
-                for feat in features:
-                    props = feat.get("properties") or {}
-                    geom = feat.get("geometry") or {}
-                    coords = geom.get("coordinates") or [None, None, None]
+                if fname.startswith("earthquakes_"):
+                    source_id = "usgs_fdsn"
+                    payload = json.loads(file_path.read_text(encoding="utf-8"))
+                    events, earthquakes = parse_usgs_geojson(payload, source_id=source_id)
+                elif fname.startswith("emsc_"):
+                    source_id = "emsc_fdsn"
+                    payload = json.loads(file_path.read_text(encoding="utf-8"))
+                    events, earthquakes = parse_emsc_json(payload, source_id=source_id)
+                elif fname.startswith("gdacs_"):
+                    source_id = "gdacs_realtime"
+                    xml_text = file_path.read_text(encoding="utf-8")
+                    events, earthquakes = parse_gdacs_xml(xml_text, source_id=source_id)
+                else:
+                    continue
 
-                    all_records.append({
-                        "event_id": feat.get("id"),
-                        "raw_time": props.get("time"),
-                        "magnitude": props.get("mag"),
-                        "mag_type": props.get("magType"),
-                        "place": props.get("place"),
-                        "longitude": coords[0] if len(coords) > 0 else None,
-                        "latitude": coords[1] if len(coords) > 1 else None,
-                        "depth_km": coords[2] if len(coords) > 2 else None,
-                        "tsunami": bool(props.get("tsunami", 0)),
-                        "source_file": file_path.name,
-                    })
+                eq_map = {eq.event_id: eq for eq in earthquakes}
+                for ev in events:
+                    is_ok, reason = ev.validate()
+                    eq = eq_map.get(ev.event_id)
+                    if is_ok:
+                        raw_ms = int(ev.timestamp.timestamp() * 1000)
+                        mag_t = (eq.magnitude_type if eq else ev.severity_unit) or "unk"
+                        valid_records.append(
+                            {
+                                "event_id": ev.event_id,
+                                "raw_time": raw_ms,
+                                "magnitude": float(ev.severity),
+                                "mag_type": mag_t,
+                                "place": (eq.place if eq else "Unknown Location") or "Unknown Location",
+                                "longitude": float(ev.longitude),
+                                "latitude": float(ev.latitude),
+                                "depth_km": float(eq.depth_km) if (eq and eq.depth_km is not None) else 10.0,
+                                "tsunami": bool(eq.tsunami_flag) if eq else False,
+                                "source_file": fname,
+                                "event_time": ev.timestamp.strftime("%Y-%m-%dT%H:%M:%S.%fZ"),
+                                "magnitude_type": mag_t,
+                                "source_id": ev.source_id,
+                                "event_type": ev.event_type,
+                                "updated_at": (ev.updated_at or ev.timestamp).strftime("%Y-%m-%dT%H:%M:%S.%fZ"),
+                                "raw_reference": ev.raw_reference,
+                            }
+                        )
+                    else:
+                        rejected_records.append(
+                            {
+                                "source_id": ev.source_id,
+                                "reason": reason or "validation_failed",
+                                "payload": ev.raw_payload or {"event_id": ev.event_id, "source_file": fname},
+                            }
+                        )
             except Exception as e:
-                logger.error("Error reading file %s: %s", file_path, e)
+                logger.error("Error reading Bronze file %s: %s", file_path, e)
 
-        logger.info("Extracted %d raw records across %d Bronze files", len(all_records), len(bronze_files))
-        return all_records
+        logger.info(
+            "Processed %d Bronze files: %d valid records, %d rejected records",
+            len(bronze_files),
+            len(valid_records),
+            len(rejected_records),
+        )
+        return {"valid": valid_records, "rejected": rejected_records}
 
     @task
-    def clean_and_normalize(records: list) -> list:
-        """Apply data cleansing, coordinate bounds checking, null handling, and deduplication."""
+    def clean_and_normalize(parsed_bundle: dict) -> dict:
+        """Apply deduplication and geophysical feature engineering (radiated energy in Joules)."""
+        records = parsed_bundle.get("valid", [])
+        rejected = parsed_bundle.get("rejected", [])
         if not records:
-            logger.info("No records to process.")
-            return []
+            return {"valid": [], "rejected": rejected}
 
         df = pd.DataFrame(records)
-        initial_count = len(df)
-
-        # 1. Null handling on mandatory primary keys and measurements
-        df = df.dropna(subset=["event_id", "magnitude", "raw_time", "latitude", "longitude"])
-        logger.info("After dropping missing mandatory fields: %d records (dropped %d)", len(df), initial_count - len(df))
-
-        # 2. Type conversions
-        df["magnitude"] = pd.to_numeric(df["magnitude"], errors="coerce")
-        df["latitude"] = pd.to_numeric(df["latitude"], errors="coerce")
-        df["longitude"] = pd.to_numeric(df["longitude"], errors="coerce")
-        df["depth_km"] = pd.to_numeric(df["depth_km"], errors="coerce").fillna(10.0)
-
-        # 3. Validation Bounds Checking
-        valid_coords = (
-            (df["latitude"] >= -90.0) & (df["latitude"] <= 90.0) &
-            (df["longitude"] >= -180.0) & (df["longitude"] <= 180.0)
-        )
-        valid_mag = (df["magnitude"] >= -2.0) & (df["magnitude"] <= 10.0)
-        df = df[valid_coords & valid_mag]
-
-        # 4. Standardization: Time to ISO-8601 UTC string (JSON/XCom serializable)
-        df["event_time"] = pd.to_datetime(df["raw_time"], unit="ms", utc=True).dt.strftime("%Y-%m-%dT%H:%M:%S.%fZ")
-
-        # 5. Text Normalization: trim, title case, null replacement
-        df["place"] = df["place"].fillna("Unknown Location").astype(str).str.strip()
-        df["magnitude_type"] = df["mag_type"].fillna("unknown").astype(str).str.lower().str.strip()
-
-        # 6. Geophysical Feature Engineering: Radiated Seismic Energy in Joules (Gutenberg-Richter)
-        # E = 10^(4.8 + 1.5 * M)
         df["energy_joules"] = df["magnitude"].apply(lambda m: 10 ** (4.8 + 1.5 * float(m)))
-
-        # 7. Deduplication: Keep most recent record per event_id
         df = df.drop_duplicates(subset=["event_id"], keep="last")
 
-        logger.info("Cleansing complete: %d curated records ready for Silver persistence", len(df))
-        return df.to_dict(orient="records")
+        logger.info("Cleansing complete: %d unique curated records ready for Silver persistence", len(df))
+        return {"valid": df.to_dict(orient="records"), "rejected": rejected}
 
     @task
-    def persist_to_silver_parquet(curated_records: list) -> str:
-        """Write curated records to a timestamped Parquet file in datalake_silver/."""
+    def persist_to_silver_parquet(curated_bundle: dict) -> str:
+        """Write curated records to a timestamped Parquet file in datalake_silver/ with uniform 13-column schema."""
+        curated_records = curated_bundle.get("valid", [])
         if not curated_records:
             logger.info("No curated records to write to Parquet.")
             return ""
 
         SILVER_DIR.mkdir(parents=True, exist_ok=True)
-        stamp = datetime.utcnow().strftime("%Y%m%d_%H%M%S")
-        parquet_filename = f"earthquakes_silver_{stamp}.parquet"
-        target_path = SILVER_DIR / parquet_filename
+        stamp = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S")
+        target_path = SILVER_DIR / f"earthquakes_silver_{stamp}.parquet"
 
         df = pd.DataFrame(curated_records)
         df["event_time"] = pd.to_datetime(df["event_time"], utc=True)
-        df.to_parquet(target_path, engine="pyarrow", index=False)
+        silver_cols = [
+            "event_id",
+            "raw_time",
+            "magnitude",
+            "mag_type",
+            "place",
+            "longitude",
+            "latitude",
+            "depth_km",
+            "tsunami",
+            "source_file",
+            "event_time",
+            "magnitude_type",
+            "energy_joules",
+        ]
+        df = df[silver_cols]
+        df.to_parquet(
+            target_path,
+            engine="pyarrow",
+            index=False,
+            coerce_timestamps="us",
+            allow_truncated_timestamps=True,
+        )
 
-        logger.info("Wrote Silver Parquet file: %s (%d rows, %.2f KB)", target_path, len(df), target_path.stat().st_size / 1024.0)
+        logger.info("Wrote Silver Parquet file: %s (%d rows)", target_path, len(df))
         return str(target_path)
 
     @task
-    def persist_to_postgres(curated_records: list):
-        """Upsert curated records into PostgreSQL table earthquakes_curated."""
-        if not curated_records:
+    def persist_to_postgres(curated_bundle: dict):
+        """Upsert curated records and quarantine rejected records into PostgreSQL canonical tables."""
+        curated_records = curated_bundle.get("valid", [])
+        rejected_records = curated_bundle.get("rejected", [])
+        if not curated_records and not rejected_records:
             return
 
         try:
             hook = PostgresHook(postgres_conn_id=CONN_ID)
             conn = hook.get_conn()
-            cursor = conn.cursor()
+            cur = conn.cursor()
 
-            insert_query = """
-            INSERT INTO earthquakes_curated (
-                event_id, event_time, magnitude, magnitude_type, place,
-                latitude, longitude, depth_km, energy_joules, tsunami_alert, source_file
-            ) VALUES %s
-            ON CONFLICT (event_id) DO UPDATE SET
-                event_time = EXCLUDED.event_time,
-                magnitude = EXCLUDED.magnitude,
-                magnitude_type = EXCLUDED.magnitude_type,
-                place = EXCLUDED.place,
-                latitude = EXCLUDED.latitude,
-                longitude = EXCLUDED.longitude,
-                depth_km = EXCLUDED.depth_km,
-                energy_joules = EXCLUDED.energy_joules,
-                tsunami_alert = EXCLUDED.tsunami_alert,
-                source_file = EXCLUDED.source_file,
-                curated_at = NOW();
-            """
+            # 1. Create ingestion_run audit entry
+            cur.execute(
+                """
+                INSERT INTO ingestion_run (source_id, mode, started_at, status, rows_in, rows_new, rows_rejected)
+                VALUES ('usgs_fdsn', 'incremental', CURRENT_TIMESTAMP, 'RUNNING', %s, 0, %s)
+                RETURNING run_id;
+                """,
+                (len(curated_records) + len(rejected_records), len(rejected_records)),
+            )
+            run_id = cur.fetchone()[0]
 
-            rows = [
-                (
-                    r["event_id"],
-                    r["event_time"],
-                    r["magnitude"],
-                    r["magnitude_type"],
-                    r["place"],
-                    r["latitude"],
-                    r["longitude"],
-                    r["depth_km"],
-                    r["energy_joules"],
-                    r["tsunami"],
-                    r["source_file"],
+            # 2. Upsert into canonical 'event' and 'earthquake' tables
+            if curated_records:
+                event_rows = [
+                    (
+                        r["event_id"],
+                        r["source_id"],
+                        r.get("event_type", "earthquake"),
+                        r["event_time"],
+                        r["latitude"],
+                        r["longitude"],
+                        r["magnitude"],
+                        r["magnitude_type"][:20],
+                        r.get("raw_reference"),
+                        r.get("updated_at") or r["event_time"],
+                    )
+                    for r in curated_records
+                ]
+                execute_values(
+                    cur,
+                    """
+                    INSERT INTO event (
+                        event_id, source_id, event_type, timestamp,
+                        latitude, longitude, severity, severity_unit, raw_reference, updated_at
+                    ) VALUES %s
+                    ON CONFLICT (event_id) DO UPDATE SET
+                        timestamp = EXCLUDED.timestamp,
+                        latitude = EXCLUDED.latitude,
+                        longitude = EXCLUDED.longitude,
+                        severity = EXCLUDED.severity,
+                        severity_unit = EXCLUDED.severity_unit,
+                        raw_reference = EXCLUDED.raw_reference,
+                        updated_at = EXCLUDED.updated_at;
+                    """,
+                    event_rows,
+                )
+
+                eq_rows = [
+                    (
+                        r["event_id"],
+                        r["depth_km"],
+                        r["magnitude_type"][:20],
+                        r["place"],
+                        r["tsunami"],
+                    )
+                    for r in curated_records
+                ]
+                execute_values(
+                    cur,
+                    """
+                    INSERT INTO earthquake (
+                        event_id, depth_km, magnitude_type, place, tsunami_flag
+                    ) VALUES %s
+                    ON CONFLICT (event_id) DO UPDATE SET
+                        depth_km = EXCLUDED.depth_km,
+                        magnitude_type = EXCLUDED.magnitude_type,
+                        place = EXCLUDED.place,
+                        tsunami_flag = EXCLUDED.tsunami_flag;
+                    """,
+                    eq_rows,
+                )
+
+                # Backward-compatible upsert into earthquakes_curated
+                curated_rows = [
+                    (
+                        r["event_id"],
+                        r["event_time"],
+                        r["magnitude"],
+                        r["magnitude_type"],
+                        r["place"],
+                        r["latitude"],
+                        r["longitude"],
+                        r["depth_km"],
+                        r["energy_joules"],
+                        r["tsunami"],
+                        r["source_file"],
+                    )
+                    for r in curated_records
+                ]
+                execute_values(
+                    cur,
+                    """
+                    INSERT INTO earthquakes_curated (
+                        event_id, event_time, magnitude, magnitude_type, place,
+                        latitude, longitude, depth_km, energy_joules, tsunami_alert, source_file
+                    ) VALUES %s
+                    ON CONFLICT (event_id) DO UPDATE SET
+                        event_time = EXCLUDED.event_time,
+                        magnitude = EXCLUDED.magnitude,
+                        magnitude_type = EXCLUDED.magnitude_type,
+                        place = EXCLUDED.place,
+                        latitude = EXCLUDED.latitude,
+                        longitude = EXCLUDED.longitude,
+                        depth_km = EXCLUDED.depth_km,
+                        energy_joules = EXCLUDED.energy_joules,
+                        tsunami_alert = EXCLUDED.tsunami_alert,
+                        source_file = EXCLUDED.source_file,
+                        curated_at = NOW();
+                    """,
+                    curated_rows,
+                )
+
+            # 3. Update ingestion_state watermarks per source
+            by_src_max_ts = {}
+            for r in curated_records:
+                s_id = r["source_id"]
+                ts_val = r.get("updated_at") or r["event_time"]
+                if s_id not in by_src_max_ts or ts_val > by_src_max_ts[s_id]:
+                    by_src_max_ts[s_id] = ts_val
+
+            for s_id, max_ts in by_src_max_ts.items():
+                cur.execute(
+                    """
+                    INSERT INTO ingestion_state (source_id, watermark, last_success)
+                    VALUES (%s, %s, CURRENT_TIMESTAMP)
+                    ON CONFLICT (source_id) DO UPDATE SET
+                        watermark = EXCLUDED.watermark,
+                        last_success = CURRENT_TIMESTAMP;
+                    """,
+                    (s_id, str(max_ts)[:100]),
+                )
+
+            # 4. Cross-source event matching into event_group
+            from src.models import CanonicalEvent
+            from src.matching import build_cross_source_event_groups
+
+            canonical_objs = [
+                CanonicalEvent(
+                    event_id=r["event_id"],
+                    source_id=r["source_id"],
+                    event_type=r.get("event_type", "earthquake"),
+                    timestamp=datetime.fromisoformat(r["event_time"].replace("Z", "+00:00")),
+                    latitude=float(r["latitude"]),
+                    longitude=float(r["longitude"]),
+                    severity=float(r["magnitude"]),
+                    severity_unit=r["magnitude_type"],
                 )
                 for r in curated_records
             ]
+            group_rows, match_metrics = build_cross_source_event_groups(canonical_objs)
+            if group_rows:
+                execute_values(
+                    cur,
+                    """
+                    INSERT INTO event_group (group_id, event_id)
+                    VALUES %s
+                    ON CONFLICT (group_id, event_id) DO NOTHING;
+                    """,
+                    group_rows,
+                )
 
-            execute_values(cursor, insert_query, rows)
+            # 5. Quarantine rejected records into rejected_record
+            if rejected_records:
+                rej_rows = [
+                    (run_id, r["source_id"], r["reason"], Json(r["payload"]))
+                    for r in rejected_records
+                ]
+                execute_values(
+                    cur,
+                    """
+                    INSERT INTO rejected_record (run_id, source_id, reason, payload)
+                    VALUES %s;
+                    """,
+                    rej_rows,
+                )
+
+            # 6. Complete ingestion_run audit entry
+            cur.execute(
+                """
+                UPDATE ingestion_run
+                SET finished_at = CURRENT_TIMESTAMP,
+                    status = 'SUCCESS',
+                    rows_new = %s
+                WHERE run_id = %s;
+                """,
+                (len(curated_records), run_id),
+            )
+
             conn.commit()
-            cursor.close()
+            cur.close()
             conn.close()
-            logger.info("Successfully upserted %d records into PostgreSQL earthquakes_curated", len(rows))
+            logger.info(
+                "Successfully persisted %d canonical events, %d event_group links, and %d quarantined records to PostgreSQL",
+                len(curated_records),
+                len(group_rows),
+                len(rejected_records),
+            )
         except Exception as e:
-            logger.warning("PostgreSQL upsert skipped or encountered issue: %s", e)
+            logger.warning("PostgreSQL upsert encountered issue: %s", e)
 
-    # FileSensor operator detecting new raw JSON files in datalake_bronze/
     wait_for_bronze_files = FileSensor(
         task_id="wait_for_bronze_files",
         filepath="datalake_bronze/earthquakes_*.json",
@@ -242,14 +460,13 @@ def silver_processing_pipeline():
         mode="poke",
     )
 
-    # DAG Task Dependency Flow
     db_prep = prepare_database()
-    raw_records = find_and_load_bronze_records()
-    clean_data = clean_and_normalize(raw_records)
-    write_parquet = persist_to_silver_parquet(clean_data)
-    write_db = persist_to_postgres(clean_data)
+    parsed_bundle = find_and_parse_bronze_records()
+    clean_bundle = clean_and_normalize(parsed_bundle)
+    write_parquet = persist_to_silver_parquet(clean_bundle)
+    write_db = persist_to_postgres(clean_bundle)
 
-    wait_for_bronze_files >> db_prep >> raw_records >> clean_data >> [write_parquet, write_db]
+    wait_for_bronze_files >> db_prep >> parsed_bundle >> clean_bundle >> [write_parquet, write_db]
 
 
 silver_dag = silver_processing_pipeline()

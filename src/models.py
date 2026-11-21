@@ -13,24 +13,45 @@ class CanonicalEvent:
     source_id: str
     event_type: str = "earthquake"
     timestamp: Optional[datetime] = None
-    latitude: float = 0.0
-    longitude: float = 0.0
-    severity: float = 0.0
+    latitude: Optional[float] = 0.0
+    longitude: Optional[float] = 0.0
+    severity: Optional[float] = 0.0
     severity_unit: str = "unk"
     raw_reference: Optional[str] = None
     updated_at: Optional[datetime] = None
+    raw_payload: Optional[Dict[str, Any]] = None
+
+    def validate(self) -> tuple[bool, Optional[str]]:
+        """Validates mandatory attributes and physical bounds, returning (is_valid, rejection_reason)."""
+        if not self.event_id or self.event_id.endswith("_"):
+            return False, "missing_event_id"
+        if self.timestamp is None:
+            return False, "missing_timestamp"
+        if self.latitude is None or self.longitude is None:
+            return False, "missing_coordinates"
+        try:
+            lat = float(self.latitude)
+            lon = float(self.longitude)
+        except (TypeError, ValueError):
+            return False, "invalid_coordinate_type"
+        if not (-90.0 <= lat <= 90.0):
+            return False, f"latitude_out_of_bounds ({lat})"
+        if not (-180.0 <= lon <= 180.0):
+            return False, f"longitude_out_of_bounds ({lon})"
+        if self.severity is None:
+            return False, "missing_severity"
+        try:
+            sev = float(self.severity)
+        except (TypeError, ValueError):
+            return False, "invalid_severity_type"
+        if sev < -1.0 or sev > 10.0:
+            return False, f"severity_out_of_bounds ({sev})"
+        return True, None
 
     def is_valid(self) -> bool:
         """Validates that coordinates and severity fall within valid physical bounds."""
-        if not (-90.0 <= self.latitude <= 90.0):
-            return False
-        if not (-180.0 <= self.longitude <= 180.0):
-            return False
-        if self.timestamp is None:
-            return False
-        if self.severity is None or self.severity < -1.0 or self.severity > 10.0:
-            return False
-        return True
+        valid, _ = self.validate()
+        return valid
 
 @dataclass
 class EarthquakeDetail:

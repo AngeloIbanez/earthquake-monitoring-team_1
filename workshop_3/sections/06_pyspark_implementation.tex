@@ -1,0 +1,36 @@
+% ======================================================================
+% SECTION 06: PYSPARK IMPLEMENTATION AND GOLD LAYER DAG
+% ======================================================================
+\section{PySpark Implementation and Gold Layer DAG}
+
+\subsection{Containerized SparkSession Setup in \texttt{local[*]} Mode}
+Inspecting the base \texttt{apache/airflow:2.10.4} Docker image revealed that it does not ship with a Java Virtual Machine (JVM), which is mandatory for PySpark execution. We therefore created a custom \texttt{Dockerfile} extending \texttt{apache/airflow:2.10.4} that installs OpenJDK~17 (\texttt{default-jre-headless}, \texttt{JAVA\_HOME=/usr/lib/jvm/default-java}) as \texttt{root} and pre-installs \texttt{pyspark>=3.5.0}, \texttt{pandas>=2.2.0}, \texttt{polars>=1.0.0}, and \texttt{pyarrow>=14.0.0} under the \texttt{airflow} user.
+
+In \texttt{src/gold\_pyspark.py}, \texttt{create\_spark\_session()} initializes PySpark in local multi-threaded mode (\texttt{local[*]}), utilizing all available container CPU cores with a $2\,\text{GB}$ driver heap:
+\begin{lstlisting}[language=Python, caption={PySpark Session Configuration and Folder-Level Parquet Read in \texttt{src/gold\_pyspark.py}}]
+def create_spark_session(app_name: str = "Team1_Earthquake_Gold_Pipeline") -> SparkSession:
+    return (
+        SparkSession.builder.master("local[*]")
+        .appName(app_name)
+        .config("spark.driver.memory", "2g")
+        .config("spark.sql.parquet.enableVectorizedReader", "false")
+        .config("spark.sql.parquet.outputTimestampType", "TIMESTAMP_MICROS")
+        .config("spark.sql.session.timeZone", "UTC")
+        .config("spark.ui.enabled", "false")
+        .getOrCreate()
+    )
+
+# Simulates cloud storage folder read pattern across all Silver partitions
+raw_df = spark.read.parquet(str(silver_dir))
+dedup_df = enriched_df.dropDuplicates(["event_id"]).cache()
+\end{lstlisting}
+
+During container integration testing, we also discovered that \texttt{apache/airflow:2.10.4}'s pre-installed \texttt{pandas==2.1.4} triggered a \texttt{PySparkImportError: [UNSUPPORTED\_PACKAGE\_VERSION] Pandas >= 2.2.0 must be installed} when passing a Pandas DataFrame to \texttt{spark.createDataFrame()}. Refactoring \texttt{src/gold\_pyspark.py} to pass native Python dictionary lists directly to \texttt{spark.createDataFrame(gov\_rows)} and \texttt{spark.createDataFrame(story\_rows)} bypassed the Pandas conversion bottleneck entirely and allowed PySpark to write clean, single-file Snappy-compressed Parquet outputs via \texttt{coalesce(1).write.mode("overwrite").parquet()}.
+
+\subsection{Gold Layer Airflow DAG (\texttt{gold\_processing\_dag.py})}
+The Gold pipeline is orchestrated by \texttt{airflow/dags/gold\_processing\_dag.py} using Airflow's TaskFlow API (\texttt{@dag}, \texttt{@task}) on a 6-hour schedule (\texttt{0 */6 * * *}) with manual trigger support:
+\begin{enumerate}
+    \item \texttt{verify\_silver\_inputs()}: Scans \texttt{/opt/airflow/datalake\_silver/} and validates that readable Silver Parquet partitions are present.
+    \item \texttt{execute\_pyspark\_gold\_aggregations(silver\_file\_count)}: Invokes \texttt{run\_gold\_pipeline()}, launching the \texttt{local[*]} SparkSession, executing both DataFrame API and Spark SQL transformations over \texttt{silver\_earthquakes}, and writing \texttt{governance\_YYYYMMDD\_HHMMSS.parquet} and \texttt{storytelling\_YYYYMMDD\_HHMMSS.parquet} into \texttt{/opt/airflow/datalake\_gold/}.
+    \item \texttt{validate\_gold\_outputs(gold\_paths)}: Reads back both generated Gold Parquet files to verify non-empty row counts and schema integrity before marking the DAG run as \texttt{SUCCESS}.
+\end{enumerate}

@@ -1,0 +1,30 @@
+% ======================================================================
+% SECTION 04: GOVERNANCE SUMMARY — KPI DEFINITION AND IMPLEMENTATION
+% ======================================================================
+\section{Governance Summary --- KPI Definition and Implementation}
+
+All Data Governance KPIs are computed in PySpark within \texttt{src/gold\_pyspark.py} and persisted as a unified, strongly typed schema in \texttt{datalake\_gold/governance\_YYYYMMDD\_HHMMSS.parquet} ($113$ rows across $6$ KPI categories). Each row contains \texttt{kpi\_category}, \texttt{metric\_name}, \texttt{source\_id}, \texttt{period\_date}, \texttt{metric\_value}, \texttt{secondary\_value}, quantile bounds (\texttt{min\_value}, \texttt{median\_value}, \texttt{max\_value}), \texttt{threshold\_value}, \texttt{compliance\_status} (\texttt{PASS}/\texttt{WARN}), \texttt{unit}, and \texttt{computed\_at}.
+
+\subsection{Formal KPI Definitions and Computation Logic}
+\begin{enumerate}
+    \item \textbf{Null Rate \& Default-Depth Pinning Rate per Field (\texttt{null\_rate\_per\_field}, 13 rows):}
+    For every Silver column $c$, PySpark evaluates:
+    \begin{equation}
+    \text{NullRate}(c) = \frac{1}{N_{\text{unique}}} \sum_{i=1}^{N_{\text{unique}}} \mathbb{I}\big(c_i \text{ IS NULL} \lor \text{trim}(c_i) = \text{""}\big) \times 100\%
+    \end{equation}
+    with a threshold of $5.0\%$ (\texttt{PASS} for all 12 physical columns at $0.0000\%$). In addition, we compute the implicit default depth pinning rate $\mathbb{I}(|d_i - 10.0| < 10^{-4})$, which evaluates to $29.8498\%$ ($974$ events) and triggers a \texttt{WARN} status against our $25.0\%$ sensitivity notice threshold (hard limit $35.0\%$).
+    \item \textbf{Volume Metrics by Source and Over Time (\texttt{volume\_by\_source}, 4 rows; \texttt{volume\_over\_time}, 80 rows):}
+    Aggregates deduplicated record counts $N_s$ and catalog share $N_s / N_{\text{unique}} \times 100\%$ per source (\texttt{usgs\_realtime}: $1,761$ rows / $46.27\%$; \texttt{usgs\_fdsn}: $1,406$ rows / $36.94\%$; \texttt{emsc\_fdsn}: $627$ rows / $16.47\%$; \texttt{gdacs\_realtime}: $12$ rows / $0.32\%$ in the latest Docker run), as well as daily ingested volume and cumulative growth per date and source.
+    \item \textbf{Duplicate \& Cross-Source Overlap Rate (\texttt{summary}):}
+    Tracks both intra-lake snapshot duplication across multiple Silver Parquet files:
+    \begin{equation}
+    \text{DupRate}_{\text{lake}} = \frac{N_{\text{raw\_parquet}} - N_{\text{unique}}}{N_{\text{raw\_parquet}}} \times 100\%
+    \end{equation}
+    ($23.10\%$ to $30.76\%$ as new Silver snapshots accumulate) and cross-catalog duplicate event matching ($568$ to $637$ matched earthquake pairs across USGS, EMSC, and GDACS).
+    \item \textbf{Schema Compliance Rate (\texttt{summary}):}
+    Percentage of curated Silver records satisfying WGS-84 coordinate bounds ($\text{lat} \in [-90, 90]$, $\text{lon} \in [-180, 180]$), physical magnitude bounds ($M \in [-1.0, 10.0]$), and non-null primary keys ($100.0000\%$ in Silver; $3$ raw records quarantined prior to Silver persistence).
+    \item \textbf{Outlier Rate per Numeric Field (\texttt{outlier\_rate\_per\_numeric\_field}, 4 rows):}
+    Uses Spark SQL \texttt{percentile\_approx(col, [0.25, 0.50, 0.75])} to compute $Q_1$, median, $Q_3$, and $\text{IQR} = Q_3 - Q_1$, flagging records outside $[Q_1 - 1.5\,\text{IQR}, Q_3 + 1.5\,\text{IQR}]$ against a $15.0\%$ threshold (\texttt{magnitude}: $0.00\%$, \texttt{log10\_energy}: $0.00\%$, \texttt{energy\_joules}: $12.32\%$ \texttt{PASS}, \texttt{depth\_km}: $16.67\%$ \texttt{WARN} due to deep subduction zones).
+    \item \textbf{Text Length Statistics (\texttt{text\_length\_statistics}, 4 rows):}
+    Computes mean, median, min, and max character length of \texttt{place} per catalog using \texttt{F.length(F.col("place"))}, monitoring structural consistency across agencies.
+\end{enumerate}

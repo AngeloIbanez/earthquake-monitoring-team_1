@@ -120,11 +120,8 @@ In modern civil protection operations, the "Current Situation" is defined as a m
 
 ### Persona Profile: Seismic Risk Officer & Disaster Response Coordinator
 
-```mermaid
-card
-title: "Dr. Elena Vance — Chief Seismic Risk Officer"
-subtitle: "National Emergency Management Agency (Civil Defense)"
-```
+> **Persona Profile:** **Dr. Elena Vance — Chief Seismic Risk Officer**  
+> *National Emergency Management Agency (Civil Defense)*
 
 * **Role & Background:** Lead geophysicist and technical advisor embedded within the National Emergency Operations Center (EOC). Responsible for 24/7 situational awareness, early warning dissemination, and operational response escalation.
 * **Core Objectives:**
@@ -147,7 +144,7 @@ graph LR
         US1["US-01: Real-Time Ingestion & Alerting<br>(Monitoring)"]
         US2["US-02: Cross-Source Deduplication<br>(Data Trust)"]
     end
-    subgraph "Should Have (Analytics & Audit)"
+    subgraph "Should Have (Analytics & Governance)"
         US3["US-03: SAAI Anomaly Indicator<br>(Analysis)"]
         US4["US-04: Automated Quarantine Logging<br>(Data Trust)"]
     end
@@ -162,7 +159,7 @@ graph LR
 | **US-01** | **Must Have** | Monitoring | *As a* Risk Officer, *I want* incremental polling of USGS and GDACS feeds every 5–15 minutes, *so that* newly detected earthquakes are available in the database within minutes of occurrence. | - Ingests USGS `all_day.geojson` every 5m.<br>- Tracks `properties.updated` watermark.<br>- Idempotent upserts on `event_id`. |
 | **US-02** | **Must Have** | Data Trust | *As a* Seismic Analyst, *I want* incoming events from USGS and EMSC reconciled via 1-to-1 nearest-neighbor matching, *so that* real-world earthquakes are not counted twice. | - Matches within 15 min and 100 km.<br>- Dimensionless cost metric eliminates 1-to-N collisions.<br>- Groups linked in `event_group` table. |
 | **US-03** | **Should Have** | Analysis | *As a* Risk Officer, *I want* the system to calculate the Seismic Activity Anomaly Index (SAAI) over rolling 24-hour windows, *so that* I can instantly identify abnormal regional swarm activity. | - Normalizes event count $N_{24h}$ and energy $E_{24h}$.<br>- Updates rolling 30-day baseline.<br>- Triggers visual anomaly warnings when $\text{SAAI} > 2.0$. |
-| **US-04** | **Should Have** | Data Trust | *As a* Data Engineer, *I want* malformed records (e.g. invalid coordinates or missing magnitudes) routed into a quarantine table, *so that* pipeline runs never crash and bad data can be audited. | - Pre-ingestion validation rules.<br>- Offending records stored in `rejected_record` with JSONB payload and error reason. |
+| **US-04** | **Should Have** | Data Trust | *As a* Data Engineer, *I want* malformed records (e.g. invalid coordinates or missing magnitudes) routed into a quarantine table, *so that* pipeline runs never crash and bad data can be inspected. | - Pre-ingestion validation rules.<br>- Offending records stored in `rejected_record` with JSONB payload and error reason. |
 | **US-05** | **Could Have** | Monitoring | *As an* Operations Specialist, *I want* an interactive geospatial map displaying hypocentral depths and magnitude circles, *so that* emergency personnel can visually assess spatial impact. | - Interactive scatter map with depth color ramp.<br>- Filtering by source, magnitude, and time window. |
 | **US-06** | **Could Have** | Analysis | *As a* Seismologist, *I want* the system to plot empirical aftershock decay against Omori's law curves, *so that* I can evaluate whether a seismic sequence is decaying as expected. | - Automated aftershock extraction following $M \ge 6.0$ events.<br>- Fits $n(t) = K / (t + c)^p$ over 14 days. |
 
@@ -201,11 +198,11 @@ graph LR
 
 | Risk ID | Hazard / Risk Description | Severity | Likelihood | Mitigation Strategy | Technical Implementation |
 |:---:|---|:---:|:---:|---|---|
-| **R-01** | **Upstream API Rate Limiting & Outages**<br>USGS or EMSC servers throttle requests (HTTP 429) or suffer downtime during major global crises. | High | Medium | Exponential backoff retry with jitter, multi-source fallback (switching to EMSC if USGS fails), and local disk caching. | Client-side rate-limiter in `ingest.py`, respects `Retry-After` header; fallback logic in `src/parsers.py`. |
-| **R-02** | **Schema Drift & Endpoint Deprecation**<br>Institutions modify payload structures (e.g., GDACS GeoJSON 404 incident). | High | High | Pre-ingestion schema validation, decoupled XML/GeoJSON parsers, and explicit quarantine routing. | Pydantic/dataclass validation; errors logged into `rejected_record` without crashing pipeline. |
-| **R-03** | **Ambiguous Cross-Catalog Matching**<br>High-density aftershock swarms cause 1-to-N matching collisions. | Medium | High | Multi-dimensional normalized spatio-temporal cost metric and greedy 1-to-1 nearest-neighbor assignment. | Implemented in `src/matching.py`, resolving 100% of candidate collisions. |
-| **R-04** | **Downstream Distortion from Preliminary Revisions**<br>Automated preliminary solutions overwrite reviewed data or cause flip-flopping watermarks. | Medium | High | High-water mark tracks `properties.updated` (not origin time) with a 24-hour rolling overlap window. | Documented in `workshop_1/polling_evidence.md`; SQL upsert with `updated_at = CURRENT_TIMESTAMP`. |
-| **R-05** | **Large Historical Volume API Cap Breaches**<br>Months with $> 20,000$ events cause USGS FDSN truncation or HTTP 400 errors. | High | Medium | Recursive temporal bisection algorithm splitting overflowing windows into halves until response $< 20,000$. | Documented in `workshop_1/mapping.md`; implemented in historical ingestion worker. |
+| **R-01** | **Upstream API Rate Limiting & Outages**<br>USGS or EMSC servers throttle requests (HTTP 429) or suffer downtime during major global crises. | High | Medium | Exponential backoff retry, polite inter-window pacing, multi-source coverage (USGS + EMSC + GDACS), and local landing zone caching. | Implemented via `fetch_with_retry` and `save_raw_payload` in `src/extractors.py`. |
+| **R-02** | **Schema Drift & Endpoint Deprecation**<br>Institutions modify payload structures (e.g., GDACS GeoJSON 404 incident). | High | High | Pre-ingestion schema validation, decoupled XML/GeoJSON parsers, and explicit quarantine routing. | Dataclass validation (`CanonicalEvent.validate()` in `src/models.py`); errors logged into `rejected_record` (`src/db.py`). |
+| **R-03** | **Ambiguous Cross-Catalog Matching**<br>High-density aftershock swarms cause 1-to-N matching collisions. | Medium | High | Multi-dimensional normalized spatio-temporal cost metric, greedy 1-to-1 nearest-neighbor assignment, and Union-Find transitive grouping. | Implemented in `src/matching.py` (`match_events_nearest_neighbor` and `build_cross_source_event_groups`). |
+| **R-04** | **Downstream Distortion from Preliminary Revisions**<br>Automated preliminary solutions overwrite reviewed data or cause flip-flopping watermarks. | Medium | High | High-water mark tracks `properties.updated` (not origin time) with a 24-hour/48-hour rolling overlap window. | Documented in `workshop_1/polling_evidence.md`; implemented via `_filter_by_watermark_window` in `ingest.py`. |
+| **R-05** | **Large Historical Volume API Cap Breaches**<br>Months with $> 20,000$ events cause USGS FDSN truncation or HTTP 400 errors. | High | Medium | Recursive temporal bisection algorithm splitting overflowing windows into halves until response $< 20,000$ (USGS) or $< 10,000$ (EMSC). | Documented in `workshop_1/canonical mapping table.md`; implemented via `_fetch_window_with_bisection` in `src/extractors.py`. |
 
 ---
 

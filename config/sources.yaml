@@ -100,6 +100,6 @@ sources:
       overlap_window_hours: 48
       notes: >
         Records are filtered server-side by eventtype=EQ only after parsing.
-        Magnitude is extracted via regex from <gdacs:severity> (e.g. 'Magnitude 6.4M, Depth:17km').
+        Magnitude and focal depth are extracted via regex from <gdacs:severity> (e.g. 'Magnitude 6.4M, Depth:17km').
         Coordinates are parsed from <georss:point> ('lat lon' space-separated string).
-        No depth field available in this feed; set depth_km = null for all GDACS records.
+        Extracted depths outside [-5.0, 800.0] km or missing depth tokens are normalized to null.

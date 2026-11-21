@@ -1,0 +1,58 @@
+% ======================================================================
+% SECTION 03: DATA QUALITY FINDINGS IN THE SILVER LAYER
+% ======================================================================
+\section{Data Quality Findings in the Silver Layer}
+
+To ground our Data Governance KPIs in empirical evidence rather than theoretical assumptions, we executed a comprehensive statistical audit across all accumulated Silver Parquet partitions in \texttt{notebooks/03\_silver\_data\_quality\_findings.ipynb} ($4,243$ total Silver rows across snapshots, yielding $3,263$ unique deduplicated events across \texttt{usgs\_fdsn}, \texttt{emsc\_fdsn}, \texttt{usgs\_realtime}, and \texttt{gdacs\_realtime}). Table~\ref{tab:silver_stats} presents the descriptive statistics of the curated Silver corpus, and Table~\ref{tab:quality_findings} summarizes the five primary data quality findings.
+
+\begin{table}[!t]
+\centering
+\caption{Descriptive Statistics Across the Deduplicated Silver Layer Corpus ($N = 3,263$ Unique Events)}
+\label{tab:silver_stats}
+\begin{tabular}{lrrrrr}
+\toprule
+\textbf{Statistic} & \textbf{Mag ($M$)} & \textbf{Depth (km)} & \textbf{Lat ($^\circ$)} & \textbf{Lon ($^\circ$)} & \textbf{$\log_{10} E$ (J)} \\
+\midrule
+Count & 3,263 & 3,263 & 3,263 & 3,263 & 3,263 \\
+Mean & 2.988 & 31.083 & 26.924 & $-45.832$ & 9.282 \\
+Std. Dev. & 1.723 & 71.693 & 29.161 & 122.713 & 2.585 \\
+Min & $-0.910$ & $-5.000$ & $-63.902$ & $-179.997$ & 3.435 \\
+25\% ($Q_1$) & 1.520 & 6.370 & 6.564 & $-147.365$ & 7.080 \\
+50\% (Med) & 2.490 & 10.000 & 34.972 & $-115.163$ & 8.535 \\
+75\% ($Q_3$) & 4.700 & 20.000 & 49.258 & 113.448 & 11.850 \\
+95\% & 5.200 & 121.668 & 61.780 & 159.647 & 12.600 \\
+Max & 6.600 & 626.486 & 69.750 & 179.939 & 14.700 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table*}[!t]
+\centering
+\caption{Structured Summary of Silver Layer Data Quality Findings and Handling Strategies}
+\label{tab:quality_findings}
+\begin{tabularx}{\textwidth}{llllXX}
+\toprule
+\textbf{ID} & \textbf{Affected Column(s)} & \textbf{Issue Nature} & \textbf{Observed Frequency / Severity} & \textbf{Handling Strategy Applied} & \textbf{Resulting Governance KPI} \\
+\midrule
+DQ-1 & \texttt{magnitude} (\texttt{severity}) & Missing (\texttt{None}) values in real-time streams & 3 records ($0.17\%$) in \texttt{usgs\_realtime} raw feed & Removed silent \texttt{0.0} fallback; quarantined to \texttt{rejected\_record} with reason \texttt{missing\_severity} & \texttt{null\_rate\_per\_field} \& \texttt{quarantined\_records\_detected} \\
+DQ-2 & \texttt{depth\_km} & Artificial default depth pinning at exactly $10.0\,\text{km}$ & $974 / 3,263$ events ($29.85\%$ overall; $98.25\%$ in \texttt{emsc\_fdsn}, $34.53\%$ in \texttt{usgs\_fdsn}) & Retained valid $10.0\,\text{km}$ depth but flagged via binary indicator \texttt{is\_pinned\_10km} & \texttt{depth\_km\_pinned\_default\_10km} ($35\%$ WARN threshold) \\
+DQ-3 & \texttt{energy\_joules}, \texttt{depth\_km} & Heavy right-skewness and statistical outliers & Linear \texttt{energy\_joules}: $402$ IQR outliers ($12.32\%$); \texttt{depth\_km}: $544$ IQR outliers ($16.67\%$) & Applied $\log_{10} E = 4.8 + 1.5M$ transformation ($0.00\%$ IQR outliers on $\log_{10} E$); retained deep subduction focus & \texttt{outlier\_rate\_per\_numeric\_field} (Tukey $1.5\,\text{IQR}$) \\
+DQ-4 & \texttt{place} & Structural \& length asymmetry across catalogs & Mean length: $21.98$ chars (EMSC), $29.50$ chars (USGS), $115.17$ chars (GDACS XML titles) & Regex region extraction stripping distance-bearing prefixes (\texttt{"X km DIR of "}) and GDACS timestamps & \texttt{text\_length\_statistics} (mean, median, min, max per source) \\
+DQ-5 & \texttt{event\_id} & Intra-lake snapshot duplication \& inter-catalog overlap & $980 / 4,243$ snapshot duplicates ($23.10\%$); $637$ cross-catalog duplicate earthquake pairs & PySpark \texttt{dropDuplicates(["event\_id"])} across Silver files + 1-to-1 matching into \texttt{event\_group} & \texttt{intra\_lake\_duplicate\_rate\_pct} \& \texttt{cross\_source\_matched\_pairs} \\
+\bottomrule
+\end{tabularx}
+\end{table*}
+
+\subsection{Detailed Analysis of Observed Findings}
+\begin{enumerate}
+    \item \textbf{Zero Post-Curation Nulls vs. High Implicit Depth Pinning (DQ-1 \& DQ-2):} While explicit column null rates in the curated Silver Parquet files are $0.0000\%$ across all $13$ columns (because missing mandatory fields are intercepted into \texttt{rejected\_record} and missing secondary strings default to \texttt{"Unknown Location"}), statistical profiling exposed that $29.85\%$ of all events ($974$ rows) are pinned at an artificial focal depth of exactly $10.0\,\text{km}$. Broken down by agency, \texttt{emsc\_fdsn} pins $98.25\%$ ($616/627$) of its global $M \ge 4.5$ events at $10.0\,\text{km}$, whereas \texttt{usgs\_realtime} (dense regional US networks) pins only $3.24\%$ ($57/1,761$). A standard null check misses this domain artifact completely, justifying our dedicated \texttt{depth\_km\_pinned\_default\_10km} KPI.
+    \item \textbf{Outlier Behavior in Radiated Energy and Subduction Depths (DQ-3):} Under Tukey's $1.5\times\text{IQR}$ rule, \texttt{magnitude} ($Q_1=1.52$, $Q_3=4.70$, $\text{IQR}=3.18$) exhibits $0.00\%$ outliers. Conversely, raw \texttt{energy\_joules} ($E = 10^{4.8+1.5M}$) spans from $2.72\times 10^3\,\text{J}$ to $5.01\times 10^{14}\,\text{J}$, flagging $402$ events ($12.32\%$) as IQR outliers ($25$ events with $|Z|>3$). Transforming energy to $\log_{10} E$ stabilizes variance and yields $0.00\%$ IQR outliers. Similarly, \texttt{depth\_km} ($Q_1=6.37\,\text{km}$, $Q_3=20.00\,\text{km}$) flags $544$ intermediate and deep Wadati-Benioff subduction earthquakes ($>40.45\,\text{km}$, up to $626.49\,\text{km}$) as statistical outliers ($16.67\%$), proving that domain-aware depth regime classification is required alongside raw IQR flags.
+    \item \textbf{Text Length Divergence Across Agencies (DQ-4):} Character length profiling of \texttt{place} shows three distinct distributions: EMSC uses concise uppercase Flinn-Engdahl region names (mean $21.98\,\text{chars}$, max $32$), USGS uses relative distance/bearing phrases (mean $27.60\text{--}29.50\,\text{chars}$, max $55$), and GDACS embeds full alert summaries in its title strings (mean $115.17\,\text{chars}$, range $102\text{--}131$).
+\end{enumerate}
+
+\begin{figure*}[!t]
+\centering
+\includegraphics[width=0.96\textwidth]{figures/fig1_silver_quality_findings.pdf}
+\caption{Empirical Silver-layer data quality diagnostics generated from \texttt{notebooks/03\_silver\_data\_quality\_findings.ipynb}: (a) default $10.0\,\text{km}$ focal depth pinning rates across seismological agencies, (b) linear vs.\ logarithmic radiated seismic energy outlier distributions, and (c) \texttt{place} descriptor character length distributions by source.}
+\label{fig:silver_quality}
+\end{figure*}

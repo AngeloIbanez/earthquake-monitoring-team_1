@@ -61,7 +61,7 @@ Post-facto diff analysis systematically identifies:
 |---|---|
 | **Feed URL** | `https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_hour.geojson` |
 | **Poll timestamp (UTC)** | `2026-11-09T06:52:11Z` |
-| **Elapsed time since Poll #1** | **78 minutes, 23 seconds** ($\ge 60\text{ min}$ rubric threshold met) |
+| **Elapsed time since Poll #1** | **78 minutes, 23 seconds** ($\ge 60\text{ min}$ minimum separation window) |
 | **Events in feed** | 10 |
 
 ### Event Snapshot — Poll #2

@@ -1,0 +1,51 @@
+% ======================================================================
+% SECTION 02: TECHNICAL ARCHITECTURE DOCUMENT
+% ======================================================================
+\section{Technical Architecture Document}
+
+\subsection{System Architecture and Data Flow}
+Fig.~\ref{fig:architecture} illustrates the five-stage Medallion pipeline architecture, delineating component boundaries, transport protocols, and storage formats. Table~\ref{tab:components} details each component's purpose, technology stack, inputs, outputs, and adjacent interactions.
+
+\begin{table*}[!t]
+\caption{System Component Specifications, Interfaces, and Architectural Rationale}
+\label{tab:components}
+\centering
+\footnotesize
+\renewcommand{\arraystretch}{1.18}
+\begin{tabularx}{\textwidth}{p{2.2cm} p{2.2cm} p{2.5cm} p{2.7cm} X}
+\toprule
+\textbf{Component} & \textbf{Technology} & \textbf{Inputs} & \textbf{Outputs} & \textbf{Purpose, Adjacent Interactions, and Justification} \\
+\midrule
+\textbf{External Sources} & USGS FDSN, EMSC, GDACS APIs & HTTP GET query parameters (UTC window, $M_{\min}$) & Raw GeoJSON, JSON, RSS 2.0 XML & Authoritative global seismological networks providing historical archives and real-time event telemetry without proprietary API keys. \\
+\textbf{Airflow Scheduler \& Webserver} & Apache Airflow 2.10.4 (\texttt{LocalExecutor}) & Python DAG files in \texttt{/opt/airflow/dags} & Task processes, XCom metadata, UI on port \texttt{8080} & Parses DAG topologies, triggers scheduled intervals, manages task retries, and exposes operational observability via the web interface. \\
+\textbf{Bronze Layer Landing Zone} & Host Volume Mount (\texttt{datalake\_bronze/}) & Unmodified JSON dictionaries from Bronze DAG & \texttt{earthquakes\_}\allowbreak\texttt{YYYYMMDD\_}\allowbreak\texttt{HHMMSS.json} & Preserves immutable raw API responses exactly as received. Enables full historical replayability and audit provenance if downstream schemas evolve. \\
+\textbf{Silver Processing Engine} & Python 3.12, Pandas 2.x, Polars, PyArrow & Raw Bronze JSON files detected via \texttt{FileSensor} & Cleaned DataFrames, ISO-8601 XCom records, logs & Enforces null handling, WGS84 coordinate bounds, physical magnitude checks, text normalization, energy feature engineering, and deduplication. \\
+\textbf{Silver Layer Persistence} & Apache Parquet + PostgreSQL 16 (Port \texttt{5440}) & Curated DataFrame from Silver DAG & \texttt{earthquakes\_}\allowbreak\texttt{silver\_*.parquet} \& \texttt{earthquakes\_}\allowbreak\texttt{curated} & Dual persistence: Parquet provides compressed columnar files for PySpark (Workshop~\#3); PostgreSQL provides indexed ACID storage for operational queries. \\
+\textbf{Gold Layer \& Dashboard (Planned)} & PySpark (\texttt{local[*]}) \& Plotly Dash (\texttt{:8050}) & Silver Parquet files in \texttt{datalake\_}\allowbreak\texttt{silver/} & \texttt{governance\_*.parquet}, \allowbreak\texttt{storytelling\_*.parquet}, Web UI & Consolidates multi-run Silver Parquet files into governance KPIs and the Seismic Activity Anomaly Index (SAAI) for emergency decision support. \\
+\bottomrule
+\end{tabularx}
+\end{table*}
+
+\subsection{Justification of Technology Choices}
+\begin{enumerate}
+    \item \textbf{Apache Airflow 2.10.4 with TaskFlow API:} Airflow provides native Pythonic workflow-as-code orchestration, deterministic execution intervals (\texttt{data\_interval\_start}), automatic retry policies with backoff, and sensor operators (\texttt{FileSensor}). Using the modern \texttt{@dag} and \texttt{@task} decorators eliminates verbose operator boilerplate and manages inter-task data passing via XComs.
+    \item \textbf{Pandas and Polars for Silver Preprocessing:} Seismic telemetry arrives as deeply nested hierarchical JSON (\texttt{features[].properties} and \texttt{features[].geometry.coordinates}). Flattening these structures into Pandas/Polars DataFrames enables vectorized C/Rust-backed operations for type coercion, regular-expression string cleaning, vectorized logarithmic energy computation, and hash-based deduplication in milliseconds.
+    \item \textbf{Apache Parquet (PyArrow) for Silver Persistence:} Unlike CSV or JSON, which are row-oriented, untyped, and verbose, Apache Parquet is a binary columnar format with embedded schema metadata and Snappy compression~\cite{parquet_docs}. In our empirical runs, a $140.7\text{ KB}$ raw Bronze JSON payload compresses to a $24.81\text{ KB}$ Silver Parquet file---an \textbf{$82.4\%$ storage reduction}---while preserving exact \texttt{datetime64[ns, UTC]} and \texttt{float64} types required for zero-copy folder reads (\texttt{spark.read.parquet("datalake\_silver/")}) in Workshop~\#3.
+    \item \textbf{PostgreSQL 16 for Metadata and Curated Storage:} PostgreSQL serves a dual role via isolated databases in a single container: managing Airflow's internal state (\texttt{airflow} DB) and storing the canonical curated earthquake table (\texttt{earthquakes\_ud} DB), supporting atomic \texttt{ON CONFLICT (event\_id) DO UPDATE} upserts.
+\end{enumerate}
+
+\subsection{File Nomenclature and Lineage Conventions}
+To guarantee chronological ordering, prevent filename collisions across runs, and maintain strict data lineage between layers, the pipeline enforces deterministic UTC timestamp nomenclature:
+\begin{itemize}
+    \item \textbf{Bronze Layer Convention:}
+    \begin{center}
+    \texttt{\{source\}\_\{YYYYMMDD\}\_\{HHMMSS\}.json}\\
+    \textit{Example:} \texttt{earthquakes\_20261117\_011500.json}
+    \end{center}
+    \item \textbf{Silver Layer Convention:}
+    \begin{center}
+    \texttt{\{topic\}\_silver\_\{YYYYMMDD\}\_\{HHMMSS\}.parquet}\\
+    \textit{Example:} \texttt{earthquakes\_silver\_20261117\_013549.parquet}
+    \end{center}
+\end{itemize}
+Furthermore, every row persisted in a Silver Parquet file and in PostgreSQL carries an explicit \texttt{source\_file} column recording the exact Bronze JSON filename from which it was extracted, ensuring $100\%$ backward traceability.

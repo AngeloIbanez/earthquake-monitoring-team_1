@@ -1,0 +1,10 @@
+% ======================================================================
+% SECTION 00: ABSTRACT & KEYWORDS
+% ======================================================================
+\begin{abstract}
+Operational natural hazard monitoring requires fault-tolerant, automated data engineering pipelines capable of ingesting heterogeneous telemetry and transforming raw payloads into analysis-ready datasets without manual intervention. Building upon the source characterization and canonical data contract established in Workshop~\#1, this paper presents the complete technical architecture and containerized implementation of the Bronze and Silver layers for the Team~1 Earthquake Activity Monitoring System. We deploy a multi-container infrastructure using Docker Compose integrating Apache Airflow~2.10.4 and PostgreSQL~16. Using Airflow's modern TaskFlow API (\texttt{@dag} and \texttt{@task}) alongside a \texttt{FileSensor} operator, we implement two automated Directed Acyclic Graphs (DAGs): \texttt{bronze\_ingestion\_dag}, which extracts seismic event streams from the USGS FDSN API into immutable timestamped JSON files in \texttt{datalake\_bronze/}, and \texttt{silver\_processing\_dag}, which detects new arrivals, enforces physical and statistical validation gates, normalizes text and UTC timestamps, computes radiated seismic energy ($E = 10^{4.8 + 1.5M}$), and persists deduplicated outputs simultaneously to compressed Apache Parquet files in \texttt{datalake\_silver/} and an ACID-compliant PostgreSQL table (\texttt{earthquakes\_curated}). Empirical verification across nine Bronze runs and eight Silver runs demonstrates $100\%$ schema compliance, $0.0\%$ missing values across 245 unique curated earthquakes, an $82.4\%$ storage footprint reduction via Snappy-compressed Parquet, and complete root-cause resolution of an initial XCom \texttt{pd.Timestamp} JSON serialization fault.
+\end{abstract}
+
+\begin{IEEEkeywords}
+Apache Airflow, Medallion Architecture, Docker Compose, Apache Parquet, Data Cleansing, Earthquake Telemetry, PostgreSQL, TaskFlow API.
+\end{IEEEkeywords}
