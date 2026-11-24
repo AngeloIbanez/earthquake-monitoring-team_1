@@ -10,7 +10,7 @@ from typing import Dict, Optional
 import dash_bootstrap_components as dbc
 import plotly.graph_objects as go
 
-# Institutional Bootstrap stylesheet (logged in decisions_log.md D-11)
+# Institutional Bootstrap stylesheet (FLATLY chosen for 1080p density & WCAG contrast)
 DBC_THEME = dbc.themes.FLATLY
 
 FONT_FAMILY = "Inter, Segoe UI, system-ui, -apple-system, sans-serif"

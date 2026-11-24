@@ -49,9 +49,8 @@ data/raw/*
 .DS_Store
 Thumbs.db
 
-# Test Cache & Workshop 4 Agent Logs / LaTeX Build Artifacts
+# Test Cache & LaTeX Build Artifacts
 .pytest_cache/
-workshop_4/_agent_logs/
 workshop_4/paper/*.aux
 workshop_4/paper/*.log
 workshop_4/paper/*.out
