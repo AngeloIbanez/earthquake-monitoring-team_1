@@ -10,11 +10,15 @@ ENV JAVA_HOME=/usr/lib/jvm/default-java
 
 USER airflow
 RUN pip install --no-cache-dir \
-    "pandas>=2.2.0" \
+    "pandas>=2.0.0,<2.2.0" \
+    "flask>=2.2.1,<2.3.0" \
+    "werkzeug>=2.0.0,<3.0.0" \
     "polars>=1.0.0" \
     "pyarrow>=14.0.0" \
     "requests>=2.30.0" \
     "pyyaml>=6.0.0" \
     "pyspark>=3.5.0" \
     "dash>=2.14.0" \
-    "plotly>=5.18.0"
+    "plotly>=5.18.0" \
+    "dash-bootstrap-components>=1.6.0"
+
