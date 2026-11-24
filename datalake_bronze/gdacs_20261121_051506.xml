@@ -1,0 +1,1150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" xmlns:gdacs="http://www.gdacs.org" xmlns:glide="http://glidenumber.net" xmlns:georss="http://www.georss.org/georss" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>GDACS RSS information</title>
+    <link>http://www.gdacs.org/</link>
+    <copyright>public domain</copyright>
+    <description>Near real-time notification about natural disaster with a potential humanitarian impact</description>
+    <managingEditor>stefano.paris@ext.ec.europa.eu</managingEditor>
+    <!--Records number 21-->
+    <!--Start 11/21/2026 6:07:00 AM-->
+    <!--=Start 11/21/2026 6:07:00 AM-->
+    <webMaster>stefano.paris@ext.ec.europa.eu</webMaster>
+    <pubDate>Sat, 21 Nov 2026 05:07:00 GMT</pubDate>
+    <atom:link href="http://www.gdacs.org/xml/rss_24h.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Green earthquake (Magnitude 4.9M, Depth:10km) in Reykjanes Ridge 21/11/2026 02:24 UTC, No people affected in 100km.</title>
+      <description>On 11/21/2026 2:24:37 AM, an earthquake occurred in Reykjanes Ridge potentially affecting No people affected in 100km. The earthquake had Magnitude 4.9M, Depth:10km.</description>
+      <enclosure type="image/png" length="1" url="https://www.gdacs.org/contentdata/resources/imgtemp/gdacs/eq/eq1747873_1.png" />
+      <gdacs:temporary>false</gdacs:temporary>
+      <link>http://www.gdacs.org/report.aspx?eventtype=EQ&amp;eventid=1578488</link>
+      <pubDate>Sat, 21 Nov 2026 02:43:23 GMT</pubDate>
+      <gdacs:dateadded>Sat, 21 Nov 2026 02:43:23 GMT</gdacs:dateadded>
+      <gdacs:datemodified>Sat, 21 Nov 2026 02:43:23 GMT</gdacs:datemodified>
+      <gdacs:iscurrent>true</gdacs:iscurrent>
+      <gdacs:fromdate>Sat, 21 Nov 2026 02:24:37 GMT</gdacs:fromdate>
+      <gdacs:todate>Sat, 21 Nov 2026 02:24:37 GMT</gdacs:todate>
+      <gdacs:durationinweek>0</gdacs:durationinweek>
+      <gdacs:year>2026</gdacs:year>
+      <dc:subject>EQ1</dc:subject>
+      <guid isPermaLink="false">EQ1578488</guid>
+      <geo:Point>
+        <geo:lat>58.5457</geo:lat>
+        <geo:long>-31.857</geo:long>
+      </geo:Point>
+      <!--gdacs:bbox format = lonmin lonmax latmin latmax-->
+      <gdacs:bbox>-35.857 -27.857 54.5457 62.5457</gdacs:bbox>
+      <georss:point>58.5457 -31.857</georss:point>
+      <gdacs:cap>https://www.gdacs.org/contentdata/resources/EQ/1578488/cap_1578488.xml</gdacs:cap>
+      <gdacs:icon>http://www.gdacs.org/Images/gdacs_icons/alerts/Green/EQ.png</gdacs:icon>
+      <gdacs:version>1</gdacs:version>
+      <gdacs:eventtype>EQ</gdacs:eventtype>
+      <gdacs:alertlevel>Green</gdacs:alertlevel>
+      <gdacs:alertscore>0</gdacs:alertscore>
+      <gdacs:episodealertlevel>Green</gdacs:episodealertlevel>
+      <gdacs:episodealertscore>1</gdacs:episodealertscore>
+      <gdacs:eventname />
+      <gdacs:eventid>1578488</gdacs:eventid>
+      <gdacs:episodeid>1747873</gdacs:episodeid>
+      <gdacs:calculationtype>earthquakeonly</gdacs:calculationtype>
+      <gdacs:severity unit="M" value="4.9">Magnitude 4.9M, Depth:10km</gdacs:severity>
+      <gdacs:population unit="in MMI -" value="0" />
+      <gdacs:vulnerability value="1.3145341380124" />
+      <gdacs:iso3 />
+      <gdacs:country>Reykjanes Ridge</gdacs:country>
+      <gdacs:glide />
+      <gdacs:mapimage />
+      <gdacs:maplink />
+      <gdacs:gtsimage />
+      <gdacs:gtslink />
+      <gdacs:resources>
+        <gdacs:resource id="event_rss" version="0" source="EC-JRC" url="http://www.gdacs.org//datareport/resources/EQ/1578488/rss_1578488.xml" type="rss">
+          <gdacs:title>Event in rss format</gdacs:title>
+          <gdacs:description>Joint Research Center of the European Commission</gdacs:description>
+          <gdacs:acknowledgements>Copyright notice: European Union (CC BY 4.0), reuse is allowed, provided appropriate credit to GDACS is given.</gdacs:acknowledgements>
+          <gdacs:accesslevel>Public</gdacs:accesslevel>
+        </gdacs:resource>
+      </gdacs:resources>
+    </item>
+    <item>
+      <title>Green earthquake (Magnitude 4.9M, Depth:10km) in Reykjanes Ridge 21/11/2026 01:26 UTC, No people affected in 100km.</title>
+      <description>On 11/21/2026 1:26:19 AM, an earthquake occurred in Reykjanes Ridge potentially affecting No people affected in 100km. The earthquake had Magnitude 4.9M, Depth:10km.</description>
+      <enclosure type="image/png" length="1" url="https://www.gdacs.org/contentdata/resources/imgtemp/gdacs/eq/eq1747858_1.png" />
+      <gdacs:temporary>false</gdacs:temporary>
+      <link>http://www.gdacs.org/report.aspx?eventtype=EQ&amp;eventid=1578474</link>
+      <pubDate>Sat, 21 Nov 2026 01:49:22 GMT</pubDate>
+      <gdacs:dateadded>Sat, 21 Nov 2026 01:49:22 GMT</gdacs:dateadded>
+      <gdacs:datemodified>Sat, 21 Nov 2026 01:49:22 GMT</gdacs:datemodified>
+      <gdacs:iscurrent>true</gdacs:iscurrent>
+      <gdacs:fromdate>Sat, 21 Nov 2026 01:26:19 GMT</gdacs:fromdate>
+      <gdacs:todate>Sat, 21 Nov 2026 01:26:19 GMT</gdacs:todate>
+      <gdacs:durationinweek>0</gdacs:durationinweek>
+      <gdacs:year>2026</gdacs:year>
+      <dc:subject>EQ1</dc:subject>
+      <guid isPermaLink="false">EQ1578474</guid>
+      <geo:Point>
+        <geo:lat>58.3017</geo:lat>
+        <geo:long>-31.7606</geo:long>
+      </geo:Point>
+      <!--gdacs:bbox format = lonmin lonmax latmin latmax-->
+      <gdacs:bbox>-35.7606 -27.7606 54.3017 62.3017</gdacs:bbox>
+      <georss:point>58.3017 -31.7606</georss:point>
+      <gdacs:cap>https://www.gdacs.org/contentdata/resources/EQ/1578474/cap_1578474.xml</gdacs:cap>
+      <gdacs:icon>http://www.gdacs.org/Images/gdacs_icons/alerts/Green/EQ.png</gdacs:icon>
+      <gdacs:version>1</gdacs:version>
+      <gdacs:eventtype>EQ</gdacs:eventtype>
+      <gdacs:alertlevel>Green</gdacs:alertlevel>
+      <gdacs:alertscore>0</gdacs:alertscore>
+      <gdacs:episodealertlevel>Green</gdacs:episodealertlevel>
+      <gdacs:episodealertscore>1</gdacs:episodealertscore>
+      <gdacs:eventname />
+      <gdacs:eventid>1578474</gdacs:eventid>
+      <gdacs:episodeid>1747858</gdacs:episodeid>
+      <gdacs:calculationtype>earthquakeonly</gdacs:calculationtype>
+      <gdacs:severity unit="M" value="4.9">Magnitude 4.9M, Depth:10km</gdacs:severity>
+      <gdacs:population unit="in MMI -" value="0" />
+      <gdacs:vulnerability value="1.3145341380124" />
+      <gdacs:iso3 />
+      <gdacs:country>Reykjanes Ridge</gdacs:country>
+      <gdacs:glide />
+      <gdacs:mapimage />
+      <gdacs:maplink />
+      <gdacs:gtsimage />
+      <gdacs:gtslink />
+      <gdacs:resources>
+        <gdacs:resource id="event_rss" version="0" source="EC-JRC" url="http://www.gdacs.org//datareport/resources/EQ/1578474/rss_1578474.xml" type="rss">
+          <gdacs:title>Event in rss format</gdacs:title>
+          <gdacs:description>Joint Research Center of the European Commission</gdacs:description>
+          <gdacs:acknowledgements>Copyright notice: European Union (CC BY 4.0), reuse is allowed, provided appropriate credit to GDACS is given.</gdacs:acknowledgements>
+          <gdacs:accesslevel>Public</gdacs:accesslevel>
+        </gdacs:resource>
+      </gdacs:resources>
+    </item>
+    <item>
+      <title>Green earthquake (Magnitude 4.7M, Depth:120.01km) in Chile 21/11/2026 01:24 UTC, 160 thousand in 100km.</title>
+      <description>On 11/21/2026 1:24:09 AM, an earthquake occurred in Chile potentially affecting 160 thousand in 100km. The earthquake had Magnitude 4.7M, Depth:120.01km.</description>
+      <enclosure type="image/png" length="1" url="https://www.gdacs.org/contentdata/resources/imgtemp/gdacs/eq/eq1747856_1.png" />
+      <gdacs:temporary>false</gdacs:temporary>
+      <link>http://www.gdacs.org/report.aspx?eventtype=EQ&amp;eventid=1578473</link>
+      <pubDate>Sat, 21 Nov 2026 01:35:19 GMT</pubDate>
+      <gdacs:dateadded>Sat, 21 Nov 2026 01:35:19 GMT</gdacs:dateadded>
+      <gdacs:datemodified>Sat, 21 Nov 2026 02:04:28 GMT</gdacs:datemodified>
+      <gdacs:iscurrent>true</gdacs:iscurrent>
+      <gdacs:fromdate>Sat, 21 Nov 2026 01:24:09 GMT</gdacs:fromdate>
+      <gdacs:todate>Sat, 21 Nov 2026 01:24:09 GMT</gdacs:todate>
+      <gdacs:durationinweek>0</gdacs:durationinweek>
+      <gdacs:year>2026</gdacs:year>
+      <dc:subject>EQ1</dc:subject>
+      <guid isPermaLink="false">EQ1578473</guid>
+      <geo:Point>
+        <geo:lat>-22.2307</geo:lat>
+        <geo:long>-68.6409</geo:long>
+      </geo:Point>
+      <!--gdacs:bbox format = lonmin lonmax latmin latmax-->
+      <gdacs:bbox>-72.6409 -64.6409 -26.2307 -18.2307</gdacs:bbox>
+      <georss:point>-22.2307 -68.6409</georss:point>
+      <gdacs:cap>https://www.gdacs.org/contentdata/resources/EQ/1578473/cap_1578473.xml</gdacs:cap>
+      <gdacs:icon>http://www.gdacs.org/Images/gdacs_icons/alerts/Green/EQ.png</gdacs:icon>
+      <gdacs:version>1</gdacs:version>
+      <gdacs:eventtype>EQ</gdacs:eventtype>
+      <gdacs:alertlevel>Green</gdacs:alertlevel>
+      <gdacs:alertscore>0</gdacs:alertscore>
+      <gdacs:episodealertlevel>Green</gdacs:episodealertlevel>
+      <gdacs:episodealertscore>1</gdacs:episodealertscore>
+      <gdacs:eventname />
+      <gdacs:eventid>1578473</gdacs:eventid>
+      <gdacs:episodeid>1747856</gdacs:episodeid>
+      <gdacs:calculationtype>earthquakeonly</gdacs:calculationtype>
+      <gdacs:severity unit="M" value="4.7">Magnitude 4.7M, Depth:120km</gdacs:severity>
+      <gdacs:population unit="in MMI III" value="150318">150 thousand in MMI III</gdacs:population>
+      <gdacs:vulnerability value="1.3145341380124" />
+      <gdacs:iso3>CHL</gdacs:iso3>
+      <gdacs:country>Chile</gdacs:country>
+      <gdacs:glide />
+      <gdacs:mapimage />
+      <gdacs:maplink />
+      <gdacs:gtsimage />
+      <gdacs:gtslink />
+      <gdacs:resources>
+        <gdacs:resource id="event_rss" version="0" source="EC-JRC" url="http://www.gdacs.org//datareport/resources/EQ/1578473/rss_1578473.xml" type="rss">
+          <gdacs:title>Event in rss format</gdacs:title>
+          <gdacs:description>Joint Research Center of the European Commission</gdacs:description>
+          <gdacs:acknowledgements>Copyright notice: European Union (CC BY 4.0), reuse is allowed, provided appropriate credit to GDACS is given.</gdacs:acknowledgements>
+          <gdacs:accesslevel>Public</gdacs:accesslevel>
+        </gdacs:resource>
+      </gdacs:resources>
+    </item>
+    <item>
+      <title>Green earthquake (Magnitude 6.7M, Depth:107.991km) in Peru 21/11/2026 00:09 UTC, 2 thousand in MMI VI.</title>
+      <description>On 11/21/2026 12:09:19 AM, an earthquake occurred in Peru potentially affecting 2 thousand in MMI VI. The earthquake had Magnitude 6.7M, Depth:107.991km.</description>
+      <enclosure type="image/png" length="1" url="https://www.gdacs.org/contentdata/resources/imgtemp/gdacs/eq/eq1747850_1.png" />
+      <gdacs:temporary>false</gdacs:temporary>
+      <link>http://www.gdacs.org/report.aspx?eventtype=EQ&amp;eventid=1578468</link>
+      <pubDate>Sat, 21 Nov 2026 00:18:06 GMT</pubDate>
+      <gdacs:dateadded>Sat, 21 Nov 2026 00:18:06 GMT</gdacs:dateadded>
+      <gdacs:datemodified>Sat, 21 Nov 2026 02:15:29 GMT</gdacs:datemodified>
+      <gdacs:iscurrent>true</gdacs:iscurrent>
+      <gdacs:fromdate>Sat, 21 Nov 2026 00:09:19 GMT</gdacs:fromdate>
+      <gdacs:todate>Sat, 21 Nov 2026 00:09:19 GMT</gdacs:todate>
+      <gdacs:durationinweek>0</gdacs:durationinweek>
+      <gdacs:year>2026</gdacs:year>
+      <dc:subject>EQ1</dc:subject>
+      <guid isPermaLink="false">EQ1578468</guid>
+      <geo:Point>
+        <geo:lat>-10.8548</geo:lat>
+        <geo:long>-75.9779</geo:long>
+      </geo:Point>
+      <!--gdacs:bbox format = lonmin lonmax latmin latmax-->
+      <gdacs:bbox>-79.9779 -71.9779 -14.8548 -6.8548</gdacs:bbox>
+      <georss:point>-10.8548 -75.9779</georss:point>
+      <gdacs:cap>https://www.gdacs.org/contentdata/resources/EQ/1578468/cap_1578468.xml</gdacs:cap>
+      <gdacs:icon>http://www.gdacs.org/Images/gdacs_icons/alerts/Green/EQ.png</gdacs:icon>
+      <gdacs:version>1</gdacs:version>
+      <gdacs:eventtype>EQ</gdacs:eventtype>
+      <gdacs:alertlevel>Green</gdacs:alertlevel>
+      <gdacs:alertscore>0</gdacs:alertscore>
+      <gdacs:episodealertlevel>Green</gdacs:episodealertlevel>
+      <gdacs:episodealertscore>1</gdacs:episodealertscore>
+      <gdacs:eventname />
+      <gdacs:eventid>1578468</gdacs:eventid>
+      <gdacs:episodeid>1747850</gdacs:episodeid>
+      <gdacs:calculationtype>earthquakeonly</gdacs:calculationtype>
+      <gdacs:severity unit="M" value="6.7">Magnitude 6.7M, Depth:108km</gdacs:severity>
+      <gdacs:population unit="in MMI VI" value="2276">2 thousand in MMI VI</gdacs:population>
+      <gdacs:vulnerability value="1.78228028098837" />
+      <gdacs:iso3>PER</gdacs:iso3>
+      <gdacs:country>Peru</gdacs:country>
+      <gdacs:glide />
+      <gdacs:mapimage />
+      <gdacs:maplink />
+      <gdacs:gtsimage />
+      <gdacs:gtslink />
+      <gdacs:resources>
+        <gdacs:resource id="event_rss" version="0" source="EC-JRC" url="http://www.gdacs.org//datareport/resources/EQ/1578468/rss_1578468.xml" type="rss">
+          <gdacs:title>Event in rss format</gdacs:title>
+          <gdacs:description>Joint Research Center of the European Commission</gdacs:description>
+          <gdacs:acknowledgements>Copyright notice: European Union (CC BY 4.0), reuse is allowed, provided appropriate credit to GDACS is given.</gdacs:acknowledgements>
+          <gdacs:accesslevel>Public</gdacs:accesslevel>
+        </gdacs:resource>
+      </gdacs:resources>
+    </item>
+    <item>
+      <title>Green forest fire notification in Australia</title>
+      <description>On 17/11/2026, a forest fire started in Australia,  until 20/11/2026.</description>
+      <enclosure type="image/png" length="1" url="" />
+      <gdacs:temporary>false</gdacs:temporary>
+      <link>http://www.gdacs.org/report.aspx?eventtype=WF&amp;eventid=1033979</link>
+      <pubDate>Fri, 20 Nov 2026 20:04:59 GMT</pubDate>
+      <gdacs:dateadded>Fri, 20 Nov 2026 20:04:59 GMT</gdacs:dateadded>
+      <gdacs:datemodified>Sat, 21 Nov 2026 04:05:04 GMT</gdacs:datemodified>
+      <gdacs:iscurrent>true</gdacs:iscurrent>
+      <gdacs:fromdate>Tue, 17 Nov 2026 00:00:00 GMT</gdacs:fromdate>
+      <gdacs:todate>Sat, 21 Nov 2026 00:00:00 GMT</gdacs:todate>
+      <gdacs:durationinweek>1</gdacs:durationinweek>
+      <gdacs:year>2026</gdacs:year>
+      <dc:subject>WF1</dc:subject>
+      <guid isPermaLink="false">WF1033979</guid>
+      <geo:Point>
+        <geo:lat>-21.463282622083057</geo:lat>
+        <geo:long>125.45302535615052</geo:long>
+      </geo:Point>
+      <!--gdacs:bbox format = lonmin lonmax latmin latmax-->
+      <gdacs:bbox>121.453025356151 129.453025356151 -25.4632826220831 -17.4632826220831</gdacs:bbox>
+      <georss:point>-21.463282622083057 125.45302535615052</georss:point>
+      <gdacs:cap>https://www.gdacs.org/contentdata/resources/WF/1033979/cap_1033979.xml</gdacs:cap>
+      <gdacs:icon>http://www.gdacs.org/Images/gdacs_icons/alerts/Green/WF.png</gdacs:icon>
+      <gdacs:version>0</gdacs:version>
+      <gdacs:eventtype>WF</gdacs:eventtype>
+      <gdacs:alertlevel>Green</gdacs:alertlevel>
+      <gdacs:alertscore>1</gdacs:alertscore>
+      <gdacs:episodealertlevel>Green</gdacs:episodealertlevel>
+      <gdacs:episodealertscore>1</gdacs:episodealertscore>
+      <gdacs:eventname />
+      <gdacs:eventid>1033979</gdacs:eventid>
+      <gdacs:episodeid>3</gdacs:episodeid>
+      <gdacs:calculationtype />
+      <gdacs:severity unit="ha" value="9308">Green impact for forestfire in 9308 ha</gdacs:severity>
+      <gdacs:population unit="" value="0">0 people affected in the area</gdacs:population>
+      <gdacs:vulnerability value="0" />
+      <gdacs:iso3>AUS</gdacs:iso3>
+      <gdacs:country>Australia</gdacs:country>
+      <gdacs:glide />
+      <gdacs:mapimage />
+      <gdacs:maplink />
+      <gdacs:gtsimage />
+      <gdacs:gtslink />
+      <gdacs:resources>
+        <gdacs:resource id="event_rss" version="0" source="EC-JRC" url="http://www.gdacs.org//datareport/resources/WF/1033979/rss_1033979.xml" type="rss">
+          <gdacs:title>Event in rss format</gdacs:title>
+          <gdacs:description>Joint Research Center of the European Commission</gdacs:description>
+          <gdacs:acknowledgements>Copyright notice: European Union (CC BY 4.0), reuse is allowed, provided appropriate credit to GDACS is given.</gdacs:acknowledgements>
+          <gdacs:accesslevel>Public</gdacs:accesslevel>
+        </gdacs:resource>
+      </gdacs:resources>
+    </item>
+    <item>
+      <title>Green forest fire notification in Australia</title>
+      <description>On 18/11/2026, a forest fire started in Australia,  until 20/11/2026.</description>
+      <enclosure type="image/png" length="1" url="" />
+      <gdacs:temporary>false</gdacs:temporary>
+      <link>http://www.gdacs.org/report.aspx?eventtype=WF&amp;eventid=1033978</link>
+      <pubDate>Fri, 20 Nov 2026 20:02:28 GMT</pubDate>
+      <gdacs:dateadded>Fri, 20 Nov 2026 20:02:28 GMT</gdacs:dateadded>
+      <gdacs:datemodified>Sat, 21 Nov 2026 04:03:38 GMT</gdacs:datemodified>
+      <gdacs:iscurrent>true</gdacs:iscurrent>
+      <gdacs:fromdate>Wed, 18 Nov 2026 00:00:00 GMT</gdacs:fromdate>
+      <gdacs:todate>Sat, 21 Nov 2026 00:00:00 GMT</gdacs:todate>
+      <gdacs:durationinweek>0</gdacs:durationinweek>
+      <gdacs:year>2026</gdacs:year>
+      <dc:subject>WF1</dc:subject>
+      <guid isPermaLink="false">WF1033978</guid>
+      <geo:Point>
+        <geo:lat>-19.268082770075505</geo:lat>
+        <geo:long>122.45048235834409</geo:long>
+      </geo:Point>
+      <!--gdacs:bbox format = lonmin lonmax latmin latmax-->
+      <gdacs:bbox>118.450482358344 126.450482358344 -23.2680827700755 -15.2680827700755</gdacs:bbox>
+      <georss:point>-19.268082770075505 122.45048235834409</georss:point>
+      <gdacs:cap>https://www.gdacs.org/contentdata/resources/WF/1033978/cap_1033978.xml</gdacs:cap>
+      <gdacs:icon>http://www.gdacs.org/Images/gdacs_icons/alerts/Green/WF.png</gdacs:icon>
+      <gdacs:version>0</gdacs:version>
+      <gdacs:eventtype>WF</gdacs:eventtype>
+      <gdacs:alertlevel>Green</gdacs:alertlevel>
+      <gdacs:alertscore>1</gdacs:alertscore>
+      <gdacs:episodealertlevel>Green</gdacs:episodealertlevel>
+      <gdacs:episodealertscore>1</gdacs:episodealertscore>
+      <gdacs:eventname />
+      <gdacs:eventid>1033978</gdacs:eventid>
+      <gdacs:episodeid>3</gdacs:episodeid>
+      <gdacs:calculationtype />
+      <gdacs:severity unit="ha" value="9576">Green impact for forestfire in 9576 ha</gdacs:severity>
+      <gdacs:population unit="" value="0">0 people affected in the area</gdacs:population>
+      <gdacs:vulnerability value="0" />
+      <gdacs:iso3>AUS</gdacs:iso3>
+      <gdacs:country>Australia</gdacs:country>
+      <gdacs:glide />
+      <gdacs:mapimage />
+      <gdacs:maplink />
+      <gdacs:gtsimage />
+      <gdacs:gtslink />
+      <gdacs:resources>
+        <gdacs:resource id="event_rss" version="0" source="EC-JRC" url="http://www.gdacs.org//datareport/resources/WF/1033978/rss_1033978.xml" type="rss">
+          <gdacs:title>Event in rss format</gdacs:title>
+          <gdacs:description>Joint Research Center of the European Commission</gdacs:description>
+          <gdacs:acknowledgements>Copyright notice: European Union (CC BY 4.0), reuse is allowed, provided appropriate credit to GDACS is given.</gdacs:acknowledgements>
+          <gdacs:accesslevel>Public</gdacs:accesslevel>
+        </gdacs:resource>
+      </gdacs:resources>
+    </item>
+    <item>
+      <title>Green forest fire notification in Australia</title>
+      <description>On 18/11/2026, a forest fire started in Australia,  until 21/11/2026.</description>
+      <enclosure type="image/png" length="1" url="" />
+      <gdacs:temporary>false</gdacs:temporary>
+      <link>http://www.gdacs.org/report.aspx?eventtype=WF&amp;eventid=1033956</link>
+      <pubDate>Thu, 19 Nov 2026 20:02:25 GMT</pubDate>
+      <gdacs:dateadded>Thu, 19 Nov 2026 20:02:25 GMT</gdacs:dateadded>
+      <gdacs:datemodified>Sat, 21 Nov 2026 04:02:57 GMT</gdacs:datemodified>
+      <gdacs:iscurrent>true</gdacs:iscurrent>
+      <gdacs:fromdate>Wed, 18 Nov 2026 00:00:00 GMT</gdacs:fromdate>
+      <gdacs:todate>Sat, 21 Nov 2026 00:00:00 GMT</gdacs:todate>
+      <gdacs:durationinweek>0</gdacs:durationinweek>
+      <gdacs:year>2026</gdacs:year>
+      <dc:subject>WF1</dc:subject>
+      <guid isPermaLink="false">WF1033956</guid>
+      <geo:Point>
+        <geo:lat>-22.782380327485043</geo:lat>
+        <geo:long>125.89229484556654</geo:long>
+      </geo:Point>
+      <!--gdacs:bbox format = lonmin lonmax latmin latmax-->
+      <gdacs:bbox>121.892294845567 129.892294845567 -26.782380327485 -18.782380327485</gdacs:bbox>
+      <georss:point>-22.782380327485043 125.89229484556654</georss:point>
+      <gdacs:cap>https://www.gdacs.org/contentdata/resources/WF/1033956/cap_1033956.xml</gdacs:cap>
+      <gdacs:icon>http://www.gdacs.org/Images/gdacs_icons/alerts/Green/WF.png</gdacs:icon>
+      <gdacs:version>0</gdacs:version>
+      <gdacs:eventtype>WF</gdacs:eventtype>
+      <gdacs:alertlevel>Green</gdacs:alertlevel>
+      <gdacs:alertscore>1</gdacs:alertscore>
+      <gdacs:episodealertlevel>Green</gdacs:episodealertlevel>
+      <gdacs:episodealertscore>1</gdacs:episodealertscore>
+      <gdacs:eventname />
+      <gdacs:eventid>1033956</gdacs:eventid>
+      <gdacs:episodeid>5</gdacs:episodeid>
+      <gdacs:calculationtype />
+      <gdacs:severity unit="ha" value="17578">Green impact for forestfire in 17578 ha</gdacs:severity>
+      <gdacs:population unit="" value="0">0 people affected in the area</gdacs:population>
+      <gdacs:vulnerability value="0" />
+      <gdacs:iso3>AUS</gdacs:iso3>
+      <gdacs:country>Australia</gdacs:country>
+      <gdacs:glide />
+      <gdacs:mapimage />
+      <gdacs:maplink />
+      <gdacs:gtsimage />
+      <gdacs:gtslink />
+      <gdacs:resources>
+        <gdacs:resource id="event_rss" version="0" source="EC-JRC" url="http://www.gdacs.org//datareport/resources/WF/1033956/rss_1033956.xml" type="rss">
+          <gdacs:title>Event in rss format</gdacs:title>
+          <gdacs:description>Joint Research Center of the European Commission</gdacs:description>
+          <gdacs:acknowledgements>Copyright notice: European Union (CC BY 4.0), reuse is allowed, provided appropriate credit to GDACS is given.</gdacs:acknowledgements>
+          <gdacs:accesslevel>Public</gdacs:accesslevel>
+        </gdacs:resource>
+      </gdacs:resources>
+    </item>
+    <item>
+      <title>Green forest fire notification in Australia</title>
+      <description>On 16/11/2026, a forest fire started in Australia,  until 21/11/2026.</description>
+      <enclosure type="image/png" length="1" url="" />
+      <gdacs:temporary>false</gdacs:temporary>
+      <link>http://www.gdacs.org/report.aspx?eventtype=WF&amp;eventid=1033943</link>
+      <pubDate>Wed, 18 Nov 2026 20:02:45 GMT</pubDate>
+      <gdacs:dateadded>Wed, 18 Nov 2026 20:02:45 GMT</gdacs:dateadded>
+      <gdacs:datemodified>Sat, 21 Nov 2026 04:06:51 GMT</gdacs:datemodified>
+      <gdacs:iscurrent>true</gdacs:iscurrent>
+      <gdacs:fromdate>Mon, 16 Nov 2026 00:00:00 GMT</gdacs:fromdate>
+      <gdacs:todate>Sat, 21 Nov 2026 00:00:00 GMT</gdacs:todate>
+      <gdacs:durationinweek>1</gdacs:durationinweek>
+      <gdacs:year>2026</gdacs:year>
+      <dc:subject>WF1</dc:subject>
+      <guid isPermaLink="false">WF1033943</guid>
+      <geo:Point>
+        <geo:lat>-22.525761612750227</geo:lat>
+        <geo:long>125.54348430992573</geo:long>
+      </geo:Point>
+      <!--gdacs:bbox format = lonmin lonmax latmin latmax-->
+      <gdacs:bbox>121.543484309926 129.543484309926 -26.5257616127502 -18.5257616127502</gdacs:bbox>
+      <georss:point>-22.525761612750227 125.54348430992573</georss:point>
+      <gdacs:cap>https://www.gdacs.org/contentdata/resources/WF/1033943/cap_1033943.xml</gdacs:cap>
+      <gdacs:icon>http://www.gdacs.org/Images/gdacs_icons/alerts/Green/WF.png</gdacs:icon>
+      <gdacs:version>0</gdacs:version>
+      <gdacs:eventtype>WF</gdacs:eventtype>
+      <gdacs:alertlevel>Green</gdacs:alertlevel>
+      <gdacs:alertscore>1</gdacs:alertscore>
+      <gdacs:episodealertlevel>Green</gdacs:episodealertlevel>
+      <gdacs:episodealertscore>1</gdacs:episodealertscore>
+      <gdacs:eventname />
+      <gdacs:eventid>1033943</gdacs:eventid>
+      <gdacs:episodeid>10</gdacs:episodeid>
+      <gdacs:calculationtype />
+      <gdacs:severity unit="ha" value="20193">Green impact for forestfire in 20193 ha</gdacs:severity>
+      <gdacs:population unit="" value="0">0 people affected in the area</gdacs:population>
+      <gdacs:vulnerability value="0" />
+      <gdacs:iso3>AUS</gdacs:iso3>
+      <gdacs:country>Australia</gdacs:country>
+      <gdacs:glide />
+      <gdacs:mapimage />
+      <gdacs:maplink />
+      <gdacs:gtsimage />
+      <gdacs:gtslink />
+      <gdacs:resources>
+        <gdacs:resource id="event_rss" version="0" source="EC-JRC" url="http://www.gdacs.org//datareport/resources/WF/1033943/rss_1033943.xml" type="rss">
+          <gdacs:title>Event in rss format</gdacs:title>
+          <gdacs:description>Joint Research Center of the European Commission</gdacs:description>
+          <gdacs:acknowledgements>Copyright notice: European Union (CC BY 4.0), reuse is allowed, provided appropriate credit to GDACS is given.</gdacs:acknowledgements>
+          <gdacs:accesslevel>Public</gdacs:accesslevel>
+        </gdacs:resource>
+      </gdacs:resources>
+    </item>
+    <item>
+      <title>Green forest fire notification in Australia</title>
+      <description>On 17/11/2026, a forest fire started in Australia,  until 19/11/2026.</description>
+      <enclosure type="image/png" length="1" url="" />
+      <gdacs:temporary>false</gdacs:temporary>
+      <link>http://www.gdacs.org/report.aspx?eventtype=WF&amp;eventid=1033942</link>
+      <pubDate>Wed, 18 Nov 2026 20:02:07 GMT</pubDate>
+      <gdacs:dateadded>Wed, 18 Nov 2026 20:02:07 GMT</gdacs:dateadded>
+      <gdacs:datemodified>Sat, 21 Nov 2026 04:04:39 GMT</gdacs:datemodified>
+      <gdacs:iscurrent>true</gdacs:iscurrent>
+      <gdacs:fromdate>Tue, 17 Nov 2026 00:00:00 GMT</gdacs:fromdate>
+      <gdacs:todate>Sat, 21 Nov 2026 00:00:00 GMT</gdacs:todate>
+      <gdacs:durationinweek>1</gdacs:durationinweek>
+      <gdacs:year>2026</gdacs:year>
+      <dc:subject>WF1</dc:subject>
+      <guid isPermaLink="false">WF1033942</guid>
+      <geo:Point>
+        <geo:lat>-21.4693213951712</geo:lat>
+        <geo:long>126.08898715026127</geo:long>
+      </geo:Point>
+      <!--gdacs:bbox format = lonmin lonmax latmin latmax-->
+      <gdacs:bbox>122.088987150261 130.088987150261 -25.4693213951712 -17.4693213951712</gdacs:bbox>
+      <georss:point>-21.4693213951712 126.08898715026127</georss:point>
+      <gdacs:cap>https://www.gdacs.org/contentdata/resources/WF/1033942/cap_1033942.xml</gdacs:cap>
+      <gdacs:icon>http://www.gdacs.org/Images/gdacs_icons/alerts/Green/WF.png</gdacs:icon>
+      <gdacs:version>0</gdacs:version>
+      <gdacs:eventtype>WF</gdacs:eventtype>
+      <gdacs:alertlevel>Green</gdacs:alertlevel>
+      <gdacs:alertscore>1</gdacs:alertscore>
+      <gdacs:episodealertlevel>Green</gdacs:episodealertlevel>
+      <gdacs:episodealertscore>1</gdacs:episodealertscore>
+      <gdacs:eventname />
+      <gdacs:eventid>1033942</gdacs:eventid>
+      <gdacs:episodeid>9</gdacs:episodeid>
+      <gdacs:calculationtype />
+      <gdacs:severity unit="ha" value="10569">Green impact for forestfire in 10569 ha</gdacs:severity>
+      <gdacs:population unit="" value="0">0 people affected in the area</gdacs:population>
+      <gdacs:vulnerability value="0" />
+      <gdacs:iso3>AUS</gdacs:iso3>
+      <gdacs:country>Australia</gdacs:country>
+      <gdacs:glide />
+      <gdacs:mapimage />
+      <gdacs:maplink />
+      <gdacs:gtsimage />
+      <gdacs:gtslink />
+      <gdacs:resources>
+        <gdacs:resource id="event_rss" version="0" source="EC-JRC" url="http://www.gdacs.org//datareport/resources/WF/1033942/rss_1033942.xml" type="rss">
+          <gdacs:title>Event in rss format</gdacs:title>
+          <gdacs:description>Joint Research Center of the European Commission</gdacs:description>
+          <gdacs:acknowledgements>Copyright notice: European Union (CC BY 4.0), reuse is allowed, provided appropriate credit to GDACS is given.</gdacs:acknowledgements>
+          <gdacs:accesslevel>Public</gdacs:accesslevel>
+        </gdacs:resource>
+      </gdacs:resources>
+    </item>
+    <item>
+      <title>Green forest fire notification in Australia</title>
+      <description>On 14/11/2026, a forest fire started in Australia,  until 19/11/2026.</description>
+      <enclosure type="image/png" length="1" url="" />
+      <gdacs:temporary>false</gdacs:temporary>
+      <link>http://www.gdacs.org/report.aspx?eventtype=WF&amp;eventid=1033859</link>
+      <pubDate>Sun, 15 Nov 2026 12:01:19 GMT</pubDate>
+      <gdacs:dateadded>Sun, 15 Nov 2026 12:01:19 GMT</gdacs:dateadded>
+      <gdacs:datemodified>Sat, 21 Nov 2026 04:11:50 GMT</gdacs:datemodified>
+      <gdacs:iscurrent>true</gdacs:iscurrent>
+      <gdacs:fromdate>Sat, 14 Nov 2026 00:00:00 GMT</gdacs:fromdate>
+      <gdacs:todate>Sat, 21 Nov 2026 00:00:00 GMT</gdacs:todate>
+      <gdacs:durationinweek>1</gdacs:durationinweek>
+      <gdacs:year>2026</gdacs:year>
+      <dc:subject>WF1</dc:subject>
+      <guid isPermaLink="false">WF1033859</guid>
+      <geo:Point>
+        <geo:lat>-19.103390422705917</geo:lat>
+        <geo:long>122.25351719578713</geo:long>
+      </geo:Point>
+      <!--gdacs:bbox format = lonmin lonmax latmin latmax-->
+      <gdacs:bbox>118.253517195787 126.253517195787 -23.1033904227059 -15.1033904227059</gdacs:bbox>
+      <georss:point>-19.103390422705917 122.25351719578713</georss:point>
+      <gdacs:cap>https://www.gdacs.org/contentdata/resources/WF/1033859/cap_1033859.xml</gdacs:cap>
+      <gdacs:icon>http://www.gdacs.org/Images/gdacs_icons/alerts/Green/WF.png</gdacs:icon>
+      <gdacs:version>0</gdacs:version>
+      <gdacs:eventtype>WF</gdacs:eventtype>
+      <gdacs:alertlevel>Green</gdacs:alertlevel>
+      <gdacs:alertscore>1</gdacs:alertscore>
+      <gdacs:episodealertlevel>Green</gdacs:episodealertlevel>
+      <gdacs:episodealertscore>1</gdacs:episodealertscore>
+      <gdacs:eventname />
+      <gdacs:eventid>1033859</gdacs:eventid>
+      <gdacs:episodeid>17</gdacs:episodeid>
+      <gdacs:calculationtype />
+      <gdacs:severity unit="ha" value="23822">Green impact for forestfire in 23822 ha</gdacs:severity>
+      <gdacs:population unit="" value="0">0 people affected in the area</gdacs:population>
+      <gdacs:vulnerability value="0" />
+      <gdacs:iso3>AUS</gdacs:iso3>
+      <gdacs:country>Australia</gdacs:country>
+      <gdacs:glide />
+      <gdacs:mapimage />
+      <gdacs:maplink />
+      <gdacs:gtsimage />
+      <gdacs:gtslink />
+      <gdacs:resources>
+        <gdacs:resource id="event_rss" version="0" source="EC-JRC" url="http://www.gdacs.org//datareport/resources/WF/1033859/rss_1033859.xml" type="rss">
+          <gdacs:title>Event in rss format</gdacs:title>
+          <gdacs:description>Joint Research Center of the European Commission</gdacs:description>
+          <gdacs:acknowledgements>Copyright notice: European Union (CC BY 4.0), reuse is allowed, provided appropriate credit to GDACS is given.</gdacs:acknowledgements>
+          <gdacs:accesslevel>Public</gdacs:accesslevel>
+        </gdacs:resource>
+      </gdacs:resources>
+    </item>
+    <item>
+      <title>Green notification for tropical cyclone XAVIER-26. Population affected by Category 1 (120 km/h) wind speeds or higher is 0  (0 in Tropical Storm).</title>
+      <description>From 15/11/2026 to 21/11/2026, a Tropical Storm (maximum wind speed of 241 km/h) XAVIER-26 was active in SEPacific. The cyclone affects these countries: Cook Islands, American Samoa, Samoa (vulnerability Medium). Estimated population affected by category 1 (120 km/h) wind speeds or higher is 0  (0 in tropical storm).</description>
+      <enclosure type="image/png" length="1" url="https://www.gdacs.org/contentdata/resources/imgtemp/gdacs/tc/1001350/1001350_15_tn.png" />
+      <gdacs:temporary>false</gdacs:temporary>
+      <link>http://www.gdacs.org/report.aspx?eventtype=TC&amp;eventid=1001350</link>
+      <pubDate>Sun, 15 Nov 2026 08:51:43 GMT</pubDate>
+      <gdacs:dateadded>Sun, 15 Nov 2026 08:51:43 GMT</gdacs:dateadded>
+      <gdacs:datemodified>Sat, 21 Nov 2026 04:05:06 GMT</gdacs:datemodified>
+      <gdacs:iscurrent>true</gdacs:iscurrent>
+      <gdacs:fromdate>Sun, 15 Nov 2026 06:00:00 GMT</gdacs:fromdate>
+      <gdacs:todate>Sat, 21 Nov 2026 00:00:00 GMT</gdacs:todate>
+      <gdacs:durationinweek>1</gdacs:durationinweek>
+      <gdacs:year>2026</gdacs:year>
+      <dc:subject>TC1</dc:subject>
+      <guid isPermaLink="false">TC1001350</guid>
+      <geo:Point>
+        <geo:lat>-11.5</geo:lat>
+        <geo:long>-164.2</geo:long>
+      </geo:Point>
+      <!--gdacs:bbox format = lonmin lonmax latmin latmax-->
+      <gdacs:bbox>-177.324930190981 -151.324930190981 -23.7232082213654 2.27679177863463</gdacs:bbox>
+      <georss:point>-11.5 -164.2</georss:point>
+      <gdacs:cap>https://www.gdacs.org/contentdata/resources/TC/1001350/cap_1001350.xml</gdacs:cap>
+      <gdacs:icon>http://www.gdacs.org/Images/gdacs_icons/alerts/Green/TC.png</gdacs:icon>
+      <gdacs:version>15</gdacs:version>
+      <gdacs:eventtype>TC</gdacs:eventtype>
+      <gdacs:alertlevel>Green</gdacs:alertlevel>
+      <gdacs:alertscore>1</gdacs:alertscore>
+      <gdacs:episodealertlevel>Green</gdacs:episodealertlevel>
+      <gdacs:episodealertscore>1</gdacs:episodealertscore>
+      <gdacs:eventname>XAVIER-26</gdacs:eventname>
+      <gdacs:eventid>1001350</gdacs:eventid>
+      <gdacs:episodeid>15</gdacs:episodeid>
+      <gdacs:calculationtype>tropicalcyclonewithstormsurge</gdacs:calculationtype>
+      <gdacs:severity unit="km/h" value="240.7392">Tropical Storm (maximum wind speed of 83 km/h)</gdacs:severity>
+      <gdacs:population unit="Pop74" value="0">Population affected by Category 1 (120 km/h) wind speeds or higher is 0 (50771 in Tropical Storm)</gdacs:population>
+      <gdacs:vulnerability value="2">Medium</gdacs:vulnerability>
+      <gdacs:iso3>ASM</gdacs:iso3>
+      <gdacs:country>Cook Islands, American Samoa, Samoa</gdacs:country>
+      <gdacs:glide />
+      <gdacs:mapimage />
+      <gdacs:maplink />
+      <gdacs:gtsimage />
+      <gdacs:gtslink />
+      <gdacs:resources>
+        <gdacs:resource id="event_rss" version="0" source="EC-JRC" url="http://www.gdacs.org//datareport/resources/TC/1001350/rss_1001350.xml" type="rss">
+          <gdacs:title>Event in rss format</gdacs:title>
+          <gdacs:description>Joint Research Center of the European Commission</gdacs:description>
+          <gdacs:acknowledgements>Copyright notice: European Union (CC BY 4.0), reuse is allowed, provided appropriate credit to GDACS is given.</gdacs:acknowledgements>
+          <gdacs:accesslevel>Public</gdacs:accesslevel>
+        </gdacs:resource>
+      </gdacs:resources>
+    </item>
+    <item>
+      <title>Green earthquake (Magnitude 4.9M, Depth:10km) in Tonga 20/11/2026 22:34 UTC, No people affected in 100km.</title>
+      <description>On 11/20/2026 10:34:39 PM, an earthquake occurred in Tonga potentially affecting No people affected in 100km. The earthquake had Magnitude 4.9M, Depth:10km.</description>
+      <enclosure type="image/png" length="1" url="https://www.gdacs.org/contentdata/resources/imgtemp/gdacs/eq/eq1747839_1.png" />
+      <gdacs:temporary>false</gdacs:temporary>
+      <link>http://www.gdacs.org/report.aspx?eventtype=EQ&amp;eventid=1578459</link>
+      <pubDate>Fri, 20 Nov 2026 23:01:52 GMT</pubDate>
+      <gdacs:dateadded>Fri, 20 Nov 2026 23:01:52 GMT</gdacs:dateadded>
+      <gdacs:datemodified>Fri, 20 Nov 2026 23:01:52 GMT</gdacs:datemodified>
+      <gdacs:iscurrent>true</gdacs:iscurrent>
+      <gdacs:fromdate>Fri, 20 Nov 2026 22:34:39 GMT</gdacs:fromdate>
+      <gdacs:todate>Fri, 20 Nov 2026 22:34:39 GMT</gdacs:todate>
+      <gdacs:durationinweek>0</gdacs:durationinweek>
+      <gdacs:year>2026</gdacs:year>
+      <dc:subject>EQ1</dc:subject>
+      <guid isPermaLink="false">EQ1578459</guid>
+      <geo:Point>
+        <geo:lat>-20.3204</geo:lat>
+        <geo:long>-173.4099</geo:long>
+      </geo:Point>
+      <!--gdacs:bbox format = lonmin lonmax latmin latmax-->
+      <gdacs:bbox>-177.4099 -169.4099 -24.3204 -16.3204</gdacs:bbox>
+      <georss:point>-20.3204 -173.4099</georss:point>
+      <gdacs:cap>https://www.gdacs.org/contentdata/resources/EQ/1578459/cap_1578459.xml</gdacs:cap>
+      <gdacs:icon>http://www.gdacs.org/Images/gdacs_icons/alerts/Green/EQ.png</gdacs:icon>
+      <gdacs:version>1</gdacs:version>
+      <gdacs:eventtype>EQ</gdacs:eventtype>
+      <gdacs:alertlevel>Green</gdacs:alertlevel>
+      <gdacs:alertscore>0</gdacs:alertscore>
+      <gdacs:episodealertlevel>Green</gdacs:episodealertlevel>
+      <gdacs:episodealertscore>1</gdacs:episodealertscore>
+      <gdacs:eventname />
+      <gdacs:eventid>1578459</gdacs:eventid>
+      <gdacs:episodeid>1747839</gdacs:episodeid>
+      <gdacs:calculationtype>earthquakeonly</gdacs:calculationtype>
+      <gdacs:severity unit="M" value="4.9">Magnitude 4.9M, Depth:10km</gdacs:severity>
+      <gdacs:population unit="in MMI III" value="2566">3 thousand in MMI III</gdacs:population>
+      <gdacs:vulnerability value="1.3145341380124" />
+      <gdacs:iso3>TON</gdacs:iso3>
+      <gdacs:country>Tonga</gdacs:country>
+      <gdacs:glide />
+      <gdacs:mapimage />
+      <gdacs:maplink />
+      <gdacs:gtsimage />
+      <gdacs:gtslink />
+      <gdacs:resources>
+        <gdacs:resource id="event_rss" version="0" source="EC-JRC" url="http://www.gdacs.org//datareport/resources/EQ/1578459/rss_1578459.xml" type="rss">
+          <gdacs:title>Event in rss format</gdacs:title>
+          <gdacs:description>Joint Research Center of the European Commission</gdacs:description>
+          <gdacs:acknowledgements>Copyright notice: European Union (CC BY 4.0), reuse is allowed, provided appropriate credit to GDACS is given.</gdacs:acknowledgements>
+          <gdacs:accesslevel>Public</gdacs:accesslevel>
+        </gdacs:resource>
+      </gdacs:resources>
+    </item>
+    <item>
+      <title>Green earthquake (Magnitude 5.1M, Depth:94.53km) in Vanuatu 20/11/2026 17:53 UTC, 90 thousand in 100km.</title>
+      <description>On 11/20/2026 5:53:15 PM, an earthquake occurred in Vanuatu potentially affecting 90 thousand in 100km. The earthquake had Magnitude 5.1M, Depth:94.53km.</description>
+      <enclosure type="image/png" length="1" url="https://www.gdacs.org/contentdata/resources/imgtemp/gdacs/eq/eq1747805_1.png" />
+      <gdacs:temporary>false</gdacs:temporary>
+      <link>http://www.gdacs.org/report.aspx?eventtype=EQ&amp;eventid=1578429</link>
+      <pubDate>Fri, 20 Nov 2026 18:12:04 GMT</pubDate>
+      <gdacs:dateadded>Fri, 20 Nov 2026 18:12:04 GMT</gdacs:dateadded>
+      <gdacs:datemodified>Fri, 20 Nov 2026 18:33:24 GMT</gdacs:datemodified>
+      <gdacs:iscurrent>true</gdacs:iscurrent>
+      <gdacs:fromdate>Fri, 20 Nov 2026 17:53:15 GMT</gdacs:fromdate>
+      <gdacs:todate>Fri, 20 Nov 2026 17:53:15 GMT</gdacs:todate>
+      <gdacs:durationinweek>0</gdacs:durationinweek>
+      <gdacs:year>2026</gdacs:year>
+      <dc:subject>EQ1</dc:subject>
+      <guid isPermaLink="false">EQ1578429</guid>
+      <geo:Point>
+        <geo:lat>-14.835</geo:lat>
+        <geo:long>167.29</geo:long>
+      </geo:Point>
+      <!--gdacs:bbox format = lonmin lonmax latmin latmax-->
+      <gdacs:bbox>163.29 171.29 -18.835 -10.835</gdacs:bbox>
+      <georss:point>-14.835 167.29</georss:point>
+      <gdacs:cap>https://www.gdacs.org/contentdata/resources/EQ/1578429/cap_1578429.xml</gdacs:cap>
+      <gdacs:icon>http://www.gdacs.org/Images/gdacs_icons/alerts/Green/EQ.png</gdacs:icon>
+      <gdacs:version>1</gdacs:version>
+      <gdacs:eventtype>EQ</gdacs:eventtype>
+      <gdacs:alertlevel>Green</gdacs:alertlevel>
+      <gdacs:alertscore>0</gdacs:alertscore>
+      <gdacs:episodealertlevel>Green</gdacs:episodealertlevel>
+      <gdacs:episodealertscore>1</gdacs:episodealertscore>
+      <gdacs:eventname />
+      <gdacs:eventid>1578429</gdacs:eventid>
+      <gdacs:episodeid>1747805</gdacs:episodeid>
+      <gdacs:calculationtype>earthquakeonly</gdacs:calculationtype>
+      <gdacs:severity unit="M" value="5.1">Magnitude 5.1M, Depth:94.5km</gdacs:severity>
+      <gdacs:population unit="in MMI IV" value="55903">60 thousand in MMI IV</gdacs:population>
+      <gdacs:vulnerability value="1.3145341380124" />
+      <gdacs:iso3>VUT</gdacs:iso3>
+      <gdacs:country>Vanuatu</gdacs:country>
+      <gdacs:glide />
+      <gdacs:mapimage />
+      <gdacs:maplink />
+      <gdacs:gtsimage />
+      <gdacs:gtslink />
+      <gdacs:resources>
+        <gdacs:resource id="event_rss" version="0" source="EC-JRC" url="http://www.gdacs.org//datareport/resources/EQ/1578429/rss_1578429.xml" type="rss">
+          <gdacs:title>Event in rss format</gdacs:title>
+          <gdacs:description>Joint Research Center of the European Commission</gdacs:description>
+          <gdacs:acknowledgements>Copyright notice: European Union (CC BY 4.0), reuse is allowed, provided appropriate credit to GDACS is given.</gdacs:acknowledgements>
+          <gdacs:accesslevel>Public</gdacs:accesslevel>
+        </gdacs:resource>
+      </gdacs:resources>
+    </item>
+    <item>
+      <title>Green earthquake (Magnitude 4.7M, Depth:10km) in Chile 20/11/2026 14:16 UTC, 60 thousand in 100km.</title>
+      <description>On 11/20/2026 2:16:15 PM, an earthquake occurred in Chile potentially affecting 60 thousand in 100km. The earthquake had Magnitude 4.7M, Depth:10km.</description>
+      <enclosure type="image/png" length="1" url="https://www.gdacs.org/contentdata/resources/imgtemp/gdacs/eq/eq1747774_1.png" />
+      <gdacs:temporary>false</gdacs:temporary>
+      <link>http://www.gdacs.org/report.aspx?eventtype=EQ&amp;eventid=1578399</link>
+      <pubDate>Fri, 20 Nov 2026 14:56:28 GMT</pubDate>
+      <gdacs:dateadded>Fri, 20 Nov 2026 14:56:28 GMT</gdacs:dateadded>
+      <gdacs:datemodified>Fri, 20 Nov 2026 14:56:28 GMT</gdacs:datemodified>
+      <gdacs:iscurrent>true</gdacs:iscurrent>
+      <gdacs:fromdate>Fri, 20 Nov 2026 14:16:15 GMT</gdacs:fromdate>
+      <gdacs:todate>Fri, 20 Nov 2026 14:16:15 GMT</gdacs:todate>
+      <gdacs:durationinweek>0</gdacs:durationinweek>
+      <gdacs:year>2026</gdacs:year>
+      <dc:subject>EQ1</dc:subject>
+      <guid isPermaLink="false">EQ1578399</guid>
+      <geo:Point>
+        <geo:lat>-31.7842</geo:lat>
+        <geo:long>-72.1485</geo:long>
+      </geo:Point>
+      <!--gdacs:bbox format = lonmin lonmax latmin latmax-->
+      <gdacs:bbox>-76.1485 -68.1485 -35.7842 -27.7842</gdacs:bbox>
+      <georss:point>-31.7842 -72.1485</georss:point>
+      <gdacs:cap>https://www.gdacs.org/contentdata/resources/EQ/1578399/cap_1578399.xml</gdacs:cap>
+      <gdacs:icon>http://www.gdacs.org/Images/gdacs_icons/alerts/Green/EQ.png</gdacs:icon>
+      <gdacs:version>1</gdacs:version>
+      <gdacs:eventtype>EQ</gdacs:eventtype>
+      <gdacs:alertlevel>Green</gdacs:alertlevel>
+      <gdacs:alertscore>0</gdacs:alertscore>
+      <gdacs:episodealertlevel>Green</gdacs:episodealertlevel>
+      <gdacs:episodealertscore>1</gdacs:episodealertscore>
+      <gdacs:eventname />
+      <gdacs:eventid>1578399</gdacs:eventid>
+      <gdacs:episodeid>1747774</gdacs:episodeid>
+      <gdacs:calculationtype>earthquakeonly</gdacs:calculationtype>
+      <gdacs:severity unit="M" value="4.7">Magnitude 4.7M, Depth:10km</gdacs:severity>
+      <gdacs:population unit="in MMI III" value="24153">20 thousand in MMI III</gdacs:population>
+      <gdacs:vulnerability value="1.3145341380124" />
+      <gdacs:iso3>CHL</gdacs:iso3>
+      <gdacs:country>Chile</gdacs:country>
+      <gdacs:glide />
+      <gdacs:mapimage />
+      <gdacs:maplink />
+      <gdacs:gtsimage />
+      <gdacs:gtslink />
+      <gdacs:resources>
+        <gdacs:resource id="event_rss" version="0" source="EC-JRC" url="http://www.gdacs.org//datareport/resources/EQ/1578399/rss_1578399.xml" type="rss">
+          <gdacs:title>Event in rss format</gdacs:title>
+          <gdacs:description>Joint Research Center of the European Commission</gdacs:description>
+          <gdacs:acknowledgements>Copyright notice: European Union (CC BY 4.0), reuse is allowed, provided appropriate credit to GDACS is given.</gdacs:acknowledgements>
+          <gdacs:accesslevel>Public</gdacs:accesslevel>
+        </gdacs:resource>
+      </gdacs:resources>
+    </item>
+    <item>
+      <title>Green earthquake (Magnitude 5.1M, Depth:73.392km) in Philippines 20/11/2026 13:09 UTC, 1.7 million in 100km.</title>
+      <description>On 11/20/2026 1:09:04 PM, an earthquake occurred in Philippines potentially affecting 1.7 million in 100km. The earthquake had Magnitude 5.1M, Depth:73.392km.</description>
+      <enclosure type="image/png" length="1" url="https://www.gdacs.org/contentdata/resources/imgtemp/gdacs/eq/eq1747753_1.png" />
+      <gdacs:temporary>false</gdacs:temporary>
+      <link>http://www.gdacs.org/report.aspx?eventtype=EQ&amp;eventid=1578380</link>
+      <pubDate>Fri, 20 Nov 2026 13:23:20 GMT</pubDate>
+      <gdacs:dateadded>Fri, 20 Nov 2026 13:23:20 GMT</gdacs:dateadded>
+      <gdacs:datemodified>Fri, 20 Nov 2026 13:49:23 GMT</gdacs:datemodified>
+      <gdacs:iscurrent>true</gdacs:iscurrent>
+      <gdacs:fromdate>Fri, 20 Nov 2026 13:09:04 GMT</gdacs:fromdate>
+      <gdacs:todate>Fri, 20 Nov 2026 13:09:04 GMT</gdacs:todate>
+      <gdacs:durationinweek>0</gdacs:durationinweek>
+      <gdacs:year>2026</gdacs:year>
+      <dc:subject>EQ1</dc:subject>
+      <guid isPermaLink="false">EQ1578380</guid>
+      <geo:Point>
+        <geo:lat>5.4441</geo:lat>
+        <geo:long>125.2986</geo:long>
+      </geo:Point>
+      <!--gdacs:bbox format = lonmin lonmax latmin latmax-->
+      <gdacs:bbox>121.2986 129.2986 1.4441 9.4441</gdacs:bbox>
+      <georss:point>5.4441 125.2986</georss:point>
+      <gdacs:cap>https://www.gdacs.org/contentdata/resources/EQ/1578380/cap_1578380.xml</gdacs:cap>
+      <gdacs:icon>http://www.gdacs.org/Images/gdacs_icons/alerts/Green/EQ.png</gdacs:icon>
+      <gdacs:version>1</gdacs:version>
+      <gdacs:eventtype>EQ</gdacs:eventtype>
+      <gdacs:alertlevel>Green</gdacs:alertlevel>
+      <gdacs:alertscore>0</gdacs:alertscore>
+      <gdacs:episodealertlevel>Green</gdacs:episodealertlevel>
+      <gdacs:episodealertscore>1</gdacs:episodealertscore>
+      <gdacs:eventname />
+      <gdacs:eventid>1578380</gdacs:eventid>
+      <gdacs:episodeid>1747753</gdacs:episodeid>
+      <gdacs:calculationtype>earthquakeonly</gdacs:calculationtype>
+      <gdacs:severity unit="M" value="5.1">Magnitude 5.1M, Depth:73.4km</gdacs:severity>
+      <gdacs:population unit="in MMI IV" value="1154025">1.2 million in MMI IV</gdacs:population>
+      <gdacs:vulnerability value="2.4958974337901" />
+      <gdacs:iso3>PHL</gdacs:iso3>
+      <gdacs:country>Philippines</gdacs:country>
+      <gdacs:glide />
+      <gdacs:mapimage />
+      <gdacs:maplink />
+      <gdacs:gtsimage />
+      <gdacs:gtslink />
+      <gdacs:resources>
+        <gdacs:resource id="event_rss" version="0" source="EC-JRC" url="http://www.gdacs.org//datareport/resources/EQ/1578380/rss_1578380.xml" type="rss">
+          <gdacs:title>Event in rss format</gdacs:title>
+          <gdacs:description>Joint Research Center of the European Commission</gdacs:description>
+          <gdacs:acknowledgements>Copyright notice: European Union (CC BY 4.0), reuse is allowed, provided appropriate credit to GDACS is given.</gdacs:acknowledgements>
+          <gdacs:accesslevel>Public</gdacs:accesslevel>
+        </gdacs:resource>
+      </gdacs:resources>
+    </item>
+    <item>
+      <title>Green earthquake (Magnitude 4.7M, Depth:10km) in Southeast Of Loyalty Islands 20/11/2026 10:48 UTC, No people affected in 100km.</title>
+      <description>On 11/20/2026 10:48:44 AM, an earthquake occurred in Southeast Of Loyalty Islands potentially affecting No people affected in 100km. The earthquake had Magnitude 4.7M, Depth:10km.</description>
+      <enclosure type="image/png" length="1" url="https://www.gdacs.org/contentdata/resources/imgtemp/gdacs/eq/eq1747733_1.png" />
+      <gdacs:temporary>false</gdacs:temporary>
+      <link>http://www.gdacs.org/report.aspx?eventtype=EQ&amp;eventid=1578362</link>
+      <pubDate>Fri, 20 Nov 2026 11:18:42 GMT</pubDate>
+      <gdacs:dateadded>Fri, 20 Nov 2026 11:18:42 GMT</gdacs:dateadded>
+      <gdacs:datemodified>Fri, 20 Nov 2026 11:18:42 GMT</gdacs:datemodified>
+      <gdacs:iscurrent>true</gdacs:iscurrent>
+      <gdacs:fromdate>Fri, 20 Nov 2026 10:48:44 GMT</gdacs:fromdate>
+      <gdacs:todate>Fri, 20 Nov 2026 10:48:44 GMT</gdacs:todate>
+      <gdacs:durationinweek>0</gdacs:durationinweek>
+      <gdacs:year>2026</gdacs:year>
+      <dc:subject>EQ1</dc:subject>
+      <guid isPermaLink="false">EQ1578362</guid>
+      <geo:Point>
+        <geo:lat>-24.6606</geo:lat>
+        <geo:long>171.1906</geo:long>
+      </geo:Point>
+      <!--gdacs:bbox format = lonmin lonmax latmin latmax-->
+      <gdacs:bbox>167.1906 175.1906 -28.6606 -20.6606</gdacs:bbox>
+      <georss:point>-24.6606 171.1906</georss:point>
+      <gdacs:cap>https://www.gdacs.org/contentdata/resources/EQ/1578362/cap_1578362.xml</gdacs:cap>
+      <gdacs:icon>http://www.gdacs.org/Images/gdacs_icons/alerts/Green/EQ.png</gdacs:icon>
+      <gdacs:version>1</gdacs:version>
+      <gdacs:eventtype>EQ</gdacs:eventtype>
+      <gdacs:alertlevel>Green</gdacs:alertlevel>
+      <gdacs:alertscore>0</gdacs:alertscore>
+      <gdacs:episodealertlevel>Green</gdacs:episodealertlevel>
+      <gdacs:episodealertscore>1</gdacs:episodealertscore>
+      <gdacs:eventname />
+      <gdacs:eventid>1578362</gdacs:eventid>
+      <gdacs:episodeid>1747733</gdacs:episodeid>
+      <gdacs:calculationtype>earthquakeonly</gdacs:calculationtype>
+      <gdacs:severity unit="M" value="4.7">Magnitude 4.7M, Depth:10km</gdacs:severity>
+      <gdacs:population unit="in MMI -" value="0" />
+      <gdacs:vulnerability value="1.3145341380124" />
+      <gdacs:iso3 />
+      <gdacs:country>Southeast Of Loyalty Islands</gdacs:country>
+      <gdacs:glide />
+      <gdacs:mapimage />
+      <gdacs:maplink />
+      <gdacs:gtsimage />
+      <gdacs:gtslink />
+      <gdacs:resources>
+        <gdacs:resource id="event_rss" version="0" source="EC-JRC" url="http://www.gdacs.org//datareport/resources/EQ/1578362/rss_1578362.xml" type="rss">
+          <gdacs:title>Event in rss format</gdacs:title>
+          <gdacs:description>Joint Research Center of the European Commission</gdacs:description>
+          <gdacs:acknowledgements>Copyright notice: European Union (CC BY 4.0), reuse is allowed, provided appropriate credit to GDACS is given.</gdacs:acknowledgements>
+          <gdacs:accesslevel>Public</gdacs:accesslevel>
+        </gdacs:resource>
+      </gdacs:resources>
+    </item>
+    <item>
+      <title>Green earthquake (Magnitude 5M, Depth:10km) in Southeast Of Loyalty Islands 20/11/2026 10:30 UTC, No people affected in 100km.</title>
+      <description>On 11/20/2026 10:30:01 AM, an earthquake occurred in Southeast Of Loyalty Islands potentially affecting No people affected in 100km. The earthquake had Magnitude 5M, Depth:10km.</description>
+      <enclosure type="image/png" length="1" url="https://www.gdacs.org/contentdata/resources/imgtemp/gdacs/eq/eq1747726_1.png" />
+      <gdacs:temporary>false</gdacs:temporary>
+      <link>http://www.gdacs.org/report.aspx?eventtype=EQ&amp;eventid=1578357</link>
+      <pubDate>Fri, 20 Nov 2026 10:50:27 GMT</pubDate>
+      <gdacs:dateadded>Fri, 20 Nov 2026 10:50:27 GMT</gdacs:dateadded>
+      <gdacs:datemodified>Fri, 20 Nov 2026 10:50:27 GMT</gdacs:datemodified>
+      <gdacs:iscurrent>true</gdacs:iscurrent>
+      <gdacs:fromdate>Fri, 20 Nov 2026 10:30:01 GMT</gdacs:fromdate>
+      <gdacs:todate>Fri, 20 Nov 2026 10:30:01 GMT</gdacs:todate>
+      <gdacs:durationinweek>0</gdacs:durationinweek>
+      <gdacs:year>2026</gdacs:year>
+      <dc:subject>EQ1</dc:subject>
+      <guid isPermaLink="false">EQ1578357</guid>
+      <geo:Point>
+        <geo:lat>-24.7463</geo:lat>
+        <geo:long>171.4327</geo:long>
+      </geo:Point>
+      <!--gdacs:bbox format = lonmin lonmax latmin latmax-->
+      <gdacs:bbox>167.4327 175.4327 -28.7463 -20.7463</gdacs:bbox>
+      <georss:point>-24.7463 171.4327</georss:point>
+      <gdacs:cap>https://www.gdacs.org/contentdata/resources/EQ/1578357/cap_1578357.xml</gdacs:cap>
+      <gdacs:icon>http://www.gdacs.org/Images/gdacs_icons/alerts/Green/EQ.png</gdacs:icon>
+      <gdacs:version>1</gdacs:version>
+      <gdacs:eventtype>EQ</gdacs:eventtype>
+      <gdacs:alertlevel>Green</gdacs:alertlevel>
+      <gdacs:alertscore>0</gdacs:alertscore>
+      <gdacs:episodealertlevel>Green</gdacs:episodealertlevel>
+      <gdacs:episodealertscore>1</gdacs:episodealertscore>
+      <gdacs:eventname />
+      <gdacs:eventid>1578357</gdacs:eventid>
+      <gdacs:episodeid>1747726</gdacs:episodeid>
+      <gdacs:calculationtype>earthquakeonly</gdacs:calculationtype>
+      <gdacs:severity unit="M" value="5">Magnitude 5M, Depth:10km</gdacs:severity>
+      <gdacs:population unit="in MMI -" value="0" />
+      <gdacs:vulnerability value="1.3145341380124" />
+      <gdacs:iso3 />
+      <gdacs:country>Southeast Of Loyalty Islands</gdacs:country>
+      <gdacs:glide />
+      <gdacs:mapimage />
+      <gdacs:maplink />
+      <gdacs:gtsimage />
+      <gdacs:gtslink />
+      <gdacs:resources>
+        <gdacs:resource id="event_rss" version="0" source="EC-JRC" url="http://www.gdacs.org//datareport/resources/EQ/1578357/rss_1578357.xml" type="rss">
+          <gdacs:title>Event in rss format</gdacs:title>
+          <gdacs:description>Joint Research Center of the European Commission</gdacs:description>
+          <gdacs:acknowledgements>Copyright notice: European Union (CC BY 4.0), reuse is allowed, provided appropriate credit to GDACS is given.</gdacs:acknowledgements>
+          <gdacs:accesslevel>Public</gdacs:accesslevel>
+        </gdacs:resource>
+      </gdacs:resources>
+    </item>
+    <item>
+      <title>Green earthquake (Magnitude 4.6M, Depth:41.976km) in Greece 20/11/2026 10:16 UTC, 230 thousand in 100km.</title>
+      <description>On 11/20/2026 10:16:14 AM, an earthquake occurred in Greece potentially affecting 230 thousand in 100km. The earthquake had Magnitude 4.6M, Depth:41.976km.</description>
+      <enclosure type="image/png" length="1" url="https://www.gdacs.org/contentdata/resources/imgtemp/gdacs/eq/eq1747744_1.png" />
+      <gdacs:temporary>false</gdacs:temporary>
+      <link>http://www.gdacs.org/report.aspx?eventtype=EQ&amp;eventid=1578354</link>
+      <pubDate>Fri, 20 Nov 2026 12:01:51 GMT</pubDate>
+      <gdacs:dateadded>Fri, 20 Nov 2026 12:01:51 GMT</gdacs:dateadded>
+      <gdacs:datemodified>Fri, 20 Nov 2026 12:01:51 GMT</gdacs:datemodified>
+      <gdacs:iscurrent>true</gdacs:iscurrent>
+      <gdacs:fromdate>Fri, 20 Nov 2026 10:16:14 GMT</gdacs:fromdate>
+      <gdacs:todate>Fri, 20 Nov 2026 10:16:14 GMT</gdacs:todate>
+      <gdacs:durationinweek>0</gdacs:durationinweek>
+      <gdacs:year>2026</gdacs:year>
+      <dc:subject>EQ1</dc:subject>
+      <guid isPermaLink="false">EQ1578354</guid>
+      <geo:Point>
+        <geo:lat>36.4406</geo:lat>
+        <geo:long>22.082</geo:long>
+      </geo:Point>
+      <!--gdacs:bbox format = lonmin lonmax latmin latmax-->
+      <gdacs:bbox>18.082 26.082 32.4406 40.4406</gdacs:bbox>
+      <georss:point>36.4406 22.082</georss:point>
+      <gdacs:cap>https://www.gdacs.org/contentdata/resources/EQ/1578354/cap_1578354.xml</gdacs:cap>
+      <gdacs:icon>http://www.gdacs.org/Images/gdacs_icons/alerts/Green/EQ.png</gdacs:icon>
+      <gdacs:version>1</gdacs:version>
+      <gdacs:eventtype>EQ</gdacs:eventtype>
+      <gdacs:alertlevel>Green</gdacs:alertlevel>
+      <gdacs:alertscore>0</gdacs:alertscore>
+      <gdacs:episodealertlevel>Green</gdacs:episodealertlevel>
+      <gdacs:episodealertscore>1</gdacs:episodealertscore>
+      <gdacs:eventname />
+      <gdacs:eventid>1578354</gdacs:eventid>
+      <gdacs:episodeid>1747744</gdacs:episodeid>
+      <gdacs:calculationtype>earthquakeonly</gdacs:calculationtype>
+      <gdacs:severity unit="M" value="4.6">Magnitude 4.6M, Depth:42km</gdacs:severity>
+      <gdacs:population unit="in MMI III" value="263530">260 thousand in MMI III</gdacs:population>
+      <gdacs:vulnerability value="1.3145341380124" />
+      <gdacs:iso3>GRC</gdacs:iso3>
+      <gdacs:country>Greece</gdacs:country>
+      <gdacs:glide />
+      <gdacs:mapimage />
+      <gdacs:maplink />
+      <gdacs:gtsimage />
+      <gdacs:gtslink />
+      <gdacs:resources>
+        <gdacs:resource id="event_rss" version="0" source="EC-JRC" url="http://www.gdacs.org//datareport/resources/EQ/1578354/rss_1578354.xml" type="rss">
+          <gdacs:title>Event in rss format</gdacs:title>
+          <gdacs:description>Joint Research Center of the European Commission</gdacs:description>
+          <gdacs:acknowledgements>Copyright notice: European Union (CC BY 4.0), reuse is allowed, provided appropriate credit to GDACS is given.</gdacs:acknowledgements>
+          <gdacs:accesslevel>Public</gdacs:accesslevel>
+        </gdacs:resource>
+      </gdacs:resources>
+    </item>
+    <item>
+      <title>Green earthquake (Magnitude 5.4M, Depth:10km) in Carlsberg Ridge 20/11/2026 08:44 UTC, [unknown].</title>
+      <description>On 11/20/2026 8:44:11 AM, an earthquake occurred in Carlsberg Ridge potentially affecting [unknown]. The earthquake had Magnitude 5.4M, Depth:10km.</description>
+      <enclosure type="image/png" length="1" url="https://www.gdacs.org/contentdata/resources/imgtemp/gdacs/eq/eq1747715_1.png" />
+      <gdacs:temporary>false</gdacs:temporary>
+      <link>http://www.gdacs.org/report.aspx?eventtype=EQ&amp;eventid=1578348</link>
+      <pubDate>Fri, 20 Nov 2026 09:03:04 GMT</pubDate>
+      <gdacs:dateadded>Fri, 20 Nov 2026 09:03:04 GMT</gdacs:dateadded>
+      <gdacs:datemodified>Fri, 20 Nov 2026 10:48:43 GMT</gdacs:datemodified>
+      <gdacs:iscurrent>true</gdacs:iscurrent>
+      <gdacs:fromdate>Fri, 20 Nov 2026 08:44:11 GMT</gdacs:fromdate>
+      <gdacs:todate>Fri, 20 Nov 2026 08:44:11 GMT</gdacs:todate>
+      <gdacs:durationinweek>0</gdacs:durationinweek>
+      <gdacs:year>2026</gdacs:year>
+      <dc:subject>EQ1</dc:subject>
+      <guid isPermaLink="false">EQ1578348</guid>
+      <geo:Point>
+        <geo:lat>9.7949</geo:lat>
+        <geo:long>57.7485</geo:long>
+      </geo:Point>
+      <!--gdacs:bbox format = lonmin lonmax latmin latmax-->
+      <gdacs:bbox>53.7485 61.7485 5.7949 13.7949</gdacs:bbox>
+      <georss:point>9.7949 57.7485</georss:point>
+      <gdacs:cap>https://www.gdacs.org/contentdata/resources/EQ/1578348/cap_1578348.xml</gdacs:cap>
+      <gdacs:icon>http://www.gdacs.org/Images/gdacs_icons/alerts/Green/EQ.png</gdacs:icon>
+      <gdacs:version>1</gdacs:version>
+      <gdacs:eventtype>EQ</gdacs:eventtype>
+      <gdacs:alertlevel>Green</gdacs:alertlevel>
+      <gdacs:alertscore>0</gdacs:alertscore>
+      <gdacs:episodealertlevel>Green</gdacs:episodealertlevel>
+      <gdacs:episodealertscore>1</gdacs:episodealertscore>
+      <gdacs:eventname />
+      <gdacs:eventid>1578348</gdacs:eventid>
+      <gdacs:episodeid>1747715</gdacs:episodeid>
+      <gdacs:calculationtype>earthquakeonly</gdacs:calculationtype>
+      <gdacs:severity unit="M" value="5.4">Magnitude 5.4M, Depth:10km</gdacs:severity>
+      <gdacs:population unit="in MMI -" value="0" />
+      <gdacs:vulnerability value="1.3145341380124" />
+      <gdacs:iso3 />
+      <gdacs:country>Carlsberg Ridge</gdacs:country>
+      <gdacs:glide />
+      <gdacs:mapimage />
+      <gdacs:maplink />
+      <gdacs:gtsimage />
+      <gdacs:gtslink />
+      <gdacs:resources>
+        <gdacs:resource id="event_rss" version="0" source="EC-JRC" url="http://www.gdacs.org//datareport/resources/EQ/1578348/rss_1578348.xml" type="rss">
+          <gdacs:title>Event in rss format</gdacs:title>
+          <gdacs:description>Joint Research Center of the European Commission</gdacs:description>
+          <gdacs:acknowledgements>Copyright notice: European Union (CC BY 4.0), reuse is allowed, provided appropriate credit to GDACS is given.</gdacs:acknowledgements>
+          <gdacs:accesslevel>Public</gdacs:accesslevel>
+        </gdacs:resource>
+      </gdacs:resources>
+    </item>
+    <item>
+      <title>Green earthquake (Magnitude 4.7M, Depth:10km) in Carlsberg Ridge 20/11/2026 08:42 UTC, No people affected in 100km.</title>
+      <description>On 11/20/2026 8:42:54 AM, an earthquake occurred in Carlsberg Ridge potentially affecting No people affected in 100km. The earthquake had Magnitude 4.7M, Depth:10km.</description>
+      <enclosure type="image/png" length="1" url="https://www.gdacs.org/contentdata/resources/imgtemp/gdacs/eq/eq1747717_1.png" />
+      <gdacs:temporary>false</gdacs:temporary>
+      <link>http://www.gdacs.org/report.aspx?eventtype=EQ&amp;eventid=1578346</link>
+      <pubDate>Fri, 20 Nov 2026 09:13:46 GMT</pubDate>
+      <gdacs:dateadded>Fri, 20 Nov 2026 09:13:46 GMT</gdacs:dateadded>
+      <gdacs:datemodified>Fri, 20 Nov 2026 09:13:46 GMT</gdacs:datemodified>
+      <gdacs:iscurrent>true</gdacs:iscurrent>
+      <gdacs:fromdate>Fri, 20 Nov 2026 08:42:54 GMT</gdacs:fromdate>
+      <gdacs:todate>Fri, 20 Nov 2026 08:42:54 GMT</gdacs:todate>
+      <gdacs:durationinweek>0</gdacs:durationinweek>
+      <gdacs:year>2026</gdacs:year>
+      <dc:subject>EQ1</dc:subject>
+      <guid isPermaLink="false">EQ1578346</guid>
+      <geo:Point>
+        <geo:lat>9.7529</geo:lat>
+        <geo:long>57.8408</geo:long>
+      </geo:Point>
+      <!--gdacs:bbox format = lonmin lonmax latmin latmax-->
+      <gdacs:bbox>53.8408 61.8408 5.7529 13.7529</gdacs:bbox>
+      <georss:point>9.7529 57.8408</georss:point>
+      <gdacs:cap>https://www.gdacs.org/contentdata/resources/EQ/1578346/cap_1578346.xml</gdacs:cap>
+      <gdacs:icon>http://www.gdacs.org/Images/gdacs_icons/alerts/Green/EQ.png</gdacs:icon>
+      <gdacs:version>1</gdacs:version>
+      <gdacs:eventtype>EQ</gdacs:eventtype>
+      <gdacs:alertlevel>Green</gdacs:alertlevel>
+      <gdacs:alertscore>0</gdacs:alertscore>
+      <gdacs:episodealertlevel>Green</gdacs:episodealertlevel>
+      <gdacs:episodealertscore>1</gdacs:episodealertscore>
+      <gdacs:eventname />
+      <gdacs:eventid>1578346</gdacs:eventid>
+      <gdacs:episodeid>1747717</gdacs:episodeid>
+      <gdacs:calculationtype>earthquakeonly</gdacs:calculationtype>
+      <gdacs:severity unit="M" value="4.7">Magnitude 4.7M, Depth:10km</gdacs:severity>
+      <gdacs:population unit="in MMI -" value="0" />
+      <gdacs:vulnerability value="1.3145341380124" />
+      <gdacs:iso3 />
+      <gdacs:country>Carlsberg Ridge</gdacs:country>
+      <gdacs:glide />
+      <gdacs:mapimage />
+      <gdacs:maplink />
+      <gdacs:gtsimage />
+      <gdacs:gtslink />
+      <gdacs:resources>
+        <gdacs:resource id="event_rss" version="0" source="EC-JRC" url="http://www.gdacs.org//datareport/resources/EQ/1578346/rss_1578346.xml" type="rss">
+          <gdacs:title>Event in rss format</gdacs:title>
+          <gdacs:description>Joint Research Center of the European Commission</gdacs:description>
+          <gdacs:acknowledgements>Copyright notice: European Union (CC BY 4.0), reuse is allowed, provided appropriate credit to GDACS is given.</gdacs:acknowledgements>
+          <gdacs:accesslevel>Public</gdacs:accesslevel>
+        </gdacs:resource>
+      </gdacs:resources>
+    </item>
+    <item>
+      <title>Green earthquake (Magnitude 5M, Depth:6.69999980926514km) in United States 20/11/2026 06:49 UTC, 10 thousand in MMI&gt;=V.</title>
+      <description>On 11/20/2026 6:49:16 AM, an earthquake occurred in United States potentially affecting 10 thousand in MMI&gt;=V. The earthquake had Magnitude 5M, Depth:6.69999980926514km.</description>
+      <enclosure type="image/png" length="1" url="https://www.gdacs.org/contentdata/resources/imgtemp/gdacs/eq/eq1747699_1.png" />
+      <gdacs:temporary>false</gdacs:temporary>
+      <link>http://www.gdacs.org/report.aspx?eventtype=EQ&amp;eventid=1578331</link>
+      <pubDate>Fri, 20 Nov 2026 06:53:56 GMT</pubDate>
+      <gdacs:dateadded>Fri, 20 Nov 2026 06:53:56 GMT</gdacs:dateadded>
+      <gdacs:datemodified>Fri, 20 Nov 2026 14:03:32 GMT</gdacs:datemodified>
+      <gdacs:iscurrent>true</gdacs:iscurrent>
+      <gdacs:fromdate>Fri, 20 Nov 2026 06:49:16 GMT</gdacs:fromdate>
+      <gdacs:todate>Fri, 20 Nov 2026 06:49:16 GMT</gdacs:todate>
+      <gdacs:durationinweek>0</gdacs:durationinweek>
+      <gdacs:year>2026</gdacs:year>
+      <dc:subject>EQ1</dc:subject>
+      <guid isPermaLink="false">EQ1578331</guid>
+      <geo:Point>
+        <geo:lat>36.5934982299805</geo:lat>
+        <geo:long>-121.220664978027</geo:long>
+      </geo:Point>
+      <!--gdacs:bbox format = lonmin lonmax latmin latmax-->
+      <gdacs:bbox>-125.220664978027 -117.220664978027 32.5934982299805 40.5934982299805</gdacs:bbox>
+      <georss:point>36.5934982299805 -121.220664978027</georss:point>
+      <gdacs:cap>https://www.gdacs.org/contentdata/resources/EQ/1578331/cap_1578331.xml</gdacs:cap>
+      <gdacs:icon>http://www.gdacs.org/Images/gdacs_icons/alerts/Green/EQ.png</gdacs:icon>
+      <gdacs:version>1</gdacs:version>
+      <gdacs:eventtype>EQ</gdacs:eventtype>
+      <gdacs:alertlevel>Green</gdacs:alertlevel>
+      <gdacs:alertscore>0</gdacs:alertscore>
+      <gdacs:episodealertlevel>Green</gdacs:episodealertlevel>
+      <gdacs:episodealertscore>1</gdacs:episodealertscore>
+      <gdacs:eventname />
+      <gdacs:eventid>1578331</gdacs:eventid>
+      <gdacs:episodeid>1747699</gdacs:episodeid>
+      <gdacs:calculationtype>earthquakeonly</gdacs:calculationtype>
+      <gdacs:severity unit="M" value="5">Magnitude 5M, Depth:6.7km</gdacs:severity>
+      <gdacs:population unit="in MMI&gt;=V" value="9704">10 thousand in MMI&gt;=V</gdacs:population>
+      <gdacs:vulnerability value="1.3145341380124" />
+      <gdacs:iso3>USA</gdacs:iso3>
+      <gdacs:country>United States</gdacs:country>
+      <gdacs:glide />
+      <gdacs:mapimage />
+      <gdacs:maplink />
+      <gdacs:gtsimage />
+      <gdacs:gtslink />
+      <gdacs:resources>
+        <gdacs:resource id="event_rss" version="0" source="EC-JRC" url="http://www.gdacs.org//datareport/resources/EQ/1578331/rss_1578331.xml" type="rss">
+          <gdacs:title>Event in rss format</gdacs:title>
+          <gdacs:description>Joint Research Center of the European Commission</gdacs:description>
+          <gdacs:acknowledgements>Copyright notice: European Union (CC BY 4.0), reuse is allowed, provided appropriate credit to GDACS is given.</gdacs:acknowledgements>
+          <gdacs:accesslevel>Public</gdacs:accesslevel>
+        </gdacs:resource>
+      </gdacs:resources>
+    </item>
+  </channel>
+</rss><!--End 11/21/2026 6:07:23 AM-->
