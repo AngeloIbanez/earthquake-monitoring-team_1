@@ -1,5 +1,5 @@
 """
-Unit and integration tests for Workshop #4 Gold Layer enrichments (T-03):
+Unit and integration tests for Workshop #4 Gold Layer enrichments:
 - Dynamic cross-source matching over synthetic multi-agency events
 - Safe offline fallback when PostgreSQL is unreachable (monkeypatch)
 - Additive Gold Parquet schema preservation (legacy W3 columns + new W4 columns & categories)

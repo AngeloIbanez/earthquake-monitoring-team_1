@@ -418,7 +418,7 @@ def build_outlier_rate_fig(df: pd.DataFrame) -> go.Figure:
 def build_outlier_quartile_spread_fig(df: pd.DataFrame) -> go.Figure:
     """
     Visualizes Q1, Median, Q3, and Upper Tukey Fence (Q3 + 1.5*IQR) per numeric field.
-    Note on scale (D-12): `energy_joules` spans >10 orders of magnitude in linear Joules,
+    Note on scale: `energy_joules` spans >10 orders of magnitude in linear Joules,
     so its quartiles are projected onto `log10(J)` alongside `magnitude`, `log10_energy`,
     and `depth_km` to preserve visual legibility without masking extreme skewness.
     """
