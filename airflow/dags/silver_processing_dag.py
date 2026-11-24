@@ -4,19 +4,27 @@ Data Analysis Programming — Semester 2026-II
 
 Monitors datalake_bronze/ for raw earthquake payloads (USGS GeoJSON, EMSC JSON, GDACS XML),
 applies comprehensive data cleansing, normalization, deduplication, validation, and quarantine,
-and outputs:
-1. Canonical relational records in PostgreSQL (source, ingestion_run, event, earthquake, rejected_record).
+outputs:
+1. Canonical relational records in PostgreSQL with per-source ingestion_run auditing.
 2. Curated relational records in PostgreSQL (earthquakes_curated) for backward compatibility.
 3. Traceable Parquet files in datalake_silver/ (earthquakes_silver_YYYYMMDD_HHMMSS.parquet).
+4. Chained trigger to gold_processing_dag (gated by ShortCircuitOperator cooldown).
 """
 
+from collections import defaultdict
+import hashlib
 import json
 import logging
+import os
+import re
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 import pandas as pd
 from airflow.decorators import dag, task
+from airflow.models import Variable
+from airflow.operators.python import ShortCircuitOperator
+from airflow.operators.trigger_dagrun import TriggerDagRunOperator
 from airflow.providers.postgres.hooks.postgres import PostgresHook
 from airflow.sensors.filesystem import FileSensor
 from psycopg2.extras import execute_values, Json
@@ -27,8 +35,10 @@ logger = logging.getLogger("airflow.task")
 
 BRONZE_DIR = Path("/opt/airflow/datalake_bronze")
 SILVER_DIR = Path("/opt/airflow/datalake_silver")
+GOLD_DIR = Path("/opt/airflow/datalake_gold")
 SCHEMA_FILE = Path("/opt/airflow/sql/schema.sql")
 CONN_ID = "postgres_etl"
+DEFAULT_GOLD_MIN_INTERVAL_MINUTES = 15
 
 DDL_CURATED = """
 CREATE TABLE IF NOT EXISTS earthquakes_curated (
@@ -56,6 +66,75 @@ DEFAULT_SOURCES = [
     ("usgs_realtime", "USGS Real-time GeoJSON Feed", "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson", "geojson", "Public Domain"),
     ("gdacs_realtime", "GDACS RSS 24h Alert Feed", "https://www.gdacs.org/xml/rss_24h.xml", "xml-rss2", "Open Access"),
 ]
+
+
+def _resolve_bronze_source_id(filename: str) -> str:
+    """Maps a Bronze filename prefix to its canonical `source_id`."""
+    if filename.startswith(("usgs_realtime_", "usgs_incremental_")):
+        return "usgs_realtime"
+    if filename.startswith("earthquakes_") or filename.startswith("usgs_fdsn_"):
+        return "usgs_fdsn"
+    if filename.startswith("emsc_"):
+        return "emsc_fdsn"
+    if filename.startswith("gdacs_"):
+        return "gdacs_realtime"
+    return ""
+
+
+def _check_gold_cooldown(**context) -> bool:
+    """
+    Short-circuit gate controlling when Silver triggers `gold_processing_dag`:
+    - Manual DAG runs (`run_type == 'manual'`) or explicit `{"force_gold": true}` always
+      trigger Gold immediately for deterministic end-to-end verification.
+    - Scheduled runs respect `GOLD_MIN_INTERVAL_MINUTES` (Airflow Variable
+      `gold_min_interval_minutes` or env `GOLD_MIN_INTERVAL_MINUTES`, default 15 min)
+      against the latest `governance_YYYYMMDD_HHMMSS.parquet` timestamp so PySpark
+      local[*] does not launch redundant heavy JVMs back-to-back.
+    """
+    dag_run = context.get("dag_run")
+    conf = (dag_run.conf or {}) if dag_run else {}
+    run_type = getattr(dag_run, "run_type", "") if dag_run else ""
+
+    if run_type == "manual" or bool(conf.get("force_gold")):
+        logger.info("Manual/forced Silver run detected (run_type=%s); triggering Gold DAG immediately.", run_type)
+        return True
+
+    raw_min = Variable.get(
+        "gold_min_interval_minutes",
+        default_var=os.getenv("GOLD_MIN_INTERVAL_MINUTES", str(DEFAULT_GOLD_MIN_INTERVAL_MINUTES)),
+    )
+    try:
+        min_interval = max(0, int(raw_min))
+    except (TypeError, ValueError):
+        min_interval = DEFAULT_GOLD_MIN_INTERVAL_MINUTES
+
+    if min_interval <= 0 or not GOLD_DIR.exists():
+        return True
+
+    gov_files = sorted(GOLD_DIR.glob("governance_*.parquet"))
+    if not gov_files:
+        return True
+
+    latest_name = gov_files[-1].name
+    m = re.search(r"(\d{8}_\d{6})", latest_name)
+    if not m:
+        return True
+
+    try:
+        last_dt = datetime.strptime(m.group(1), "%Y%m%d_%H%M%S").replace(tzinfo=timezone.utc)
+        age_min = (datetime.now(timezone.utc) - last_dt).total_seconds() / 60.0
+        if age_min < min_interval:
+            logger.info(
+                "Skipping Gold trigger: latest Gold (%s) is %.1f min old (< %d min cooldown).",
+                latest_name,
+                age_min,
+                min_interval,
+            )
+            return False
+    except ValueError:
+        pass
+
+    return True
 
 
 @dag(
@@ -108,6 +187,7 @@ def silver_processing_pipeline():
         BRONZE_DIR.mkdir(parents=True, exist_ok=True)
         bronze_files = sorted(
             list(BRONZE_DIR.glob("earthquakes_*.json"))
+            + list(BRONZE_DIR.glob("usgs_realtime_*.json"))
             + list(BRONZE_DIR.glob("emsc_*.json"))
             + list(BRONZE_DIR.glob("gdacs_*.xml"))
         )
@@ -120,17 +200,17 @@ def silver_processing_pipeline():
 
         for file_path in bronze_files:
             fname = file_path.name
+            source_id = _resolve_bronze_source_id(fname)
+            if not source_id:
+                continue
             try:
-                if fname.startswith("earthquakes_"):
-                    source_id = "usgs_fdsn"
+                if source_id in ("usgs_fdsn", "usgs_realtime"):
                     payload = json.loads(file_path.read_text(encoding="utf-8"))
                     events, earthquakes = parse_usgs_geojson(payload, source_id=source_id)
-                elif fname.startswith("emsc_"):
-                    source_id = "emsc_fdsn"
+                elif source_id == "emsc_fdsn":
                     payload = json.loads(file_path.read_text(encoding="utf-8"))
                     events, earthquakes = parse_emsc_json(payload, source_id=source_id)
-                elif fname.startswith("gdacs_"):
-                    source_id = "gdacs_realtime"
+                elif source_id == "gdacs_realtime":
                     xml_text = file_path.read_text(encoding="utf-8")
                     events, earthquakes = parse_gdacs_xml(xml_text, source_id=source_id)
                 else:
@@ -194,8 +274,18 @@ def silver_processing_pipeline():
         df["energy_joules"] = df["magnitude"].apply(lambda m: 10 ** (4.8 + 1.5 * float(m)))
         df = df.drop_duplicates(subset=["event_id"], keep="last")
 
+        # Deduplicate rejected records in-memory by (source_id, reason, canonical JSON digest)
+        seen_rej = set()
+        dedup_rejected = []
+        for r in rejected:
+            digest = hashlib.md5(json.dumps(r["payload"], sort_keys=True, default=str).encode("utf-8")).hexdigest()
+            key = (r["source_id"], r["reason"], digest)
+            if key not in seen_rej:
+                seen_rej.add(key)
+                dedup_rejected.append(r)
+
         logger.info("Cleansing complete: %d unique curated records ready for Silver persistence", len(df))
-        return {"valid": df.to_dict(orient="records"), "rejected": rejected}
+        return {"valid": df.to_dict(orient="records"), "rejected": dedup_rejected}
 
     @task
     def persist_to_silver_parquet(curated_bundle: dict) -> str:
@@ -240,27 +330,56 @@ def silver_processing_pipeline():
 
     @task
     def persist_to_postgres(curated_bundle: dict):
-        """Upsert curated records and quarantine rejected records into PostgreSQL canonical tables."""
+        """
+        Upserts curated records, tracks per-source `ingestion_run` audit rows with
+        exact new/updated/rejected counts, and quarantines rejected records idempotently.
+        """
         curated_records = curated_bundle.get("valid", [])
         rejected_records = curated_bundle.get("rejected", [])
         if not curated_records and not rejected_records:
             return
+
+        by_source_valid = defaultdict(list)
+        for r in curated_records:
+            by_source_valid[r["source_id"]].append(r)
+
+        by_source_rej = defaultdict(list)
+        for r in rejected_records:
+            by_source_rej[r["source_id"]].append(r)
+
+        active_sources = sorted(set(by_source_valid.keys()) | set(by_source_rej.keys()))
 
         try:
             hook = PostgresHook(postgres_conn_id=CONN_ID)
             conn = hook.get_conn()
             cur = conn.cursor()
 
-            # 1. Create ingestion_run audit entry
-            cur.execute(
-                """
-                INSERT INTO ingestion_run (source_id, mode, started_at, status, rows_in, rows_new, rows_rejected)
-                VALUES ('usgs_fdsn', 'incremental', CURRENT_TIMESTAMP, 'RUNNING', %s, 0, %s)
-                RETURNING run_id;
-                """,
-                (len(curated_records) + len(rejected_records), len(rejected_records)),
-            )
-            run_id = cur.fetchone()[0]
+            # Check existing event_ids prior to upsert for accurate per-source rows_new tracking
+            all_ids = [r["event_id"] for r in curated_records]
+            existing_ids = set()
+            if all_ids:
+                cur.execute("SELECT event_id FROM event WHERE event_id = ANY(%s);", (all_ids,))
+                existing_ids = {row[0] for row in cur.fetchall()}
+
+            # 1. Create per-source `ingestion_run` audit entries
+            run_ids_by_source = {}
+            rows_new_by_source = {}
+            for s_id in active_sources:
+                s_valid = by_source_valid[s_id]
+                s_rej = by_source_rej[s_id]
+                s_in = len(s_valid) + len(s_rej)
+                s_new = sum(1 for r in s_valid if r["event_id"] not in existing_ids)
+                rows_new_by_source[s_id] = s_new
+
+                cur.execute(
+                    """
+                    INSERT INTO ingestion_run (source_id, mode, started_at, status, rows_in, rows_new, rows_rejected)
+                    VALUES (%s, 'incremental', CURRENT_TIMESTAMP, 'RUNNING', %s, 0, %s)
+                    RETURNING run_id;
+                    """,
+                    (s_id, s_in, len(s_rej)),
+                )
+                run_ids_by_source[s_id] = cur.fetchone()[0]
 
             # 2. Upsert into canonical 'event' and 'earthquake' tables
             if curated_records:
@@ -400,7 +519,7 @@ def silver_processing_pipeline():
                 )
                 for r in curated_records
             ]
-            group_rows, match_metrics = build_cross_source_event_groups(canonical_objs)
+            group_rows, _ = build_cross_source_event_groups(canonical_objs)
             if group_rows:
                 execute_values(
                     cur,
@@ -412,41 +531,66 @@ def silver_processing_pipeline():
                     group_rows,
                 )
 
-            # 5. Quarantine rejected records into rejected_record
+            # 5. Idempotently quarantine rejected records linked to their source's run_id
             if rejected_records:
-                rej_rows = [
-                    (run_id, r["source_id"], r["reason"], Json(r["payload"]))
-                    for r in rejected_records
-                ]
-                execute_values(
-                    cur,
-                    """
-                    INSERT INTO rejected_record (run_id, source_id, reason, payload)
-                    VALUES %s;
-                    """,
-                    rej_rows,
-                )
+                cur.execute("SELECT source_id, reason, payload::text FROM rejected_record;")
+                existing_rej = {
+                    (row[0], row[1], json.dumps(json.loads(row[2]), sort_keys=True))
+                    for row in cur.fetchall()
+                    if row[2]
+                }
+                new_rej_rows = []
+                for r in rejected_records:
+                    norm_json = json.dumps(r["payload"], sort_keys=True, default=str)
+                    if (r["source_id"], r["reason"], norm_json) not in existing_rej:
+                        new_rej_rows.append(
+                            (run_ids_by_source[r["source_id"]], r["source_id"], r["reason"], Json(r["payload"]))
+                        )
+                if new_rej_rows:
+                    execute_values(
+                        cur,
+                        """
+                        INSERT INTO rejected_record (run_id, source_id, reason, payload)
+                        VALUES %s;
+                        """,
+                        new_rej_rows,
+                    )
 
-            # 6. Complete ingestion_run audit entry
-            cur.execute(
-                """
-                UPDATE ingestion_run
-                SET finished_at = CURRENT_TIMESTAMP,
-                    status = 'SUCCESS',
-                    rows_new = %s
-                WHERE run_id = %s;
-                """,
-                (len(curated_records), run_id),
-            )
+            # 6. Complete each source's ingestion_run audit entry
+            for s_id, s_run_id in run_ids_by_source.items():
+                s_valid_cnt = len(by_source_valid[s_id])
+                s_new_cnt = rows_new_by_source[s_id]
+                s_rej_cnt = len(by_source_rej[s_id])
+                cur.execute(
+                    """
+                    UPDATE ingestion_run
+                    SET finished_at = CURRENT_TIMESTAMP,
+                        status = 'SUCCESS',
+                        rows_in = %s,
+                        rows_new = %s,
+                        rows_rejected = %s
+                    WHERE run_id = %s;
+                    """,
+                    (s_valid_cnt + s_rej_cnt, s_new_cnt, s_rej_cnt, s_run_id),
+                )
+                logger.info(
+                    "Audit ingestion_run #%d [%s]: in=%d, new=%d, updated=%d, rejected=%d",
+                    s_run_id,
+                    s_id,
+                    s_valid_cnt + s_rej_cnt,
+                    s_new_cnt,
+                    max(0, s_valid_cnt - s_new_cnt),
+                    s_rej_cnt,
+                )
 
             conn.commit()
             cur.close()
             conn.close()
             logger.info(
-                "Successfully persisted %d canonical events, %d event_group links, and %d quarantined records to PostgreSQL",
+                "Successfully persisted %d canonical events across %d sources (%d event_group links)",
                 len(curated_records),
+                len(active_sources),
                 len(group_rows),
-                len(rejected_records),
             )
         except Exception as e:
             logger.warning("PostgreSQL upsert encountered issue: %s", e)
@@ -460,13 +604,25 @@ def silver_processing_pipeline():
         mode="poke",
     )
 
+    gold_cooldown_gate = ShortCircuitOperator(
+        task_id="check_gold_trigger_cooldown",
+        python_callable=_check_gold_cooldown,
+    )
+
+    trigger_gold_dag = TriggerDagRunOperator(
+        task_id="trigger_gold_processing",
+        trigger_dag_id="gold_processing_dag",
+        wait_for_completion=False,
+        reset_dag_run=True,
+    )
+
     db_prep = prepare_database()
     parsed_bundle = find_and_parse_bronze_records()
     clean_bundle = clean_and_normalize(parsed_bundle)
     write_parquet = persist_to_silver_parquet(clean_bundle)
     write_db = persist_to_postgres(clean_bundle)
 
-    wait_for_bronze_files >> db_prep >> parsed_bundle >> clean_bundle >> [write_parquet, write_db]
+    wait_for_bronze_files >> db_prep >> parsed_bundle >> clean_bundle >> [write_parquet, write_db] >> gold_cooldown_gate >> trigger_gold_dag
 
 
 silver_dag = silver_processing_pipeline()
