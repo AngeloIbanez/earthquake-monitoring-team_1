@@ -75,5 +75,41 @@ services:
       airflow-init:
         condition: service_completed_successfully
 
+  dashboard-governance:
+    image: earthquake-monitoring-airflow:2.10.4
+    command: python -m dashboard.governance_app
+    ports:
+      - "8050:8050"
+    environment:
+      PYTHONPATH: /opt/airflow
+      GOLD_DIR: /opt/airflow/datalake_gold
+      DASH_HOST: 0.0.0.0
+      DASH_PORT: "8050"
+    volumes:
+      - ./dashboard:/opt/airflow/dashboard
+      - ./datalake_gold:/opt/airflow/datalake_gold:ro
+      - ./docs:/opt/airflow/docs:ro
+    depends_on:
+      airflow-webserver:
+        condition: service_started
+
+  dashboard-storytelling:
+    image: earthquake-monitoring-airflow:2.10.4
+    command: python -m dashboard.storytelling_app
+    ports:
+      - "8051:8051"
+    environment:
+      PYTHONPATH: /opt/airflow
+      GOLD_DIR: /opt/airflow/datalake_gold
+      DASH_HOST: 0.0.0.0
+      DASH_PORT: "8051"
+    volumes:
+      - ./dashboard:/opt/airflow/dashboard
+      - ./datalake_gold:/opt/airflow/datalake_gold:ro
+      - ./docs:/opt/airflow/docs:ro
+    depends_on:
+      airflow-webserver:
+        condition: service_started
+
 volumes:
   postgres-data:
