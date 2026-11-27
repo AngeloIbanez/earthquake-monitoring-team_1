@@ -448,7 +448,7 @@ server = app.server
 
 def main() -> None:
     port = int(os.getenv("GOVERNANCE_PORT", str(DEFAULT_GOVERNANCE_PORT)))
-    host = os.getenv("GOVERNANCE_HOST", "127.0.0.1")
+    host = os.getenv("GOVERNANCE_HOST", "0.0.0.0")
     logger.info("Starting Governance Dashboard on http://%s:%d", host, port)
     app.run(host=host, port=port, debug=False)
 

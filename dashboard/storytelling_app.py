@@ -574,7 +574,7 @@ server = app.server
 
 def main() -> None:
     port = int(os.getenv("STORYTELLING_PORT", str(DEFAULT_STORYTELLING_PORT)))
-    host = os.getenv("STORYTELLING_HOST", "127.0.0.1")
+    host = os.getenv("STORYTELLING_HOST", "0.0.0.0")
     logger.info("Starting Storytelling Dashboard on http://%s:%d", host, port)
     app.run(host=host, port=port, debug=False)
 
