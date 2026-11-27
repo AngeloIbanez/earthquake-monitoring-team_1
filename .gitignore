@@ -48,3 +48,16 @@ data/raw/*
 # OS Artifacts
 .DS_Store
 Thumbs.db
+
+# Test Cache & LaTeX Build Artifacts
+.pytest_cache/
+workshop_4/paper/*.aux
+workshop_4/paper/*.log
+workshop_4/paper/*.out
+workshop_4/paper/*.toc
+workshop_4/paper/*.fls
+workshop_4/paper/*.fdb_latexmk
+workshop_4/paper/*.synctex.gz
+workshop_4/paper/*.bbl
+workshop_4/paper/*.blg
+

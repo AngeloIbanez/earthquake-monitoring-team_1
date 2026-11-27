@@ -18,12 +18,15 @@ from pathlib import Path
 import requests
 from airflow.decorators import dag, task
 
+from src.extractors import USER_AGENT
+
 logger = logging.getLogger("airflow.task")
 
 USGS_URL = "https://earthquake.usgs.gov/fdsnws/event/1/query"
 EMSC_URL = "https://www.seismicportal.eu/fdsnws/event/1/query"
 GDACS_URL = "https://www.gdacs.org/xml/rss_24h.xml"
 BRONZE_DIR = Path("/opt/airflow/datalake_bronze")
+HTTP_HEADERS = {"User-Agent": USER_AGENT}
 
 
 def _resolve_time_window(data_interval_start=None, data_interval_end=None, dag_run=None):
@@ -68,7 +71,7 @@ def bronze_ingestion_pipeline():
             "minmagnitude": min_mag,
         }
         logger.info("Querying USGS FDSN endpoint: %s [%s -> %s] (min_mag=%s)", USGS_URL, start_str, end_str, min_mag)
-        response = requests.get(USGS_URL, params=params, timeout=30)
+        response = requests.get(USGS_URL, params=params, headers=HTTP_HEADERS, timeout=30)
         response.raise_for_status()
         payload = response.json()
         logger.info("Successfully fetched %d earthquake features from USGS", len(payload.get("features", [])))
@@ -86,7 +89,7 @@ def bronze_ingestion_pipeline():
             "limit": "2000",
         }
         logger.info("Querying EMSC FDSN endpoint: %s [%s -> %s] (minmag=%s)", EMSC_URL, start_str, end_str, min_mag)
-        response = requests.get(EMSC_URL, params=params, timeout=30)
+        response = requests.get(EMSC_URL, params=params, headers=HTTP_HEADERS, timeout=30)
         if response.status_code == 204 or not response.text.strip():
             logger.info("EMSC returned 204 No Content for window.")
             return {"type": "FeatureCollection", "features": []}
@@ -99,7 +102,7 @@ def bronze_ingestion_pipeline():
     def extract_gdacs_alerts(**context) -> str:
         """Fetch active disaster alert RSS 2.0 XML feed from GDACS."""
         logger.info("Querying GDACS RSS 24h XML feed: %s", GDACS_URL)
-        response = requests.get(GDACS_URL, timeout=30)
+        response = requests.get(GDACS_URL, headers=HTTP_HEADERS, timeout=30)
         response.raise_for_status()
         xml_text = response.text
         logger.info("Successfully fetched GDACS XML feed (%d bytes)", len(xml_text))
